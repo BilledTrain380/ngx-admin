@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
+import {ClassesComponent} from './classes/classes.component';
+import {ClassComponent} from './classes/class/class.component';
 
 const routes: Routes = [{
   path: '',
@@ -11,6 +13,12 @@ const routes: Routes = [{
   children: [{
     path: 'dashboard',
     component: DashboardComponent,
+  }, {
+    path: 'classes',
+    component: ClassesComponent,
+  }, {
+    path: 'classes/class',
+    component: ClassComponent,
   }, {
     path: 'ui-features',
     loadChildren: './ui-features/ui-features.module#UiFeaturesModule',

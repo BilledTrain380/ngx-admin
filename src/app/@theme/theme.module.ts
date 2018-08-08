@@ -16,7 +16,7 @@ import {
   NbUserModule,
   NbCheckboxModule,
   NbPopoverModule,
-  NbContextMenuModule,
+  NbContextMenuModule, NbBadgeModule,
 } from '@nebular/theme';
 
 import { NbSecurityModule } from '@nebular/security';
@@ -46,6 +46,7 @@ import { CORPORATE_THEME } from './styles/theme.corporate';
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
 
 const NB_MODULES = [
+  NbBadgeModule,
   NbCardModule,
   NbLayoutModule,
   NbTabsetModule,
@@ -92,7 +93,7 @@ const PIPES = [
 const NB_THEME_PROVIDERS = [
   ...NbThemeModule.forRoot(
     {
-      name: 'cosmic',
+      name: 'corporate',
     },
     [ DEFAULT_THEME, COSMIC_THEME, CORPORATE_THEME ],
   ).providers,
