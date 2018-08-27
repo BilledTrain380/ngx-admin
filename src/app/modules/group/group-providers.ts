@@ -1,8 +1,8 @@
-import {Injectable, InjectionToken} from '@angular/core';
+import {Inject, Injectable, InjectionToken} from '@angular/core';
 import {Group} from './group-models';
-import {environment} from '../../../environments/environment';
-import * as AjvImpl from 'ajv';
 import {groupJsonSchema, groupsJsonSchema} from './json-schemas';
+import {AuthenticationError, BadRequestError, ResourceNotFoundError} from '../http/http-errors';
+import {HTTP_SERVICE, HttpService, REST_SERVICE, RestService} from '../http/http-service';
 
 export const GROUP_PROVIDER: InjectionToken<GroupProvider> = new InjectionToken('Token for a group provider');
 
@@ -16,8 +16,8 @@ export interface GroupProvider {
 
     /**
      * @return all available Groups
-     * @throws {TypeError} if the response does not match the expected type
-     * @throws {Error} if the response is not ok
+     * @throws {AuthenticationError} if the response status is 401
+     * @throws {Error} If the response is not ok.
      */
     getAll(): Promise<Array<Group>>;
 
@@ -27,15 +27,26 @@ export interface GroupProvider {
      * @param name - The name of the group
      *
      * @return the group matching the given name
-     * @throws {ReferenceError} if no group could be found
-     * @throws {TypeError} if the response does not match the expected type
-     * @throws {Error} if the response is not ok
+     * @throws {AuthenticationError} if the response status is 401
+     * @throws {ResourceNotFoundError} if the given {@code url} does not exist
+     * @throws {Error} If the response is not ok.
      */
     getOne(name: string): Promise<Group>;
+
+    /**
+     * Imports the the given file.
+     *
+     * @param file - The file to import
+     *
+     * @throws {AuthenticationError} if the response status is 401
+     * @throws {BadRequestError} if the file is not valid
+     * @throws {Error} If the response is not ok.
+     */
+    import(file: File): Promise<void>;
 }
 
 /**
- *
+ * Http implementation of a {@link GroupProvider}.
  *
  * @author Nicolas Märchy <billedtrain380@gmail.com>
  * @since 1.0.0
@@ -43,57 +54,51 @@ export interface GroupProvider {
 @Injectable()
 export class HttpGroupProvider implements GroupProvider {
 
-    /**
-     * @return all available Groups
-     * @throws {TypeError} if the response does not match the expected type
-     * @throws {Error} if the response is not ok
-     */
+    constructor(
+        @Inject(REST_SERVICE)
+        private readonly rest: RestService,
+
+        @Inject(HTTP_SERVICE)
+        private readonly http: HttpService,
+    ) {}
+
     async getAll(): Promise<Array<Group>> {
 
-        const response: Response = await fetch(`${environment.host}/groups`, {
-            method: 'GET',
-            mode: 'same-origin',
-        });
-
-        if (!response.ok) throw new Error(`Response is not ok: statusCode=${response.status}`);
-
-        const responseBody: any = response.json();
-
-        const valid: boolean = await new AjvImpl()
-            .validate(groupsJsonSchema, responseBody);
-
-        if (!valid) throw new TypeError('Response does not match JSON schema');
-
-        return responseBody;
+        try {
+            return this.rest.getRequest<Array<Group>>('groups', groupsJsonSchema);
+        } catch (error) {
+            if (error instanceof AuthenticationError) throw error;
+            throw Error(error.message);
+        }
     }
 
-    /**
-     * Gets the group with the given {@code name}.
-     *
-     * @param name - The name of the group
-     *
-     * @return the group matching the given name
-     * @throws {ReferenceError} if no group could be found
-     * @throws {TypeError} if the response does not match the expected type
-     * @throws {Error} if the response is not ok
-     */
     async getOne(name: string): Promise<Group> {
 
-        const response: Response = await fetch(`${environment.host}/group/${name}`, {
-            method: 'GET',
-            mode: 'same-origin',
-        });
+        try {
+            return this.rest.getRequest<Group>(`group/${name}`, groupJsonSchema);
+        } catch (error) {
+            if (error instanceof AuthenticationError) throw error;
+            if (error instanceof ResourceNotFoundError) throw error;
+            throw Error(error.message);
+        }
+    }
 
-        if (response.status === 404) throw new ReferenceError(`Group does not exists: name=${name}`);
-        if (!response.ok) throw new Error(`Response is not ok: statusCode=${response.status}`);
+    async import(file: File): Promise<void> {
 
-        const responseBody: any = response.json();
+        try {
 
-        const valid: boolean = await new AjvImpl()
-            .validate(groupJsonSchema, responseBody);
+            const headers: Headers = new Headers();
+            headers.set('Content-Type', 'multipart/form-data');
 
-        if (!valid) throw new TypeError('Response does not match JSON schema');
+            const formData: FormData = new FormData();
+            formData.set('group-input', file);
 
-        return responseBody;
+            await this.http.postForm('group-import', formData, headers);
+
+        } catch (error) {
+            if (error instanceof AuthenticationError) throw error;
+            if (error instanceof BadRequestError) throw error;
+            throw Error(error.message);
+        }
     }
 }

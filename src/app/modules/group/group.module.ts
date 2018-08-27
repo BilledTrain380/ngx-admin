@@ -6,9 +6,6 @@ import {GROUP_PROVIDER, HttpGroupProvider} from './group-providers';
     imports: [
         CommonModule,
     ],
-    exports: [
-        HttpGroupProvider,
-    ],
     declarations: [],
     providers: [
         {
