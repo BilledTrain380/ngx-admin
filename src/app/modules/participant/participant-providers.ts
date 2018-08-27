@@ -1,5 +1,5 @@
 import {Inject, Injectable, InjectionToken} from '@angular/core';
-import {Participant, Town} from './participant-models';
+import {Gender, Participant, Town} from './participant-models';
 import {Sport} from '../sport/sport-models';
 import {Group} from '../group/group-models';
 import {participantJsonSchema, participantListJsonSchema} from './json-schemas';
@@ -53,9 +53,21 @@ export interface ParticipantProvider {
      * @param participant - The participant to update
      *
      * @throws {ReferenceError} If no participant could be found.
+     * @throws {AuthenticationError} if the response status is 401
      * @throws {Error} If the response is not ok.
      */
     update(participant: Participant): Promise<void>;
+
+    /**
+     * Creates the given {@code participant}.
+     * The ID of the paricipant will always be ignored.
+     *
+     * @param participant - The participant to create
+     *
+     * @throws {AuthenticationError} if the response status is 401
+     * @throws {Error} If the response is not ok.
+     */
+    create(participant: Participant): Promise<void>;
 
     /**
      * Sets the given {@code sport} on the given {@code participant}.
@@ -159,12 +171,35 @@ export class HttpParticipantProvider implements ParticipantProvider {
             throw Error(error.message);
         }
     }
+
+    async create(participant: Participant): Promise<void> {
+
+        try {
+
+            const body: CreateParticipant = {
+                surname: participant.surname,
+                prename: participant.prename,
+                gender: participant.gender,
+                birthday: participant.birthday,
+                address: participant.address,
+                town: participant.town,
+                group: participant.group,
+                sport: participant.sport,
+            };
+
+            await this.rest.postRequest('participants', JSON.stringify(body));
+
+        } catch (error) {
+            if (error instanceof AuthenticationError) throw error;
+            throw Error(error.message);
+        }
+    }
 }
 
 interface UpdateParticipant {
     readonly surname?: string;
     readonly prename?: string;
-    readonly gender?: string;
+    readonly gender?: Gender;
     readonly birthday?: number;
     readonly address?: string;
     readonly absent?: boolean;
@@ -174,4 +209,15 @@ interface ParticipantRelations {
     readonly town?: Town;
     readonly group?: Group;
     readonly sport?: Sport;
+}
+
+interface CreateParticipant {
+    readonly surname: string;
+    readonly prename: string;
+    readonly gender: Gender;
+    readonly birthday: number;
+    readonly address: string;
+    readonly town: Town;
+    readonly group: Group;
+    readonly sport: Sport;
 }
