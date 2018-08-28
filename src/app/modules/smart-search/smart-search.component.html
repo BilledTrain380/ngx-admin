@@ -1,0 +1,25 @@
+<section>
+
+    <div class="filter-wrapper">
+
+        <input [formControl]="queryField" type="text" class="form-control" placeholder="Search for participants"/>
+
+        <div #searchResultBox class="filter-select">
+
+            <nb-list>
+
+                <nb-list-item class="search-result" *ngFor="let result of searchResults" (click)="emit(result.value)">
+                    {{ result.displayValue }}
+                </nb-list-item>
+
+                <nb-list-item *ngIf="searchResults.length === 0">
+                    No result found
+                </nb-list-item>
+
+            </nb-list>
+
+        </div>
+
+    </div>
+
+</section>
