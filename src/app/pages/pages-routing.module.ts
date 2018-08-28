@@ -1,11 +1,11 @@
-import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {NgModule} from '@angular/core';
 
-import { PagesComponent } from './pages.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
-import {ClassesComponent} from './classes/classes.component';
-import {ClassComponent} from './classes/class/class.component';
+import {PagesComponent} from './pages.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {NotFoundComponent} from './miscellaneous/not-found/not-found.component';
+import {GroupOverviewComponent} from './group/overview/group-overview.component';
+import {GroupDetailComponent} from './group/detail/group-detail.component';
 
 const routes: Routes = [{
   path: '',
@@ -14,11 +14,11 @@ const routes: Routes = [{
     path: 'dashboard',
     component: DashboardComponent,
   }, {
-    path: 'classes',
-    component: ClassesComponent,
+    path: 'group/overview',
+    component: GroupOverviewComponent,
   }, {
-    path: 'classes/class',
-    component: ClassComponent,
+    path: 'group/detail/:name',
+    component: GroupDetailComponent,
   }, {
     path: 'ui-features',
     loadChildren: './ui-features/ui-features.module#UiFeaturesModule',

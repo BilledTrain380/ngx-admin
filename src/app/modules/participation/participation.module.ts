@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {PARTICIPATION_PROVIDER} from './participation-providers';
-import {HttpParticipantProvider} from '../participant/participant-providers';
+import {HttpParticipationProvider, PARTICIPATION_PROVIDER} from './participation-providers';
 
 @NgModule({
     imports: [
@@ -11,7 +10,7 @@ import {HttpParticipantProvider} from '../participant/participant-providers';
     providers: [
         {
             provide: PARTICIPATION_PROVIDER,
-            useClass: HttpParticipantProvider,
+            useClass: HttpParticipationProvider,
         },
     ],
 })

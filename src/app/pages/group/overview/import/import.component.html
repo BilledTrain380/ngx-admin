@@ -1,0 +1,37 @@
+<div class="modal-header">
+    <span>Import</span>
+    <button class="close" aria-label="Close" (click)="dismissModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<div class="modal-body">
+
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        <strong>Fehler!</strong> Die Datei konnte nicht hochgeladen werden.
+        <br>
+        {{ errorMessage }}
+    </div>
+
+    <h4>CSV Format</h4>
+    <ul class="mb-5">
+        <li>Muss die Dateiendung <mark>.csv</mark> entsprechen</li>
+        <li>
+            Muss die folgende Reihenfolge der Attribute einhalten:<br>
+            <i>Gruppe,Nachname,Vorname,Geschlecht,Strasse,PLZ,Ort,Geburtsdatum,Gruppenleiter</i>
+        </li>
+        <li>Das Geschlecht muss <mark>m</mark> für Knaben und <mark>w</mark> für Mädchen entsprechen</li>
+        <li>Das Gebutsdatum muss dem Format <mark>dd.MM.YYYY</mark> entsprechen; z.B. 06.10.2009 </li>
+        <li>Das Trennzeichen muss dem Komma (,) entsprechen</li>
+    </ul>
+
+    <ngx-dropzone (onFileDrop)="setFile($event)"></ngx-dropzone>
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-md btn-primary" type="button" [disabled]="!file" (click)="upload()">
+        <span *ngIf="!loading">Upload</span>
+        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+    </button>
+</div>

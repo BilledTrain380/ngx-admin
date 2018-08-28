@@ -8,9 +8,9 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
-    title: 'Klassen',
+    title: 'Gruppen',
     icon: 'fa fa-university',
-    link: '/pages/classes',
+    link: '/pages/group/overview',
   },
   {
     title: 'Teilnehmerlisten',
