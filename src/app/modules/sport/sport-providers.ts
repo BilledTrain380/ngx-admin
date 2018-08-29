@@ -48,13 +48,7 @@ export class HttpSportProvider implements SportProvider {
     ) {}
 
     async getAll(): Promise<Array<Sport>> {
-
-        try {
-            return this.rest.getRequest<Array<Sport>>('sports', sportListJsonSchema);
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            throw Error(error.message);
-        }
+        return this.rest.getRequest<Array<Sport>>('sports', sportListJsonSchema);
     }
 
     getOne(name: string): Promise<Sport> {

@@ -1,6 +1,5 @@
 import {ErrorHandler, Injectable, Injector, NgZone} from '@angular/core';
 import {Router} from '@angular/router';
-import {NoConnectionError} from './app.errors';
 
 /**
  * Global error handler to handle all un-catch errors.
@@ -9,18 +8,21 @@ import {NoConnectionError} from './app.errors';
  * @since 1.0.0
  */
 @Injectable()
-export class GlobalErrorHandler implements ErrorHandler {
-    
+export class GlobalErrorHandler extends ErrorHandler {
+
     constructor(
         private readonly injector: Injector,
         private readonly ngZone: NgZone,
-    ) {}
+    ) {
+        super();
+    }
 
     handleError(error: any): void {
 
         this.ngZone.run(() => {
 
-            if (error instanceof NoConnectionError) {
+            // because error handling in js sucks really hard, we have to hack the error type
+            if (error.toString().search(/.*NoConnectionError.*/) > 0) {
                 this.injector.get(Router).navigate(['pages/miscellaneous/no-connection']);
             }
 

@@ -4,6 +4,7 @@ import {environment} from '../../../environments/environment';
 import * as AjvImpl from 'ajv';
 import {AuthenticationError, BadRequestError, RequestError, ResourceNotFoundError} from './http-errors';
 import {responseErrorSchema} from './json-schema';
+import {NoConnectionError} from '../../app.errors';
 
 export type RequestBody = Blob | DataSource | string;
 
@@ -104,15 +105,21 @@ export class OriginRestService implements RestService {
 
     async getRequest<T>(url: string, jsonSchema: object): Promise<T> {
 
-        const response: Response = await fetch(`${environment.host}/${url}`, {
-            method: 'GET',
-            mode: 'same-origin',
-        });
+        try {
 
-        await handleResponse(response);
-        await validateResponseBody(response, jsonSchema);
+            const response: Response = await fetch(`${environment.host}/${url}`, {
+                method: 'GET',
+                mode: 'same-origin',
+            });
 
-        return response.json();
+            await handleResponse(response);
+            await validateResponseBody(response, jsonSchema);
+
+            return response.json();
+
+        } catch (error) {
+            throw new NoConnectionError('Could not connect to server');
+        }
     }
 
     async postRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
@@ -129,20 +136,24 @@ export class OriginRestService implements RestService {
 
     private async fetchWithBody<T>(url: string, method: string, body: RequestBody, jsonSchema?: object): Promise<T> {
 
-        const response: Response = await fetch(`${environment.host}/${url}`, {
-            method,
-            mode: 'same-origin',
-            body: body as any, // because typescript sucks and can not recognize the type
-        });
+        try {
+            const response: Response = await fetch(`${environment.host}/${url}`, {
+                method,
+                mode: 'same-origin',
+                body: body as any, // because typescript sucks and can not recognize the type
+            });
 
-        await handleResponse(response);
+            await handleResponse(response);
 
-        if (jsonSchema) {
-            await validateResponseBody(response, jsonSchema);
-            return response.json();
+            if (jsonSchema) {
+                await validateResponseBody(response, jsonSchema);
+                return response.json();
+            }
+
+            return '' as any; // the json schema was not defined, so we return an empty body
+        } catch (error) {
+            throw new NoConnectionError('Could not connect to server');
         }
-
-        return '' as any; // the json schema was not defined, so we return an empty body
     }
 }
 

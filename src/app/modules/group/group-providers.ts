@@ -63,42 +63,21 @@ export class HttpGroupProvider implements GroupProvider {
     ) {}
 
     async getAll(): Promise<Array<Group>> {
-
-        try {
-            return this.rest.getRequest<Array<Group>>('groups', groupsJsonSchema);
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            throw Error(error.message);
-        }
+        return this.rest.getRequest<Array<Group>>('groups', groupsJsonSchema);
     }
 
     async getOne(name: string): Promise<Group> {
-
-        try {
-            return this.rest.getRequest<Group>(`group/${name}`, groupJsonSchema);
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            if (error instanceof ResourceNotFoundError) throw error;
-            throw Error(error.message);
-        }
+        return this.rest.getRequest<Group>(`group/${name}`, groupJsonSchema);
     }
 
     async import(file: File): Promise<void> {
 
-        try {
+        const headers: Headers = new Headers();
+        headers.set('Content-Type', 'multipart/form-data');
 
-            const headers: Headers = new Headers();
-            headers.set('Content-Type', 'multipart/form-data');
+        const formData: FormData = new FormData();
+        formData.set('group-input', file);
 
-            const formData: FormData = new FormData();
-            formData.set('group-input', file);
-
-            await this.http.postForm('group-import', formData, headers);
-
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            if (error instanceof BadRequestError) throw error;
-            throw Error(error.message);
-        }
+        await this.http.postForm('group-import', formData, headers);
     }
 }

@@ -4,7 +4,7 @@ import {Sport} from '../sport/sport-models';
 import {Group} from '../group/group-models';
 import {participantJsonSchema, participantListJsonSchema} from './json-schemas';
 import {REST_SERVICE, RestService} from '../http/http-service';
-import {AuthenticationError, ResourceNotFoundError} from '../http/http-errors';
+import {AuthenticationError} from '../http/http-errors';
 
 export const PARTICIPANT_PROVIDER: InjectionToken<ParticipantProvider> =
     new InjectionToken('token for participant provider');
@@ -97,102 +97,62 @@ export class HttpParticipantProvider implements ParticipantProvider {
     ) {}
 
     async getAll(): Promise<Array<Participant>> {
-
-        try {
-            return this.rest.getRequest<Array<Participant>>('participants', participantListJsonSchema);
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            throw Error(error.message);
-        }
+        return this.rest.getRequest<Array<Participant>>('participants', participantListJsonSchema);
     }
 
     getByGroup(group: Group): Promise<Array<Participant>> {
 
-        try {
-            return this.rest.getRequest<Array<Participant>>(
-                `participants?group=${group.name}`,
-                participantListJsonSchema);
-
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            throw Error(error.message);
-        }
+        return this.rest.getRequest<Array<Participant>>(
+            `participants?group=${group.name}`,
+            participantListJsonSchema);
     }
 
     getOne(id: number): Promise<Participant> {
 
-        try {
-            return this.rest.getRequest<Participant>(
-                `participant/${id}`,
-                participantJsonSchema);
-
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            if (error instanceof ResourceNotFoundError) throw error;
-            throw Error(error.message);
-        }
+        return this.rest.getRequest<Participant>(
+            `participant/${id}`,
+            participantJsonSchema);
     }
 
     setSport(participant: Participant, sport: Sport): Promise<void> {
 
-        try {
+        const body: ParticipantRelations = {sport};
 
-            const body: ParticipantRelations = {sport};
-
-            return this.rest.putRequest<void>(
-                `participant/${participant.id}`,
-                JSON.stringify(body));
-
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            throw Error(error.message);
-        }
+        return this.rest.putRequest<void>(
+            `participant/${participant.id}`,
+            JSON.stringify(body));
     }
 
     update(participant: Participant): Promise<void> {
 
-        try {
+        const body: UpdateParticipant = {
+            surname: participant.surname,
+            prename: participant.prename,
+            gender: participant.gender,
+            birthday: participant.birthday,
+            address: participant.address,
+            absent: participant.absent,
+        };
 
-            const body: UpdateParticipant = {
-                surname: participant.surname,
-                prename: participant.prename,
-                gender: participant.gender,
-                birthday: participant.birthday,
-                address: participant.address,
-                absent: participant.absent,
-            };
-
-            return this.rest.patchRequest<void>(
-                `participant/${participant.id}`,
-                JSON.stringify(body));
-
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            throw Error(error.message);
-        }
+        return this.rest.patchRequest<void>(
+            `participant/${participant.id}`,
+            JSON.stringify(body));
     }
 
     async create(participant: Participant): Promise<void> {
 
-        try {
+        const body: CreateParticipant = {
+            surname: participant.surname,
+            prename: participant.prename,
+            gender: participant.gender,
+            birthday: participant.birthday,
+            address: participant.address,
+            town: participant.town,
+            group: participant.group,
+            sport: participant.sport,
+        };
 
-            const body: CreateParticipant = {
-                surname: participant.surname,
-                prename: participant.prename,
-                gender: participant.gender,
-                birthday: participant.birthday,
-                address: participant.address,
-                town: participant.town,
-                group: participant.group,
-                sport: participant.sport,
-            };
-
-            await this.rest.postRequest('participants', JSON.stringify(body));
-
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            throw Error(error.message);
-        }
+        await this.rest.postRequest('participants', JSON.stringify(body));
     }
 }
 

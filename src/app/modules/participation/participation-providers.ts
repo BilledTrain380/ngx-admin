@@ -59,17 +59,12 @@ export class HttpParticipationProvider implements ParticipationProvider {
 
     async getStatus(): Promise<ParticipationStatus> {
 
-        try {
-            const participation: Participation = await this.rest.getRequest<Participation>(
-                'participation',
-                participationStatusJsonSchema,
-            );
+        const participation: Participation = await this.rest.getRequest<Participation>(
+            'participation',
+            participationStatusJsonSchema,
+        );
 
-            return participation.status;
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            throw Error(error.message);
-        }
+        return participation.status;
     }
 
     async reset(): Promise<void> {
@@ -77,16 +72,11 @@ export class HttpParticipationProvider implements ParticipationProvider {
     }
 
     private update(status: ParticipationStatus): Promise<void> {
-        try {
 
-            const body: Participation = {
-                status,
-            };
+        const body: Participation = {
+            status,
+        };
 
-            return this.rest.patchRequest('participation', JSON.stringify(body));
-        } catch (error) {
-            if (error instanceof AuthenticationError) throw error;
-            throw Error(error.message);
-        }
+        return this.rest.patchRequest('participation', JSON.stringify(body));
     }
 }
