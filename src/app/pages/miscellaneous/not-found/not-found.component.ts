@@ -1,5 +1,6 @@
-import { NbMenuService } from '@nebular/theme';
-import { Component } from '@angular/core';
+import {Component, Inject} from '@angular/core';
+import {PREVIOUS_ROUTE_SERVICE, PreviousRouteService} from '../../../modules/previous-route/prevous-route.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'ngx-not-found',
@@ -8,10 +9,14 @@ import { Component } from '@angular/core';
 })
 export class NotFoundComponent {
 
-  constructor(private menuService: NbMenuService) {
-  }
+  constructor(
+      private readonly router: Router,
 
-  goToHome() {
-    this.menuService.navigateHome();
+      @Inject(PREVIOUS_ROUTE_SERVICE)
+      private readonly previousRouteService: PreviousRouteService,
+  ) {}
+
+  goBack() {
+      this.router.navigate([this.previousRouteService.previousUrl]);
   }
 }
