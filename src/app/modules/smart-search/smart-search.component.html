@@ -2,7 +2,7 @@
 
     <div class="filter-wrapper">
 
-        <input [formControl]="queryField" type="text" class="form-control" placeholder="Search for participants"/>
+        <input [formControl]="queryField" type="text" class="form-control" [placeholder]="settings.placeHolder"/>
 
         <div #searchResultBox class="filter-select">
 

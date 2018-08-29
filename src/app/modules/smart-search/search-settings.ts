@@ -11,5 +11,6 @@
 export interface SearchSettings<T> {
     readonly matchFunction: (term: string, value: T) => boolean;
     readonly toStringValue: (value: T) => string;
+    readonly placeHolder: string;
     readonly limit: number;
 }
