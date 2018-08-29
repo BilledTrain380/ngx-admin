@@ -42,20 +42,12 @@ export class SmartSearchComponent implements OnInit {
                     return;
                 }
 
-                const regex: RegExp = new RegExp(`^.*${term}.*$`, 'i');
-
                 this.searchResults = this.source
-                    .filter(it => {
-                        return this.settings.searchProperties.some(property => {
-                            const matches: RegExpMatchArray = String(it[property]).match(regex);
-                            return matches !== null && matches.length > 0;
-                        });
-                    }).slice(0, this.settings.limit + 1)
+                    .filter(it => this.settings.matchFunction(term, it))
+                    .slice(0, this.settings.limit + 1)
                     .map<SearchResult<object>>(value => {
 
-                        const displayValue: string = this.settings.searchProperties
-                            .map(property => String(value[property]))
-                            .join(this.settings.displaySeparator);
+                        const displayValue: string = this.settings.toStringValue(value);
 
                         return {
                             displayValue,
