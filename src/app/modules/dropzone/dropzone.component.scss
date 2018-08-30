@@ -6,12 +6,12 @@
         height: 150px;
         border: 2px dashed nb-theme(color-ghost);
 
-        &.drag-enter {
+        &.drag-enter, &.drag-enter h3 {
             //border-color: nb-theme(color-primary);
             color: nb-theme(color-primary);
         }
 
-        &.drag-success {
+        &.drag-success, &.drag-success h3 {
             color: nb-theme(color-info);
         }
 
