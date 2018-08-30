@@ -72,12 +72,9 @@ export class HttpGroupProvider implements GroupProvider {
 
     async import(file: File): Promise<void> {
 
-        const headers: Headers = new Headers();
-        headers.set('Content-Type', 'multipart/form-data');
-
         const formData: FormData = new FormData();
-        formData.set('group-input', file);
+        formData.append('group-input', file);
 
-        await this.http.postForm('group-import', formData, headers);
+        await this.http.postForm('group-import', formData);
     }
 }

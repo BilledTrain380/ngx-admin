@@ -105,21 +105,13 @@ export class OriginRestService implements RestService {
 
     async getRequest<T>(url: string, jsonSchema: object): Promise<T> {
 
-        try {
+        const response: Response = await run(fetch, `${environment.host}/${url}`, {
+            method: 'GET',
+            mode: 'cors',
+        });
 
-            const response: Response = await fetch(`${environment.host}/${url}`, {
-                method: 'GET',
-                mode: 'same-origin',
-            });
-
-            await handleResponse(response);
-            await validateResponseBody(response, jsonSchema);
-
-            return response.json();
-
-        } catch (error) {
-            throw new NoConnectionError('Could not connect to server');
-        }
+        await handleResponse(response);
+        return validateResponseBody(response, jsonSchema);
     }
 
     async postRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
@@ -136,24 +128,19 @@ export class OriginRestService implements RestService {
 
     private async fetchWithBody<T>(url: string, method: string, body: RequestBody, jsonSchema?: object): Promise<T> {
 
-        try {
-            const response: Response = await fetch(`${environment.host}/${url}`, {
-                method,
-                mode: 'same-origin',
-                body: body as any, // because typescript sucks and can not recognize the type
-            });
+        const response: Response = await run(fetch, `${environment.host}/${url}`, {
+            method,
+            mode: 'cors',
+            body: body as any, // because typescript sucks and can not recognize the type
+        });
 
-            await handleResponse(response);
+        await handleResponse(response);
 
-            if (jsonSchema) {
-                await validateResponseBody(response, jsonSchema);
-                return response.json();
-            }
-
-            return '' as any; // the json schema was not defined, so we return an empty body
-        } catch (error) {
-            throw new NoConnectionError('Could not connect to server');
+        if (jsonSchema) {
+            return validateResponseBody(response, jsonSchema);
         }
+
+        return '' as any; // the json schema was not defined, so we return an empty body
     }
 }
 
@@ -183,7 +170,7 @@ export interface HttpService {
     postForm(url: string, formData: FormData, headers?: Headers): Promise<Response>;
 }
 
-const defaultFormHeaders: Headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+const defaultFormHeaders: Headers = new Headers();
 
 /**
  * {@link HttpService} implementation for the same origin.
@@ -198,7 +185,7 @@ export class OriginHttpService implements HttpService {
 
         const response: Response = await fetch(`${environment.host}/import-group`, {
             method: 'POST',
-            mode: 'same-origin',
+            mode: 'cors',
             headers: headers,
             body: formData,
         });
@@ -209,15 +196,21 @@ export class OriginHttpService implements HttpService {
     }
 }
 
+async function run(func: Function, ...args: Array<any>): Promise<any> {
+    try {
+        return func.apply(null, args);
+    } catch (error) {
+        throw new NoConnectionError('Could not connect to server');
+    }
+}
+
 async function handleResponse(response: Response): Promise<void> {
 
     if (response.ok) {
         return;
     }
 
-    await validateResponseBody(response, responseErrorSchema);
-
-    const errorResponse: ErrorResponse = await response.json();
+    const errorResponse: ErrorResponse = await validateResponseBody(response, responseErrorSchema);
 
     if (errorResponse.status === 400)
         throw new BadRequestError(errorResponse.message, errorResponse.timestamp, errorResponse.path);
@@ -236,12 +229,16 @@ async function handleResponse(response: Response): Promise<void> {
         errorResponse.path);
 }
 
-async function validateResponseBody(response: Response, schema: object): Promise<void> {
+async function validateResponseBody(response: Response, schema: object): Promise<any> {
+
+    const body: any = await response.json();
 
     const valid: boolean = await new AjvImpl()
-    .validate(schema, response.json());
+    .validate(schema, body);
 
-if (!valid) throw new TypeError('Response does not match JSON schema');
+    if (!valid) throw new TypeError(`Response does not match JSON schema: url=${response.url}`);
+
+    return body;
 }
 
 interface ErrorResponse {

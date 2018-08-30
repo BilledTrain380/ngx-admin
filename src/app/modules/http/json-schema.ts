@@ -14,7 +14,7 @@ export const responseErrorSchema: object = {
     'properties': {
         'timestamp': {
             '$id': '#/properties/timestamp',
-            'type': 'string',
+            'type': 'integer',
             'title': 'The Timestamp Schema',
             'default': '',
             'examples': [

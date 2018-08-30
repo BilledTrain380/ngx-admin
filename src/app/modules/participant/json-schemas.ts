@@ -172,7 +172,7 @@ export const participantListJsonSchema: object = {
             },
             'sport': {
                 '$id': '#/items/properties/sport',
-                'type': 'object',
+                'type': ['object', 'null'],
                 'title': 'The Sport Schema',
                 'required': [
                     'name',
@@ -364,7 +364,7 @@ export const participantJsonSchema: object = {
         },
         'sport': {
             '$id': '#/properties/sport',
-            'type': 'object',
+            'type': ['object', 'null'],
             'title': 'The Sport Schema',
             'required': [
                 'name',
