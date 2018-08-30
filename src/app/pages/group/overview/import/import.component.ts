@@ -36,6 +36,7 @@ export class ImportComponent {
 
             if (this.file !== undefined) {
                 await this.groupProvider.import(this.file);
+                this.activeModal.close();
             }
 
         } catch (error) {

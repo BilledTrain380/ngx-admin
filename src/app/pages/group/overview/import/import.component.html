@@ -5,7 +5,7 @@
     </button>
 </div>
 
-<div class="modal-body">
+<div class="modal-body" [nbSpinner]="loading">
 
     <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
         <strong>Fehler!</strong> Die Datei konnte nicht hochgeladen werden.
@@ -31,7 +31,6 @@
 
 <div class="modal-footer">
     <button class="btn btn-md btn-primary" type="button" [disabled]="!file" (click)="upload()">
-        <span *ngIf="!loading">Upload</span>
-        <i *ngIf="loading" class="fa fa-spinner fa-spin"></i>
+        Upload
     </button>
 </div>
