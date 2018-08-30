@@ -26,7 +26,8 @@ export class GlobalErrorHandler extends ErrorHandler {
                 this.injector.get(Router).navigate(['pages/miscellaneous/no-connection']);
             }
 
-            // TODO: else log error or sent it back to the server.
+            // TODO: sent it back to the server.
+            super.handleError(error);
         });
     }
 }
