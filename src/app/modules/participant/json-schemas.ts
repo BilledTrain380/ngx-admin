@@ -93,20 +93,10 @@ export const participantListJsonSchema: object = {
                 'type': 'object',
                 'title': 'The Town Schema',
                 'required': [
-                    'id',
                     'zip',
                     'name',
                 ],
                 'properties': {
-                    'id': {
-                        '$id': '#/items/properties/town/properties/id',
-                        'type': 'integer',
-                        'title': 'The Id Schema',
-                        'default': 0,
-                        'examples': [
-                            1,
-                        ],
-                    },
                     'zip': {
                         '$id': '#/items/properties/town/properties/zip',
                         'type': 'string',
@@ -285,20 +275,10 @@ export const participantJsonSchema: object = {
             'type': 'object',
             'title': 'The Town Schema',
             'required': [
-                'id',
                 'zip',
                 'name',
             ],
             'properties': {
-                'id': {
-                    '$id': '#/properties/town/properties/id',
-                    'type': 'integer',
-                    'title': 'The Id Schema',
-                    'default': 0,
-                    'examples': [
-                        1,
-                    ],
-                },
                 'zip': {
                     '$id': '#/properties/town/properties/zip',
                     'type': 'string',
