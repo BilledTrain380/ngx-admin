@@ -108,6 +108,7 @@ export class OriginRestService implements RestService {
         const response: Response = await run(fetch, `${environment.host}/${url}`, {
             method: 'GET',
             mode: 'cors',
+            headers: { 'Content-Type': 'application/json' },
         });
 
         await handleResponse(response);
@@ -132,6 +133,7 @@ export class OriginRestService implements RestService {
             method,
             mode: 'cors',
             body: body as any, // because typescript sucks and can not recognize the type
+            headers: { 'Content-Type': 'application/json' },
         });
 
         await handleResponse(response);
