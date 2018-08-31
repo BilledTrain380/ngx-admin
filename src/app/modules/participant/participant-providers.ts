@@ -60,7 +60,7 @@ export interface ParticipantProvider {
 
     /**
      * Creates the given {@code participant}.
-     * The ID of the paricipant will always be ignored.
+     * The ID of the participant will always be ignored.
      *
      * @param participant - The participant to create
      *
@@ -68,6 +68,16 @@ export interface ParticipantProvider {
      * @throws {Error} If the response is not ok.
      */
     create(participant: Participant): Promise<void>;
+
+    /**
+     * Deletes the given {@code participant}.
+     *
+     * @param participant - The participant to delete
+     *
+     * @throws {AuthenticationError} if the response status is 401
+     * @throws {Error} If the response is not ok.
+     */
+    delete(participant: Participant): Promise<void>;
 
     /**
      * Sets the given {@code sport} on the given {@code participant}.
@@ -153,6 +163,10 @@ export class HttpParticipantProvider implements ParticipantProvider {
         };
 
         await this.rest.postRequest('participants', JSON.stringify(body));
+    }
+
+    async delete(participant: Participant): Promise<void> {
+        await this.rest.deleteRequest(`participant/${participant.id}`);
     }
 }
 

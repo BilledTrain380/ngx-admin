@@ -90,6 +90,19 @@ export interface RestService {
      * @throws {RequestError} if the response is not ok
      */
     putRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T>;
+
+    /**
+     * Fetches a DELETE request to the given {@code url}.
+     *
+     * If the response body is not needed, the type {@coed T} should be {@code void}.
+     * In this case the {@code jsonSchema} can be omitted.
+     *
+     * @type T - The response type.
+     * @param url - The url to fetch.
+     * @param body - The request body to send.
+     * @param jsonSchema - The JSON schema to validate the response body.
+     */
+    deleteRequest<T>(url: string, body?: RequestBody, jsonSchema?: object): Promise<T>;
 }
 
 /**
@@ -101,33 +114,29 @@ export interface RestService {
  * @since 1.0.0
  */
 @Injectable()
-export class OriginRestService implements RestService {
+export class CorsRestService implements RestService {
 
     async getRequest<T>(url: string, jsonSchema: object): Promise<T> {
-
-        const response: Response = await run(fetch, `${environment.host}/${url}`, {
-            method: 'GET',
-            mode: 'cors',
-            headers: { 'Content-Type': 'application/json' },
-        });
-
-        await handleResponse(response);
-        return validateResponseBody(response, jsonSchema);
+        return this.fetchRequest<T>(url, 'GET', undefined, jsonSchema);
     }
 
     async postRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
-        return this.fetchWithBody<T>(url, 'POST', body, jsonSchema);
+        return this.fetchRequest<T>(url, 'POST', body, jsonSchema);
     }
 
     async patchRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
-        return this.fetchWithBody<T>(url, 'PATCH', body, jsonSchema);
+        return this.fetchRequest<T>(url, 'PATCH', body, jsonSchema);
     }
 
     async putRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
-        return this.fetchWithBody<T>(url, 'PUT', body, jsonSchema);
+        return this.fetchRequest<T>(url, 'PUT', body, jsonSchema);
     }
 
-    private async fetchWithBody<T>(url: string, method: string, body: RequestBody, jsonSchema?: object): Promise<T> {
+    deleteRequest<T>(url: string, body?: RequestBody, jsonSchema?: object): Promise<T> {
+        return this.fetchRequest<T>(url, 'DELETE', body, jsonSchema);
+    }
+
+    private async fetchRequest<T>(url: string, method: string, body?: RequestBody, jsonSchema?: object): Promise<T> {
 
         const response: Response = await run(fetch, `${environment.host}/${url}`, {
             method,
@@ -181,7 +190,7 @@ const defaultFormHeaders: Headers = new Headers();
  * @since 1.0.0
  */
 @Injectable()
-export class OriginHttpService implements HttpService {
+export class CorsHttpService implements HttpService {
 
     async postForm(url: string, formData: FormData, headers: Headers = defaultFormHeaders): Promise<Response> {
 

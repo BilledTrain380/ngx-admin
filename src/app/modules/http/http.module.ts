@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {HTTP_SERVICE, OriginHttpService, OriginRestService, REST_SERVICE} from './http-service';
+import {HTTP_SERVICE, CorsHttpService, CorsRestService, REST_SERVICE} from './http-service';
 
 @NgModule({
     imports: [
@@ -10,11 +10,11 @@ import {HTTP_SERVICE, OriginHttpService, OriginRestService, REST_SERVICE} from '
     providers: [
         {
             provide: REST_SERVICE,
-            useClass: OriginRestService,
+            useClass: CorsRestService,
         },
         {
             provide: HTTP_SERVICE,
-            useClass: OriginHttpService,
+            useClass: CorsHttpService,
         },
     ],
 })
