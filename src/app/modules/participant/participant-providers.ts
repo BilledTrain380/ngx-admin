@@ -158,11 +158,10 @@ export class HttpParticipantProvider implements ParticipantProvider {
             birthday: participant.birthday,
             address: participant.address,
             town: participant.town,
-            group: participant.group,
             sport: participant.sport,
         };
 
-        await this.rest.postRequest('participants', JSON.stringify(body));
+        await this.rest.postRequest(`participants?group=${participant.group.name}`, JSON.stringify(body));
     }
 
     async delete(participant: Participant): Promise<void> {
@@ -192,6 +191,5 @@ interface CreateParticipant {
     readonly birthday: number;
     readonly address: string;
     readonly town: Town;
-    readonly group: Group;
     readonly sport: Sport;
 }

@@ -38,7 +38,6 @@ export enum Gender {
  * @since 1.0.0
  */
 export interface Town {
-    readonly id: number;
     readonly zip: string;
     readonly name: string;
 }
