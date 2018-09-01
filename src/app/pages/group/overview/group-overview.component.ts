@@ -31,8 +31,8 @@ export class GroupOverviewComponent implements OnInit {
     }
 
     showImportModal(): void {
-        const model: NgbModalRef = this.modalService.open(ImportComponent, {size: 'lg', container: 'nb-layout'});
-        model.result.then(() => {
+        const modal: NgbModalRef = this.modalService.open(ImportComponent, {size: 'lg', container: 'nb-layout'});
+        modal.result.then(() => {
             this.ngOnInit();
             this.importSuccessful = true;
         });

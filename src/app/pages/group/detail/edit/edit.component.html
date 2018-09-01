@@ -1,0 +1,105 @@
+<div class="modal-header">
+    <span>Bearbeiten</span>
+    <button class="close" aria-label="Close" (click)="dismissModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<form [formGroup]="editForm" (ngSubmit)="submit()">
+
+    <div class="modal-body">
+
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="inputFirstName">Vorname</label>
+                    <input type="text" class="form-control" id="inputFirstName"
+                           formControlName="firstName"
+                           [ngClass]="{ 'form-control-danger': editForm.controls.firstName.dirty && !editForm.controls.firstName.valid }"
+                           required>
+                    <small *ngIf="editForm.controls.firstName.dirty && !editForm.controls.firstName.invalid" class="form-text">This field is required</small>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="inputLastName">Nachname</label>
+                    <input type="text" class="form-control" id="inputLastName"
+                           formControlName="lastName"
+                           [ngClass]="{ 'form-control-danger': editForm.controls.lastName.dirty && !editForm.controls.lastName.valid }"
+                           required>
+                    <small *ngIf="editForm.controls.lastName.dirty && editForm.controls.lastName.invalid" class="form-text">This field is required</small>
+                </div>
+            </div>
+
+            <label class="col-sm-3">Geschlecht</label>
+
+            <div class="col-sm-3">
+                <div class="form-check">
+                    <label class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" required formControlName="gender" value="MALE">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Männlich</span>
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="custom-control custom-radio">
+                        <input type="radio" class="custom-control-input" required formControlName="gender" value="FEMALE">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">Weiblich</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+
+                <div class="form-group">
+                    <label for="inputBirthday">Geburtstag</label>
+                    <div class="input-group">
+
+                        <input class="form-control" id="inputBirthday" type="text" disabled [value]="datePickerValue.toLocaleDateString()">
+
+                        <div class="input-group-append">
+
+                            <button class="btn btn-outline-secondary" [nbPopover]="datePicker" nbPopoverPlacement="bottom" type="button">
+                                <i class="fa fa-calendar"></i>
+                            </button>
+
+                            <ng-template #datePicker>
+                                <nb-calendar [(date)]="datePickerValue"></nb-calendar>
+                            </ng-template>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="inputAddress">Address</label>
+                    <input type="text" class="form-control" id="inputAddress"
+                           formControlName="address"
+                           [ngClass]="{ 'form-control-danger': editForm.controls.address.dirty && !editForm.controls.address.valid }"
+                           required>
+                    <small *ngIf="editForm.controls.address.dirty && editForm.controls.address.invalid" class="form-text">This field is required</small>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
+            Abbrechen
+        </button>
+
+        <button class="btn btn-md btn-primary" [disabled]="editForm.invalid" type="submit">
+            Speichern
+        </button>
+
+    </div>
+
+</form>

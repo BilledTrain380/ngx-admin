@@ -14,7 +14,11 @@ import {ParticipationModule} from '../../modules/participation/participation.mod
 import {SmartSearchModule} from '../../modules/smart-search/smart-search.module';
 import {SportViewComponent} from './detail/table-cell-views/sport-view.component';
 import {AbsentViewComponent} from './detail/table-cell-views/absent-view.component';
-import {NbSpinnerModule} from '@nebular/theme';
+import {NbCalendarModule, NbSpinnerModule} from '@nebular/theme';
+import {ConfirmationModule} from '../../modules/confirmation/confirmation.module';
+import { EditComponent } from './detail/edit/edit.component';
+import { ParticipationComponent } from './detail/participation/participation.component';
+import { ReParticipationComponent } from './detail/re-participation/re-participation.component';
 
 @NgModule({
     imports: [
@@ -30,6 +34,8 @@ import {NbSpinnerModule} from '@nebular/theme';
         SmartSearchModule,
         Ng2SmartTableModule,
         NbSpinnerModule,
+        ConfirmationModule,
+        NbCalendarModule,
     ],
     entryComponents: [
         ImportComponent,
@@ -37,6 +43,7 @@ import {NbSpinnerModule} from '@nebular/theme';
         GroupDetailComponent,
         SportViewComponent,
         AbsentViewComponent,
+        EditComponent,
     ],
     declarations: [
         ImportComponent,
@@ -44,6 +51,9 @@ import {NbSpinnerModule} from '@nebular/theme';
         GroupDetailComponent,
         SportViewComponent,
         AbsentViewComponent,
+        EditComponent,
+        ParticipationComponent,
+        ReParticipationComponent,
     ],
 })
 export class GroupPageModule { }

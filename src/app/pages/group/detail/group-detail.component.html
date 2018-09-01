@@ -1,24 +1,42 @@
 <div class="row">
 
     <div class="col-lg-12">
-        <h1>Gruppe: {{ activeGroup.name }} <small>{{ activeGroup.coach }}</small></h1>
+        <h1>Gruppe {{ activeGroup.name }}, <small>{{ activeGroup.coach }}</small></h1>
         <hr>
     </div>
 
     <div class="col-lg-12">
 
-        <nb-card>
+        <nb-card [nbSpinner]="loading">
 
-            <nb-card-header>
+            <nb-card-header style="position: relative">
+                <nb-badge *ngIf="participationIsOpen()" text="Teilnahme ist offen" status="primary" position="top right"></nb-badge>
+                <nb-badge *ngIf="participationIsClosed()" text="Teilnahme ist Geschlossen" status="info" position="top right"></nb-badge>
                 Teinehmer
             </nb-card-header>
 
             <nb-card-body>
 
-                <ng2-smart-table *ngIf="participationStatus === 'CLOSE'" [settings]="tableSettings" [source]="source">
+                <div *ngIf="editSuccess" class="alert alert-success" role="alert">
+                    <strong>Super!</strong> Der Teinehmer wurde gespeichert.
+                </div>
+
+                <div *ngIf="deleteSuccess" class="alert alert-success" role="alert">
+                    <strong>Super!</strong> Der Teilnehmer wurde gelöscht.
+                </div>
+
+                <ng2-smart-table *ngIf="participationIsClosed()"
+                                 [settings]="tableSettings"
+                                 [source]="tableSource"
+                                 (delete)="deleteParticipant($event.data.originalValue)"
+                                 (edit)="editParticipant($event.data.originalValue)">
                 </ng2-smart-table>
 
-                <ng2-smart-table *ngIf="participationStatus === 'OPEN'" [settings]="mutableTableSettings" [source]="source">
+                <ng2-smart-table *ngIf="participationIsOpen()"
+                                 [settings]="mutableTableSettings"
+                                 [source]="tableSource"
+                                 (delete)="deleteParticipant($event.data.originalValue)"
+                                 (edit)="editParticipant($event.data.originalValue)">
                 </ng2-smart-table>
 
             </nb-card-body>
@@ -28,142 +46,18 @@
 
     <div class="col-lg-6">
 
-        <nb-card>
-
-            <nb-card-header>Nachmeldung</nb-card-header>
-
-            <nb-card-body>
-
-                <div class="row">
-
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="inputFirstName">First Name</label>
-                            <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="inputLastName">Last Name</label>
-                            <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <label class="col-sm-3">Gender</label>
-
-                    <div class="col-sm-3">
-                        <div class="form-check">
-                            <label class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="inputGender" checked>
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Male</span>
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <label class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="inputGender">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Female</span>
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-
-                        <div class="form-group">
-                            <div class="input-group">
-                                <input class="form-control" placeholder="yyyy-mm-dd"
-                                       name="dp" ngbDatepicker #d="ngbDatepicker">
-                                <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                                        <i class="fa fa-calendar"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-sm-12">
-                        <div class="form-group">
-                            <label for="inputAddress">Address</label>
-                            <input type="text" class="form-control" id="inputAddress" placeholder="Addres">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="inputPLZ">PLZ</label>
-                            <input type="text" class="form-control" id="inputPLZ" placeholder="PLZ">
-                        </div>
-                    </div>
-
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="inputOrt">Ort</label>
-                            <input type="text" class="form-control" id="inputOrt" placeholder="Ort">
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="row">
-
-                    <label class="col-sm-2">Sport</label>
-
-                    <div class="col-sm-4">
-                        <div class="form-check">
-                            <label class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="inputSport" checked>
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Ballwurf</span>
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <label class="custom-control custom-radio">
-                                <input type="radio" class="custom-control-input" name="inputSport">
-                                <span class="custom-control-indicator"></span>
-                                <span class="custom-control-description">Something else</span>
-                            </label>
-                        </div>
-                    </div>
-
-                </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-
-            </nb-card-body>
-
-        </nb-card>
+        <ngx-participation [sports]="sports" [group]="activeGroup" (onCreate)="loadParticipants()"></ngx-participation>
 
     </div>
 
     <div class="col-lg-6">
 
-        <nb-card>
-
-            <nb-card-header>Ummeldung</nb-card-header>
-
-            <nb-card-body>
-
-                Here will be a search field, where you search for the participant you wanna change. Then you select him, change his sport
-                and save the changes
-
-            </nb-card-body>
-
-        </nb-card>
+        <ngx-re-participation
+            [sports]="sports"
+            [participantList]="participantList"
+            [participationStatus]="participationStatus"
+            (onChange)="loadParticipants()">
+        </ngx-re-participation>
 
     </div>
 

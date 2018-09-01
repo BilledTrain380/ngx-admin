@@ -1,0 +1,89 @@
+<nb-card>
+
+    <nb-card-header>Ummeldung</nb-card-header>
+
+    <nb-card-body *ngIf="participationStatus === 'OPEN'">
+        <div class="alert alert-primary" role="alert">
+            <strong>Information!</strong> Dieser Bereich ist gesperrt solange die Teilnahme offen ist.
+        </div>
+    </nb-card-body>
+
+    <nb-card-body *ngIf="participationStatus === 'CLOSE'" style="overflow: visible">
+
+        <ngx-smart-search [source]="participantList" [settings]="searchSettings" (onSearchResultClick)="setSearchResult($event)"></ngx-smart-search>
+
+        <div *ngIf="participant">
+
+            <hr>
+
+            <div class="row">
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Vorname</label>
+                        <h4>{{ participant.prename }}</h4>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Nachname</label>
+                        <h4>{{ participant.surname }}</h4>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Geschlecht</label>
+                        <h4>{{ participant.gender }}</h4>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Geburtstag</label>
+                        <h4>{{ participant.birthday }}</h4>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label>Adresse</label>
+                        <h4>{{ participant.address }}</h4>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>PLZ</label>
+                        <h4>{{ participant.town.zip }}</h4>
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Ortschaft</label>
+                        <h4>{{ participant.town.name }}</h4>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="inputSport">Sportart</label>
+                        <select id="inputSport" class="form-control" (ngModel)="participant.sport">
+                            <option *ngFor="let sport of sports" [ngValue]="sport">{{ sport.name }}</option>
+                        </select>
+                    </div>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary" (click)="changeSport()">Ummelden</button>
+
+        </div>
+
+    </nb-card-body>
+
+</nb-card>
