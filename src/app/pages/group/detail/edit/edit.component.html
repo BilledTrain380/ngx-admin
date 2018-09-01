@@ -18,7 +18,7 @@
                            formControlName="firstName"
                            [ngClass]="{ 'form-control-danger': editForm.controls.firstName.dirty && !editForm.controls.firstName.valid }"
                            required>
-                    <small *ngIf="editForm.controls.firstName.dirty && !editForm.controls.firstName.invalid" class="form-text">This field is required</small>
+                    <small *ngIf="editForm.controls.firstName.dirty && editForm.controls.firstName.invalid" class="form-text">This field is required</small>
                 </div>
             </div>
 
