@@ -40,7 +40,8 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>Geschlecht</label>
-                        <h4>{{ participant.gender }}</h4>
+                        <h4 *ngIf="participant.gender === 'MALE'">Männlich</h4>
+                        <h4 *ngIf="participant.gender === 'FEMALE'">Weiblich</h4>
                     </div>
                 </div>
 
