@@ -1,0 +1,112 @@
+<div class="row">
+
+    <div class="col-lg-12">
+        <h1>Verwaltung</h1>
+        <hr>
+    </div>
+
+    <div class="col-lg-12">
+
+        <nb-card status="info" *ngIf="participationStatus === 'CLOSE'">
+
+            <nb-card-header>
+                Teilnahme ist abgeschlossen
+            </nb-card-header>
+
+        </nb-card>
+
+        <nb-card *ngIf="participationStatus === 'OPEN'">
+
+            <nb-card-header>
+
+                <span>Teilnahme</span>
+
+                <div class="float-right btn-group btn-divided-group">
+
+                    <button type="button" class="btn active btn-sm btn-primary" (click)="closeParticipation()">
+                        Abschliessen
+                    </button>
+
+                </div>
+
+            </nb-card-header>
+
+            <nb-card-body>
+
+                <p>
+                    Um die Leichtathletik starten zu können, müssen Sie die Teinahme abschliessen.
+                    <br>
+                    Dadurch werden die Startnummern generiert und Sie können die Wettkampfblätter herunterladen.
+                </p>
+
+                <div class="alert alert-primary" role="alert">
+                    <strong>Achtung!</strong> Wenn Sie die Teilnahme abschliessen, kann ein Teinehmer nur noch durch eine Ummeldung einer anderen Sportart zugewiesen werden.
+                </div>
+
+                <nb-card size="small" *ngIf="groupList.length > 0">
+
+                    <nb-card-header>
+                        Gruppen mit noch offenen Teilnahmen
+                    </nb-card-header>
+
+                    <nb-card-body>
+
+                        <nb-list>
+                            <nb-list-item *ngFor="let group of groupList">
+                                <a routerLink="/pages/group/detail/{{ group.name }}" class="text-heading">
+                                    <b>Gruppe:</b> {{ group.name }}
+                                </a>
+                            </nb-list-item>
+                        </nb-list>
+
+                    </nb-card-body>
+
+                </nb-card>
+
+            </nb-card-body>
+
+        </nb-card>
+
+    </div>
+
+    <div class="col-lg-12">
+
+        <nb-card>
+
+            <nb-card-header>
+
+                <span>Teilnahme Zurücksetzen</span>
+
+                <div class="float-right btn-group btn-divided-group">
+
+                    <button type="button" class="btn active btn-sm btn-danger" (click)="resetParticipation()">
+                        Zurücksetzen
+                    </button>
+
+                </div>
+
+            </nb-card-header>
+
+            <nb-card-body>
+
+                <div *ngIf="resetSuccess" class="alert alert-success" role="alert">
+                    <strong>Super!</strong> Die Teilnahme wurde zurückgesetzt.
+                </div>
+
+                <p>
+                    Um die Datenerfassung von neuem zu beginnen müssen Sie die Teilnahme zurücksetzens.
+                    <br>
+                    Dadurch werden alle Teilnehmer Daten gelöscht und Sie können die Teilnehmer von Anfang neu erfassen.
+                </p>
+
+                <div class="alert alert-danger" role="alert">
+                    <strong>Warnung!</strong> Wenn Sie die Teilnahme zurücksetzen werden alle Teilnehmer Daten unwiederruflich gelöscht.
+                </div>
+
+            </nb-card-body>
+
+        </nb-card>
+
+    </div>
+
+</div>

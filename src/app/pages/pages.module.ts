@@ -6,6 +6,7 @@ import {PagesRoutingModule} from './pages-routing.module';
 import {ThemeModule} from '../@theme/theme.module';
 import {MiscellaneousModule} from './miscellaneous/miscellaneous.module';
 import {GroupPageModule} from './group/group-page.module';
+import {ManagementModule} from './management/management.module';
 
 const PAGES_COMPONENTS: Array<any> = [
     PagesComponent,
@@ -18,6 +19,7 @@ const PAGES_COMPONENTS: Array<any> = [
         DashboardModule,
         MiscellaneousModule,
         GroupPageModule,
+        ManagementModule,
     ],
     declarations: [
         ...PAGES_COMPONENTS,

@@ -43,7 +43,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Verwaltung',
     icon: 'users-class',
-    link: '/pages/classes',
+    link: '/pages/management',
   },
   {
     title: 'Einstellungen',

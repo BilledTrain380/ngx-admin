@@ -6,6 +6,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {NotFoundComponent} from './miscellaneous/not-found/not-found.component';
 import {GroupOverviewComponent} from './group/overview/group-overview.component';
 import {GroupDetailComponent} from './group/detail/group-detail.component';
+import {ManagementComponent} from './management/management.component';
 
 const routes: Routes = [{
   path: '',
@@ -20,8 +21,8 @@ const routes: Routes = [{
     path: 'group/detail/:name',
     component: GroupDetailComponent,
   }, {
-    path: 'ui-features',
-    loadChildren: './ui-features/ui-features.module#UiFeaturesModule',
+    path: 'management',
+    component: ManagementComponent,
   }, {
     path: 'components',
     loadChildren: './components/components.module#ComponentsModule',
