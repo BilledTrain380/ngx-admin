@@ -40,6 +40,7 @@ export class ReParticipationComponent {
     };
 
     participant: Participant;
+    reParticipattionSuccess: boolean = false;
 
     constructor(
         @Inject(PARTICIPANT_PROVIDER)
@@ -53,5 +54,10 @@ export class ReParticipationComponent {
     async changeSport(): Promise<void> {
         await this.participantProvider.setSport(this.participant, this.participant.sport);
         this.onChange.emit();
+        this.participant = undefined;
+        this.reParticipattionSuccess = true;
+        setTimeout(() => {
+            this.reParticipattionSuccess = false;
+        }, 5000);
     }
 }

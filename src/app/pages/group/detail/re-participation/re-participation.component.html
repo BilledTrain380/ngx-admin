@@ -10,6 +10,10 @@
 
     <nb-card-body *ngIf="participationStatus === 'CLOSE'" style="overflow: visible">
 
+        <div *ngIf="reParticipattionSuccess" class="alert alert-success" role="alert">
+            <strong>Super!</strong> Die Ummeldung war erfolgreich.
+        </div>
+
         <ngx-smart-search [source]="participantList" [settings]="searchSettings" (onSearchResultClick)="setSearchResult($event)"></ngx-smart-search>
 
         <div *ngIf="participant">
@@ -43,7 +47,7 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label>Geburtstag</label>
-                        <h4>{{ participant.birthday }}</h4>
+                        <h4>{{ participant.birthday | date }}</h4>
                     </div>
                 </div>
 
@@ -72,7 +76,7 @@
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label for="inputSport">Sportart</label>
-                        <select id="inputSport" class="form-control" (ngModel)="participant.sport">
+                        <select id="inputSport" class="form-control" [(ngModel)]="participant.sport">
                             <option *ngFor="let sport of sports" [ngValue]="sport">{{ sport.name }}</option>
                         </select>
                     </div>
