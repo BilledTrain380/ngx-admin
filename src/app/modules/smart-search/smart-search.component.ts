@@ -34,10 +34,10 @@ export class SmartSearchComponent implements OnInit {
         this.queryField.valueChanges
             .pipe(debounceTime(200))
             .pipe(distinctUntilChanged())
-            .pipe(filter(() => this.settings !== undefined))
+            .pipe(filter((term) => this.settings !== undefined))
             .subscribe((term: string) => {
 
-                if (term.length < 3) {
+                if (term && term.length < 3) {
                     this.clearSearch();
                     return;
                 }
@@ -62,6 +62,7 @@ export class SmartSearchComponent implements OnInit {
     emit(value: object): void {
         this.onSearchResultClick.emit(value);
         this.clearSearch();
+        this.queryField.reset();
     }
 
     private clearSearch(): void {
