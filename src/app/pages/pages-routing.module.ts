@@ -24,8 +24,8 @@ const routes: Routes = [{
     path: 'management',
     component: ManagementComponent,
   }, {
-    path: 'components',
-    loadChildren: './components/components.module#ComponentsModule',
+    path: 'athletics',
+    loadChildren: './athletics/athletics-page.module#AthleticsPageModule',
   }, {
     path: 'maps',
     loadChildren: './maps/maps.module#MapsModule',

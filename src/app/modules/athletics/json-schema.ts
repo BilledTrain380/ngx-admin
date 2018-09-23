@@ -217,7 +217,7 @@ export const competitorsJsonSchema: object = {
                         },
                         'distance': {
                             '$id': '#/items/properties/results/items/properties/distance',
-                            'type': 'string',
+                            'type': ['string', 'null'],
                             'title': 'The Distance Schema',
                             'default': '',
                             'examples': [
@@ -386,6 +386,65 @@ export const resultsJsonSchema: object = {
                                 ],
                             },
                         },
+                    },
+                },
+            },
+        },
+    },
+};
+
+export const disciplineListJsonSchema: object = {
+    'definitions': {},
+    '$schema': 'http://json-schema.org/draft-07/schema#',
+    '$id': 'http://example.com/root.json',
+    'type': 'array',
+    'title': 'The Root Schema',
+    'items': {
+        '$id': '#/items',
+        'type': 'object',
+        'title': 'The Items Schema',
+        'required': [
+            'name',
+            'unit',
+        ],
+        'properties': {
+            'name': {
+                '$id': '#/items/properties/name',
+                'type': 'string',
+                'title': 'The Name Schema',
+                'default': '',
+                'examples': [
+                    'Running',
+                ],
+                'pattern': '^(.*)$',
+            },
+            'unit': {
+                '$id': '#/items/properties/unit',
+                'type': 'object',
+                'title': 'The Unit Schema',
+                'required': [
+                    'name',
+                    'factor',
+                ],
+                'properties': {
+                    'name': {
+                        '$id': '#/items/properties/unit/properties/name',
+                        'type': 'string',
+                        'title': 'The Name Schema',
+                        'default': '',
+                        'examples': [
+                            '',
+                        ],
+                        'pattern': '^(.*)$',
+                    },
+                    'factor': {
+                        '$id': '#/items/properties/unit/properties/factor',
+                        'type': 'integer',
+                        'title': 'The Factor Schema',
+                        'default': 0,
+                        'examples': [
+                            1,
+                        ],
                     },
                 },
             },

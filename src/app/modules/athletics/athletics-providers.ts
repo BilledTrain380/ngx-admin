@@ -1,9 +1,9 @@
 import {Gender} from '../participant/participant-models';
-import {Competitor, Result, TemporaryResult} from './athletics-models';
+import {Competitor, Discipline, Result, TemporaryResult} from './athletics-models';
 import {Group} from '../group/group-models';
 import {Inject, Injectable, InjectionToken} from '@angular/core';
 import {REST_SERVICE, RestService} from '../http/http-service';
-import {competitorsJsonSchema, resultsJsonSchema} from './json-schema';
+import {competitorsJsonSchema, disciplineListJsonSchema, resultsJsonSchema} from './json-schema';
 
 export const COMPETITOR_PROVIDER: InjectionToken<CompetitorProvider> =
     new InjectionToken('token for competitor provider');
@@ -54,12 +54,12 @@ export class HttpCompetitorProvider implements CompetitorProvider {
 
     getCompetitors(group?: Group, gender?: Gender): Promise<ReadonlyArray<Competitor>> {
 
-        const groupParam: string = group ? '' : `group=${group.name}`;
-        const genderParam: string = gender ? '' : `gender=${gender}`;
+        const groupParam: string = !group ? '' : `group=${group.name}`;
+        const genderParam: string = !gender ? '' : `gender=${gender}`;
 
         const params: string = [groupParam, genderParam].filter(it => it !== '').join('&');
 
-        const url: string = 'competitors' + (params === '') ? params : '?' + params;
+        const url: string = 'competitors' + ((params === '') ? params : '?' + params);
         return this.rest.getRequest(url, competitorsJsonSchema);
     }
 
@@ -71,6 +71,42 @@ export class HttpCompetitorProvider implements CompetitorProvider {
             results: results,
         };
 
-        return this.rest.patchRequest(url, JSON.stringify(body), resultsJsonSchema);
+        return this.rest.putRequest(url, JSON.stringify(body), resultsJsonSchema);
+    }
+}
+
+export const DISCIPLINE_PROVIDER: InjectionToken<DisciplineProvider> =
+    new InjectionToken('token for discipline provider');
+
+/**
+ * Provider for the discipline domain.
+ *
+ * @author Nicolas Märchy <billedtrain380@gmail.com>
+ * @since 1.0.0
+ */
+export interface DisciplineProvider {
+
+    /**
+     * @return all available disciplines
+     */
+    getAll(): Promise<ReadonlyArray<Discipline>>;
+}
+
+/**
+ * Http {@link DisciplineProvider} implementation.
+ *
+ * @author Nicolas Märchy <billedtrain380@gmail.com>
+ * @since 1.0.0
+ */
+@Injectable()
+export class HttpDisciplineProvider implements DisciplineProvider {
+
+    constructor(
+        @Inject(REST_SERVICE)
+        private readonly rest: RestService,
+    ) {}
+
+    getAll(): Promise<ReadonlyArray<Discipline>> {
+        return this.rest.getRequest('disciplines', disciplineListJsonSchema);
     }
 }

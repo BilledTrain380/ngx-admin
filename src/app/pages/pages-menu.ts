@@ -20,7 +20,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Leichtathletik',
     icon: 'nb-keypad',
-    link: '/pages/ui-features',
+    link: '/pages/athletics',
     children: [
       {
         title: 'Starliste',
@@ -32,7 +32,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         title: 'Resultate',
-        link: '/pages/ui-features/icons',
+        link: '/pages/athletics/results',
       },
       {
         title: 'Ranglisten',

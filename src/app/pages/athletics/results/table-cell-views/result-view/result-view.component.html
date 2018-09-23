@@ -1,0 +1,16 @@
+<div class="input-group mail-btn-group">
+    <span class="input-group-prepend" *ngIf="result.distance">
+        <button class="btn btn-secondary input-group-text normal" tabindex="-1">
+          Distanz: {{ result.distance }}
+        </button>
+    </span>
+    <input type="text" class="form-control mr-left result-input"  [(ngModel)]="result.value" (ngModelChange)="emitResult($event)">
+    <span class="input-group-append">
+        <button class="btn btn-secondary input-group-text normal" tabindex="-1">
+          {{ result.unit }}
+        </button>
+        <button class="btn btn-info btn-icon input-group-text" tabindex="-1" style="margin-left: 20px">
+          {{ result.points }}
+        </button>
+    </span>
+</div>
