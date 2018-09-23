@@ -5,6 +5,14 @@
         </button>
     </span>
 
+    <span class="input-group-prepend" *ngIf="label">
+
+        <div class="input-group-text">
+            {{ label }}
+        </div>
+
+    </span>
+
     <select class="form-control" [(ngModel)]="selectedValue" (ngModelChange)="change()">
         <option *ngFor="let option of data" [ngValue]="option">{{ settings.onDisplay(option) }}</option>
     </select>

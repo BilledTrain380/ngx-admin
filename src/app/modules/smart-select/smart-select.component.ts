@@ -8,6 +8,9 @@ import {SmartSelectSettings} from './smart-select-settings';
 })
 export class SmartSelectComponent implements OnChanges {
 
+    @Input('label')
+    readonly label?: string;
+
     @Input('data')
     readonly data: ReadonlyArray<any> = [];
 
@@ -27,7 +30,7 @@ export class SmartSelectComponent implements OnChanges {
     }
 
     ngOnChanges(): void {
-        if (this.selectedValue) return;
+        if (this.selectedValue || !this.data) return;
         this.selectedValue = this.data[0];
         this.change();
     }
