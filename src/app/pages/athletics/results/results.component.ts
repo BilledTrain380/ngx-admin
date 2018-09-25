@@ -120,7 +120,7 @@ export class ResultsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.groupProvider.getAll().then(it => this.groups = it);
+        this.groupProvider.getGroupList({competitive: true}).then(it => this.groups = it);
         this.disciplineProvider.getAll().then(it => this.disciplines = it);
     }
 

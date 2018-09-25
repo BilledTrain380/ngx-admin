@@ -19,7 +19,7 @@ export interface GroupProvider {
      * @throws {AuthenticationError} if the response status is 401
      * @throws {Error} If the response is not ok.
      */
-    getAll(): Promise<Array<Group>>;
+    getGroupList(filter?: { competitive?: boolean, pendingParticipation?: boolean }): Promise<Array<Group>>;
 
     /**
      * Gets the group with the given {@code name}.
@@ -31,7 +31,7 @@ export interface GroupProvider {
      * @throws {ResourceNotFoundError} if the given {@code url} does not exist
      * @throws {Error} If the response is not ok.
      */
-    getOne(name: string): Promise<Group>;
+    getGroup(name: string): Promise<Group>;
 
     /**
      * Imports the the given file.
@@ -62,11 +62,17 @@ export class HttpGroupProvider implements GroupProvider {
         private readonly http: HttpService,
     ) {}
 
-    async getAll(): Promise<Array<Group>> {
-        return this.rest.getRequest<Array<Group>>('groups', groupsJsonSchema);
+    async getGroupList(filter?: { competitive?: boolean, pendingParticipation?: boolean }): Promise<Array<Group>> {
+
+        const params: string = (filter.competitive !== undefined ? `competitive=${filter.competitive}` : '') +
+            (filter.pendingParticipation !== undefined ? `pendingParticipation=${filter.pendingParticipation}` : '');
+
+        const url: string = 'groups' + (params ? `?${params}` : '');
+
+        return this.rest.getRequest<Array<Group>>(url, groupsJsonSchema);
     }
 
-    async getOne(name: string): Promise<Group> {
+    async getGroup(name: string): Promise<Group> {
         return this.rest.getRequest<Group>(`group/${name}`, groupJsonSchema);
     }
 

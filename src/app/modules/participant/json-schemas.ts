@@ -14,8 +14,8 @@ export const participantListJsonSchema: object = {
             'prename',
             'gender',
             'birthday',
-            'absent',
             'address',
+            'absent',
             'town',
             'group',
             'sport',
@@ -69,15 +69,6 @@ export const participantListJsonSchema: object = {
                     1529234942,
                 ],
             },
-            'absent': {
-                '$id': '#/items/properties/absent',
-                'type': 'boolean',
-                'title': 'The Absent Schema',
-                'default': false,
-                'examples': [
-                    false,
-                ],
-            },
             'address': {
                 '$id': '#/items/properties/address',
                 'type': 'string',
@@ -87,6 +78,15 @@ export const participantListJsonSchema: object = {
                     'Examplestreet 5',
                 ],
                 'pattern': '^(.*)$',
+            },
+            'absent': {
+                '$id': '#/items/properties/absent',
+                'type': 'boolean',
+                'title': 'The Absent Schema',
+                'default': false,
+                'examples': [
+                    false,
+                ],
             },
             'town': {
                 '$id': '#/items/properties/town',
@@ -126,7 +126,6 @@ export const participantListJsonSchema: object = {
                 'required': [
                     'name',
                     'coach',
-                    'pendingParticipation',
                 ],
                 'properties': {
                     'name': {
@@ -141,22 +140,33 @@ export const participantListJsonSchema: object = {
                     },
                     'coach': {
                         '$id': '#/items/properties/group/properties/coach',
-                        'type': 'string',
+                        'type': 'object',
                         'title': 'The Coach Schema',
-                        'default': '',
-                        'examples': [
-                            'Willi Wirbelwind',
+                        'required': [
+                            'id',
+                            'name',
                         ],
-                        'pattern': '^(.*)$',
-                    },
-                    'pendingParticipation': {
-                        '$id': '#/items/properties/group/properties/pendingParticipation',
-                        'type': 'boolean',
-                        'title': 'The Pendingparticipation Schema',
-                        'default': false,
-                        'examples': [
-                            false,
-                        ],
+                        'properties': {
+                            'id': {
+                                '$id': '#/items/properties/group/properties/coach/properties/id',
+                                'type': 'integer',
+                                'title': 'The Id Schema',
+                                'default': 0,
+                                'examples': [
+                                    1,
+                                ],
+                            },
+                            'name': {
+                                '$id': '#/items/properties/group/properties/coach/properties/name',
+                                'type': 'string',
+                                'title': 'The Name Schema',
+                                'default': '',
+                                'examples': [
+                                    'Max Muster',
+                                ],
+                                'pattern': '^(.*)$',
+                            },
+                        },
                     },
                 },
             },
@@ -308,7 +318,6 @@ export const participantJsonSchema: object = {
             'required': [
                 'name',
                 'coach',
-                'pendingParticipation',
             ],
             'properties': {
                 'name': {
@@ -323,22 +332,33 @@ export const participantJsonSchema: object = {
                 },
                 'coach': {
                     '$id': '#/properties/group/properties/coach',
-                    'type': 'string',
+                    'type': 'object',
                     'title': 'The Coach Schema',
-                    'default': '',
-                    'examples': [
-                        'Willi Wirbelwind',
+                    'required': [
+                        'id',
+                        'name',
                     ],
-                    'pattern': '^(.*)$',
-                },
-                'pendingParticipation': {
-                    '$id': '#/properties/group/properties/pendingParticipation',
-                    'type': 'boolean',
-                    'title': 'The Pendingparticipation Schema',
-                    'default': false,
-                    'examples': [
-                        false,
-                    ],
+                    'properties': {
+                        'id': {
+                            '$id': '#/properties/group/properties/coach/properties/id',
+                            'type': 'integer',
+                            'title': 'The Id Schema',
+                            'default': 0,
+                            'examples': [
+                                1,
+                            ],
+                        },
+                        'name': {
+                            '$id': '#/properties/group/properties/coach/properties/name',
+                            'type': 'string',
+                            'title': 'The Name Schema',
+                            'default': '',
+                            'examples': [
+                                'Max Muster',
+                            ],
+                            'pattern': '^(.*)$',
+                        },
+                    },
                 },
             },
         },

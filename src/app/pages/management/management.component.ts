@@ -30,8 +30,8 @@ export class ManagementComponent implements OnInit {
 
     ngOnInit() {
 
-        this.groupProvider.getAll().then(groups => {
-            this.groupList = groups.filter(it => it.pendingParticipation);
+        this.groupProvider.getGroupList({pendingParticipation: true}).then(groups => {
+            this.groupList = this.groupList.concat(...groups);
         });
 
         this.participationProvider.getStatus().then(status => {

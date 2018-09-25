@@ -11,7 +11,6 @@ export const groupsJsonSchema: object = {
         'required': [
             'name',
             'coach',
-            'pendingParticipation',
         ],
         'properties': {
             'name': {
@@ -26,22 +25,33 @@ export const groupsJsonSchema: object = {
             },
             'coach': {
                 '$id': '#/items/properties/coach',
-                'type': 'string',
+                'type': 'object',
                 'title': 'The Coach Schema',
-                'default': '',
-                'examples': [
-                    'Max Muster',
+                'required': [
+                    'id',
+                    'name',
                 ],
-                'pattern': '^(.*)$',
-            },
-            'pendingParticipation': {
-                '$id': '#/items/properties/pendingParticipation',
-                'type': 'boolean',
-                'title': 'The Pendingparticipation Schema',
-                'default': false,
-                'examples': [
-                    true,
-                ],
+                'properties': {
+                    'id': {
+                        '$id': '#/items/properties/coach/properties/id',
+                        'type': 'integer',
+                        'title': 'The Id Schema',
+                        'default': 0,
+                        'examples': [
+                            1,
+                        ],
+                    },
+                    'name': {
+                        '$id': '#/items/properties/coach/properties/name',
+                        'type': 'string',
+                        'title': 'The Name Schema',
+                        'default': '',
+                        'examples': [
+                            'Max Muster',
+                        ],
+                        'pattern': '^(.*)$',
+                    },
+                },
             },
         },
     },
@@ -56,7 +66,6 @@ export const groupJsonSchema: object = {
     'required': [
         'name',
         'coach',
-        'pendingParticipation',
     ],
     'properties': {
         'name': {
@@ -71,22 +80,33 @@ export const groupJsonSchema: object = {
         },
         'coach': {
             '$id': '#/properties/coach',
-            'type': 'string',
+            'type': 'object',
             'title': 'The Coach Schema',
-            'default': '',
-            'examples': [
-                'Max Muster',
+            'required': [
+                'id',
+                'name',
             ],
-            'pattern': '^(.*)$',
-        },
-        'pendingParticipation': {
-            '$id': '#/properties/pendingParticipation',
-            'type': 'boolean',
-            'title': 'The Pendingparticipation Schema',
-            'default': false,
-            'examples': [
-                true,
-            ],
+            'properties': {
+                'id': {
+                    '$id': '#/properties/coach/properties/id',
+                    'type': 'integer',
+                    'title': 'The Id Schema',
+                    'default': 0,
+                    'examples': [
+                        1,
+                    ],
+                },
+                'name': {
+                    '$id': '#/properties/coach/properties/name',
+                    'type': 'string',
+                    'title': 'The Name Schema',
+                    'default': '',
+                    'examples': [
+                        'Max Muster',
+                    ],
+                    'pattern': '^(.*)$',
+                },
+            },
         },
     },
 };

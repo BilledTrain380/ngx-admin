@@ -138,7 +138,6 @@ export const competitorsJsonSchema: object = {
                 'required': [
                     'name',
                     'coach',
-                    'pendingParticipation',
                 ],
                 'properties': {
                     'name': {
@@ -153,22 +152,33 @@ export const competitorsJsonSchema: object = {
                     },
                     'coach': {
                         '$id': '#/items/properties/group/properties/coach',
-                        'type': 'string',
+                        'type': 'object',
                         'title': 'The Coach Schema',
-                        'default': '',
-                        'examples': [
-                            'Willi Wirbelwind',
+                        'required': [
+                            'id',
+                            'name',
                         ],
-                        'pattern': '^(.*)$',
-                    },
-                    'pendingParticipation': {
-                        '$id': '#/items/properties/group/properties/pendingParticipation',
-                        'type': 'boolean',
-                        'title': 'The Pendingparticipation Schema',
-                        'default': false,
-                        'examples': [
-                            false,
-                        ],
+                        'properties': {
+                            'id': {
+                                '$id': '#/items/properties/group/properties/coach/properties/id',
+                                'type': 'integer',
+                                'title': 'The Id Schema',
+                                'default': 0,
+                                'examples': [
+                                    1,
+                                ],
+                            },
+                            'name': {
+                                '$id': '#/items/properties/group/properties/coach/properties/name',
+                                'type': 'string',
+                                'title': 'The Name Schema',
+                                'default': '',
+                                'examples': [
+                                    'Max Muster',
+                                ],
+                                'pattern': '^(.*)$',
+                            },
+                        },
                     },
                 },
             },

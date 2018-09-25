@@ -82,7 +82,7 @@ export class GroupDetailComponent implements OnInit {
 
     readonly tableSource: LocalDataSource = new LocalDataSource();
 
-    activeGroup: Group = {name: '', coach: '', pendingParticipation: false};
+    activeGroup: Group = {name: '', coach: ''};
     participationStatus: ParticipationStatus = ParticipationStatus.CLOSE;
     participantList: ReadonlyArray<Participant> = [];
     sports: ReadonlyArray<Sport> = [];
@@ -137,7 +137,7 @@ export class GroupDetailComponent implements OnInit {
             .subscribe(async (params) => {
 
                 try {
-                    this.activeGroup = await this.groupProvider.getOne(params['name']);
+                    this.activeGroup = await this.groupProvider.getGroup(params['name']);
                     this.sports = await this.sportProvider.getAll();
                     this.participationStatus = await this.participationProvider.getStatus();
 
