@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {NbCardModule, NbCheckboxModule} from '@nebular/theme';
+import {NbCardModule, NbCheckboxModule, NbSpinnerModule} from '@nebular/theme';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {SmartSelectModule} from '../../../modules/smart-select/smart-select.module';
 import {AthleticsModule} from '../../../modules/athletics/athletics.module';
@@ -13,6 +13,7 @@ import {FormsModule} from '@angular/forms';
     imports: [
         CommonModule,
         NbCardModule,
+        NbSpinnerModule,
         Ng2SmartTableModule,
         NbCheckboxModule,
         FormsModule,

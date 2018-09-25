@@ -104,6 +104,8 @@ export class ResultsComponent implements OnInit {
     selectedGroup?: Group;
     selectedDiscipline?: Discipline;
 
+    isLoading: boolean = false;
+
     groups: ReadonlyArray<Group> = [];
     disciplines: ReadonlyArray<Discipline> = [];
     competitors: ReadonlyArray<CompetitorModel> = [];
@@ -154,6 +156,8 @@ export class ResultsComponent implements OnInit {
 
     private async loadCompetitors(): Promise<void> {
 
+        this.isLoading = true;
+
         if (!(this.selectedGroup && this.selectedDiscipline)) return;
 
         let gender: Gender|undefined;
@@ -189,6 +193,8 @@ export class ResultsComponent implements OnInit {
 
                 return model;
             });
+
+        this.isLoading = false;
     }
 }
 
