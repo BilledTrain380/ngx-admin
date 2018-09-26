@@ -52,7 +52,7 @@ export class GroupOverviewComponent implements OnInit {
         modal.result.then(() => {
             this.ngOnInit();
             this.importSuccessful = true;
-        });
+        }).catch(() => {});
     }
 }
 

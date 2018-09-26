@@ -30,6 +30,11 @@
 </div>
 
 <div class="modal-footer">
+
+    <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
+        Close
+    </button>
+
     <button class="btn btn-md btn-primary" type="button" [disabled]="!file" (click)="upload()">
         Upload
     </button>
