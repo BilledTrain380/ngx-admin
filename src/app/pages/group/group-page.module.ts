@@ -11,14 +11,10 @@ import {ParticipantModule} from '../../modules/participant/participant.module';
 import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {SportModule} from '../../modules/sport/sport.module';
 import {ParticipationModule} from '../../modules/participation/participation.module';
-import {SmartSearchModule} from '../../modules/smart-search/smart-search.module';
-import {SportViewComponent} from './detail/table-cell-views/sport-view.component';
-import {AbsentViewComponent} from './detail/table-cell-views/absent-view.component';
 import {NbCalendarModule, NbSpinnerModule} from '@nebular/theme';
 import {ConfirmationModule} from '../../modules/confirmation/confirmation.module';
-import { EditComponent } from './detail/edit/edit.component';
-import { ParticipationComponent } from './detail/participation/participation.component';
-import { ReParticipationComponent } from './detail/re-participation/re-participation.component';
+import {EditComponent} from './detail/edit/edit.component';
+import {ParticipationComponent} from './detail/participation/participation.component';
 
 @NgModule({
     imports: [
@@ -31,7 +27,6 @@ import { ReParticipationComponent } from './detail/re-participation/re-participa
         ParticipantModule,
         ParticipationModule,
         SportModule,
-        SmartSearchModule,
         Ng2SmartTableModule,
         NbSpinnerModule,
         ConfirmationModule,
@@ -41,19 +36,15 @@ import { ReParticipationComponent } from './detail/re-participation/re-participa
         ImportComponent,
         GroupOverviewComponent,
         GroupDetailComponent,
-        SportViewComponent,
-        AbsentViewComponent,
         EditComponent,
+        ParticipationComponent,
     ],
     declarations: [
         ImportComponent,
         GroupOverviewComponent,
         GroupDetailComponent,
-        SportViewComponent,
-        AbsentViewComponent,
         EditComponent,
         ParticipationComponent,
-        ReParticipationComponent,
     ],
 })
 export class GroupPageModule { }

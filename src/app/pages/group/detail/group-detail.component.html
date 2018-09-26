@@ -1,21 +1,30 @@
-<div class="row">
+<ngx-page-title [title]="'Gruppe ' + activeGroup.name + ' -'" [subtitle]="activeGroup.coach.name"></ngx-page-title>
 
-    <div class="col-lg-12">
-        <h1>Gruppe {{ activeGroup.name }}, <small>{{ activeGroup.coach.name }}</small></h1>
-        <hr>
-    </div>
+<div class="row">
 
     <div class="col-lg-12">
 
         <nb-card [nbSpinner]="loading">
 
             <nb-card-header style="position: relative">
-                <nb-badge *ngIf="participationIsOpen()" text="Teilnahme ist offen" status="primary" position="top right"></nb-badge>
-                <nb-badge *ngIf="participationIsClosed()" text="Teilnahme ist Geschlossen" status="info" position="top right"></nb-badge>
-                Teinehmer
+
+                <span>Teilnehmer</span>
+
+                <div class="float-right btn-group btn-divided-group btn-outline-divided-group">
+
+                    <button type="button" class="btn btn-outline-primary btn-with-icon" (click)="openParticipateModel()">
+                        <i class="fa fa-plus-circle"></i> Nachmeldung
+                    </button>
+
+                </div>
+
             </nb-card-header>
 
             <nb-card-body>
+
+                <div *ngIf="createSuccess" class="alert alert-success" role="alert">
+                    <strong>Super!</strong> Der Teinehmer wurde erstellt.
+                </div>
 
                 <div *ngIf="editSuccess" class="alert alert-success" role="alert">
                     <strong>Super!</strong> Der Teinehmer wurde gespeichert.
@@ -25,39 +34,61 @@
                     <strong>Super!</strong> Der Teilnehmer wurde gelöscht.
                 </div>
 
-                <ng2-smart-table *ngIf="participationIsClosed()"
-                                 [settings]="tableSettings"
-                                 [source]="tableSource"
-                                 (delete)="deleteParticipant($event.data.originalValue)"
-                                 (edit)="editParticipant($event.data.originalValue)">
-                </ng2-smart-table>
+                <table class="table">
 
-                <ng2-smart-table *ngIf="participationIsOpen()"
-                                 [settings]="mutableTableSettings"
-                                 [source]="tableSource"
-                                 (delete)="deleteParticipant($event.data.originalValue)"
-                                 (edit)="editParticipant($event.data.originalValue)">
-                </ng2-smart-table>
+                    <thead>
+                    <tr class="ng2-smart-titles">
+                        <th class="ng2-smart-th">Aktionen</th>
+                        <th class="ng2-smart-th">Nachname</th>
+                        <th class="ng2-smart-th">Vorname</th>
+                        <th class="ng2-smart-th">Geschlecht</th>
+                        <th class="ng2-smart-th">Adresse</th>
+                        <th class="ng2-smart-th">Abwesend</th>
+                        <th class="ng2-smart-th">Sportart</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr *ngFor="let participant of participantList">
+                        <td>
+                            <nb-actions size="small">
+                                <nb-action icon="nb-arrow-retweet" *ngIf="participationIsClosed()" (click)="participant.actionClicked('REPARTICIPATE')"></nb-action>
+                                <nb-action icon="nb-edit" (click)="participant.actionClicked('EDIT')"></nb-action>
+                                <nb-action icon="nb-trash" (click)="participant.actionClicked('DELETE')"></nb-action>
+                            </nb-actions>
+                        </td>
+                        <td>{{ participant.surname }}</td>
+                        <td>{{ participant.prename }}</td>
+                        <td>{{ participant.gender }}</td>
+                        <td>{{ participant.address }}</td>
+                        <td>
+                            <input type="checkbox" class="form-control" [(ngModel)]="participant.absent" (change)="participant.absentChanged()">
+                        </td>
+
+                        <td *ngIf="participationIsOpen() || participant.isReparticipate">
+
+                            <div class="input-group">
+                                <select class="form-control" [(ngModel)]="participant.sport" (change)="participant.sportChanged()">
+                                    <option *ngFor="let sport of sports" [value]="sport.name">{{ sport.name }}</option>
+                                </select>
+                                <span class="input-group-append" *ngIf="participant.isReparticipate">
+                                    <button class="btn btn-secondary btn-icon input-group-text" (click)="participant.isReparticipate = false">
+                                      <i class="nb-close"></i>
+                                    </button>
+                                </span>
+                            </div>
+
+                        </td>
+
+                        <td *ngIf="participationIsClosed() && !participant.isReparticipate">{{ participant.sport ? participant.sport : 'N/D' }}</td>
+
+                    </tr>
+                    </tbody>
+
+                </table>
 
             </nb-card-body>
         </nb-card>
-
-    </div>
-
-    <div class="col-lg-6">
-
-        <ngx-participation [sports]="sports" [group]="activeGroup" (onCreate)="loadParticipants()"></ngx-participation>
-
-    </div>
-
-    <div class="col-lg-6">
-
-        <ngx-re-participation
-            [sports]="sports"
-            [participantList]="participantList"
-            [participationStatus]="participationStatus"
-            (onChange)="loadParticipants()">
-        </ngx-re-participation>
 
     </div>
 

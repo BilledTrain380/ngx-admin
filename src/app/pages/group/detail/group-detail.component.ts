@@ -1,8 +1,7 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {take} from 'rxjs/operators';
-import {Gender, Participant} from '../../../modules/participant/participant-models';
-import {LocalDataSource} from 'ng2-smart-table';
+import {Participant} from '../../../modules/participant/participant-models';
 import {Sport} from '../../../modules/sport/sport-models';
 import {PARTICIPANT_PROVIDER, ParticipantProvider} from '../../../modules/participant/participant-providers';
 import {PARTICIPATION_PROVIDER, ParticipationProvider} from '../../../modules/participation/participation-providers';
@@ -10,61 +9,12 @@ import {ParticipationStatus} from '../../../modules/participation/participation-
 import {Group} from '../../../modules/group/group-models';
 import {GROUP_PROVIDER, GroupProvider} from '../../../modules/group/group-providers';
 import {ResourceNotFoundError} from '../../../modules/http/http-errors';
-import {ParticipantDataSource} from './table-data-source';
-import {SportViewComponent} from './table-cell-views/sport-view.component';
-import {AbsentViewComponent} from './table-cell-views/absent-view.component';
 import {SPORT_PROVIDER, SportProvider} from '../../../modules/sport/sport-providers';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmationComponent} from '../../../modules/confirmation/confirmation.component';
 import {EditComponent} from './edit/edit.component';
-
-const baseTableSettings: object = {
-    hideSubHeader: true,
-    mode: 'external',
-    actions: {
-        columnTitle: 'Akitonen',
-    },
-    edit: {
-        editButtonContent: '<i class="nb-edit"></i>',
-    },
-    delete: {
-        deleteButtonContent: '<i class="nb-trash"></i>',
-    },
-};
-
-const baseTableColumns: object = {
-    firstName: {
-        title: 'Vorname',
-        type: 'string',
-        editable: false,
-    },
-    lastName: {
-        title: 'Nachname',
-        type: 'string',
-        editable: false,
-    },
-    gender: {
-        title: 'Geschlecht',
-        type: 'string',
-        editable: false,
-        valuePrepareFunction: (cell, row) => {
-            if (cell === Gender.MALE) return 'Männlich';
-            if (cell === Gender.FEMALE) return 'Weiblich';
-            return cell;
-        },
-    },
-    address: {
-        title: 'Adresse',
-        type: 'string',
-        editable: false,
-    },
-    absent: {
-        title: 'Abwesend',
-        type: 'custom',
-        editable: false,
-        renderComponent: AbsentViewComponent,
-    },
-};
+import {ParticipationComponent} from './participation/participation.component';
+import {ParticipantAction, ParticipantModel} from './group-detail.models';
 
 @Component({
     selector: 'ngx-group-detail',
@@ -74,17 +24,13 @@ const baseTableColumns: object = {
 export class GroupDetailComponent implements OnInit {
 
     loading: boolean = true;
+    createSuccess: boolean = false;
     editSuccess: boolean = false;
     deleteSuccess: boolean = false;
 
-    readonly tableSettings: object;
-    readonly mutableTableSettings: object;
-
-    readonly tableSource: LocalDataSource = new LocalDataSource();
-
-    activeGroup: Group = {name: '', coach: ''};
+    activeGroup: Group = {name: '', coach: { id: 0, name: ''}};
     participationStatus: ParticipationStatus = ParticipationStatus.CLOSE;
-    participantList: ReadonlyArray<Participant> = [];
+    participantList: ReadonlyArray<ParticipantModel> = [];
     sports: ReadonlyArray<Sport> = [];
 
     constructor(
@@ -103,32 +49,7 @@ export class GroupDetailComponent implements OnInit {
 
         @Inject(SPORT_PROVIDER)
         private readonly sportProvider: SportProvider,
-    ) {
-
-        const mutableColumns = Object.assign({}, baseTableColumns, {
-            sport: {
-                title: 'Sportart',
-                type: 'custom',
-                editable: false,
-                renderComponent: SportViewComponent,
-                onComponentInitFunction: (component: SportViewComponent) => {
-                    component.init(this.sports); // pass in the sports to the cell component
-                },
-            },
-        });
-
-        this.mutableTableSettings = Object.assign({ columns: mutableColumns }, baseTableSettings);
-
-        const columns = Object.assign({}, baseTableColumns, {
-            sport: {
-                title: 'Sportart',
-                type: 'string',
-                editable: false,
-            },
-        });
-
-        this.tableSettings = Object.assign({columns}, baseTableSettings);
-    }
+    ) {}
 
     ngOnInit(): void {
 
@@ -162,7 +83,69 @@ export class GroupDetailComponent implements OnInit {
         return this.participationStatus === ParticipationStatus.CLOSE;
     }
 
-    async deleteParticipant(participant: Participant): Promise<void> {
+    async loadParticipants(): Promise<void> {
+
+        this.participantList = (await this.participantProvider.getByGroup(this.activeGroup))
+            .map(it => {
+
+                const model: ParticipantModel = new ParticipantModel(it);
+
+                model.actionsProperty
+                    .subscribe(type => {
+
+                        switch (type) {
+                            case ParticipantAction.EDIT:
+                                this.editParticipant(it);
+                                break;
+                            case ParticipantAction.DELETE:
+                                this.deleteParticipant(it);
+                                break;
+                        }
+                    });
+
+                model.absentProperty
+                    .subscribe(absentValue => {
+                        const participant: Participant = Object.assign(it, {absent: absentValue});
+                        this.participantProvider.update(participant);
+                    });
+
+                model.sportProperty
+                    .subscribe(sportName => {
+                        const sport: Sport = this.sports.find(sportType => sportType.name === sportName);
+                        this.participantProvider.setSport(it, sport);
+
+                        if (model.isReparticipate) {
+                            model.isReparticipate = false;
+                        }
+                    });
+
+                return model;
+            }).sort((a, b) => a.surname.localeCompare(b.surname));
+    }
+
+    async openParticipateModel(): Promise<void> {
+
+        const modal: NgbModalRef = this.modalService.open(ParticipationComponent, {
+            size: 'lg', container: 'nb-layout',
+        });
+
+        modal.componentInstance.sports = this.sports;
+        modal.componentInstance.group = this.activeGroup;
+
+        // we catch the modal dismiss, so it won't bubble up the error
+        modal.result
+            .then(async() => {
+
+                await this.loadParticipants();
+
+                this.createSuccess = true;
+                setTimeout(() => {
+                    this.createSuccess = false;
+                }, 5000);
+            }).catch(() => {});
+    }
+
+    private async deleteParticipant(participant: Participant): Promise<void> {
 
         const modal: NgbModalRef = this.modalService.open(ConfirmationComponent, {
             size: 'lg', container: 'nb-layout',
@@ -184,7 +167,7 @@ export class GroupDetailComponent implements OnInit {
             }).catch(() => {});
     }
 
-    async editParticipant(participant: Participant): Promise<void> {
+    private async editParticipant(participant: Participant): Promise<void> {
 
         const modal: NgbModalRef = this.modalService.open(EditComponent, {size: 'lg', container: 'nb-layout'});
         modal.componentInstance.participant = participant;
@@ -199,24 +182,6 @@ export class GroupDetailComponent implements OnInit {
                     this.editSuccess = false;
                 }, 5000);
             }).catch(() => {});
-    }
-
-    async loadParticipants(): Promise<void> {
-
-        this.participantList = await this.participantProvider.getByGroup(this.activeGroup);
-
-        this.tableSource.load(
-            this.participantList.map<ParticipantDataSource>(it => ({
-                id: it.id,
-                firstName: it.prename,
-                lastName: it.surname,
-                gender: it.gender,
-                address: it.address,
-                absent: it.absent,
-                sport: (it.sport) ? it.sport.name : null,
-                originalValue: it,
-            })),
-        );
     }
 }
 

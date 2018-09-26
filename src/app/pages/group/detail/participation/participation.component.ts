@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Inject, Input, Output} from '@angular/core';
+import {Component, Inject} from '@angular/core';
 import {Sport} from '../../../../modules/sport/sport-models';
 import {PARTICIPANT_PROVIDER, ParticipantProvider} from '../../../../modules/participant/participant-providers';
 import {Participant} from '../../../../modules/participant/participant-models';
 import {Group} from '../../../../modules/group/group-models';
 import {NgForm} from '@angular/forms';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'ngx-participation',
@@ -12,25 +13,23 @@ import {NgForm} from '@angular/forms';
 })
 export class ParticipationComponent {
 
-    @Input('sports')
     readonly sports: ReadonlyArray<Sport> = [];
-
-    @Input('group')
-    private readonly group: Group;
-
-    @Output('onCreate')
-    private readonly onCreate: EventEmitter<void> = new EventEmitter();
+    readonly group: Group;
 
     datePickerValue: Date = new Date();
-
-    createSuccess: boolean = false;
 
     constructor(
         @Inject(PARTICIPANT_PROVIDER)
         private readonly participantProvider: ParticipantProvider,
+
+        private readonly activeModal: NgbActiveModal,
     ) {}
 
-    async create(form: NgForm): Promise<void> {
+    dismissModal(): void {
+        this.activeModal.dismiss();
+    }
+
+    submit(form: NgForm): void {
 
         const newParticipant: Participant = {
             id: 0,
@@ -48,13 +47,10 @@ export class ParticipationComponent {
             sport: form.value.sport,
         };
 
-        await this.participantProvider.create(newParticipant);
-        this.onCreate.emit();
-        form.resetForm();
-        this.datePickerValue = new Date();
-        this.createSuccess = true;
-        setTimeout(() => {
-            this.createSuccess = false;
-        }, 5000);
+        this.participantProvider.create(newParticipant).then(() => {
+            this.activeModal.close();
+        }).catch(() => {
+            this.dismissModal();
+        });
     }
 }
