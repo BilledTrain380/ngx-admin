@@ -109,6 +109,7 @@ export class ResultsComponent implements OnInit {
     groups: ReadonlyArray<Group> = [];
     disciplines: ReadonlyArray<Discipline> = [];
     competitors: ReadonlyArray<CompetitorModel> = [];
+    absentCompetitors: ReadonlyArray<CompetitorModel> = [];
 
     constructor(
         @Inject(GROUP_PROVIDER)
@@ -165,34 +166,45 @@ export class ResultsComponent implements OnInit {
         if (this.isMale && !this.isFemale) { gender = Gender.MALE; }
         if (!this.isMale && this.isFemale) { gender = Gender.FEMALE; }
 
-        this.competitors = (await this.competitorProvider.getCompetitors(this.selectedGroup, gender))
-            .map(it => {
+        this.competitors = (await this.competitorProvider.getCompetitorList({
+            group: this.selectedGroup,
+            gender,
+            absent: false,
+        })).map(it => {
                 const model: CompetitorModel = new CompetitorModel(it, this.selectedDiscipline);
 
-                // save result when its value get changed
-                model.result.valueProperty
-                    .pipe(debounceTime(200))
-                    .pipe(distinctUntilChanged())
-                    .subscribe(resultValue => {
+            // save result when its value get changed
+            model.result.valueProperty
+                .pipe(debounceTime(200))
+                .pipe(distinctUntilChanged())
+                .subscribe(resultValue => {
 
-                        const result: TemporaryResult = {
-                            id: model.result.id,
-                            value: Math.floor(resultValue * model.result.discipline.unit.factor),
-                            distance: model.result.distance,
-                            discipline: model.result.discipline,
-                        };
+                    const result: TemporaryResult = {
+                        id: model.result.id,
+                        value: Math.floor(resultValue * model.result.discipline.unit.factor),
+                        distance: model.result.distance,
+                        discipline: model.result.discipline,
+                    };
 
-                        model.result.isCalculating = true;
+                    model.result.isCalculating = true;
 
-                        this.competitorProvider.saveResults(it, [result]).then(results => {
-                            // we only send 1 result, therefore the response only has one result
-                            model.result.points = results[0].points;
-                            model.result.isCalculating = false;
-                        });
+                    this.competitorProvider.saveResults(it, [result]).then(results => {
+                        // we only send 1 result, therefore the response only has one result
+                        model.result.points = results[0].points;
+                        model.result.isCalculating = false;
                     });
+                });
 
-                return model;
-            });
+            return model;
+        }).sort((a, b) => a.surname.localeCompare(b.surname));
+
+        this.absentCompetitors = (await this.competitorProvider.getCompetitorList({
+            group: this.selectedGroup,
+            gender,
+            absent: true,
+        }))
+            .map(it => new CompetitorModel(it, this.selectedDiscipline))
+            .sort((a, b) => a.surname.localeCompare(b.surname));
 
         this.isLoading = false;
     }

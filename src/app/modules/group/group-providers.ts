@@ -15,6 +15,8 @@ export const GROUP_PROVIDER: InjectionToken<GroupProvider> = new InjectionToken(
 export interface GroupProvider {
 
     /**
+     * @param filter - filter options to filter the returned list
+     *
      * @return all available Groups
      * @throws {AuthenticationError} if the response status is 401
      * @throws {Error} If the response is not ok.
@@ -65,9 +67,9 @@ export class HttpGroupProvider implements GroupProvider {
     async getGroupList(filter?: { competitive?: boolean, pendingParticipation?: boolean }): Promise<Array<Group>> {
 
         const params: string = (filter.competitive !== undefined ? `competitive=${filter.competitive}` : '') +
-            (filter.pendingParticipation !== undefined ? `pendingParticipation=${filter.pendingParticipation}` : '');
+            (filter.pendingParticipation !== undefined ? `&pendingParticipation=${filter.pendingParticipation}` : '');
 
-        const url: string = 'groups' + (params ? `?${params}` : '');
+        const url: string = 'groups' + (params === '' ? '' : `?${params}`);
 
         return this.rest.getRequest<Array<Group>>(url, groupsJsonSchema);
     }

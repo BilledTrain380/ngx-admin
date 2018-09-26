@@ -20,12 +20,11 @@ export interface CompetitorProvider {
      * Get all competitors filtered by the given parameters.
      * If a parameter is left out, it will not be considered in the filtering.
      *
-     * @param group {Group} The group to filter
-     * @param gender {Gender} The gender to filter
+     * @param filter - filter options to filter the returned list
      *
      * @return an array of the resulting competitors
      */
-    getCompetitors(group?: Group, gender?: Gender): Promise<ReadonlyArray<Competitor>>;
+    getCompetitorList(filter?: {group?: Group, gender?: Gender, absent?: boolean}): Promise<ReadonlyArray<Competitor>>;
 
     /**
      * Saves the given {@code results} to the given {@code competitor}.
@@ -52,14 +51,13 @@ export class HttpCompetitorProvider implements CompetitorProvider {
         private readonly rest: RestService,
     ) {}
 
-    getCompetitors(group?: Group, gender?: Gender): Promise<ReadonlyArray<Competitor>> {
+    getCompetitorList(filter?: {group?: Group, gender?: Gender, absent?: boolean}): Promise<ReadonlyArray<Competitor>> {
 
-        const groupParam: string = !group ? '' : `group=${group.name}`;
-        const genderParam: string = !gender ? '' : `gender=${gender}`;
+        const params: string = (filter.group !== undefined ? `group=${filter.group.name}` : '') +
+            (filter.gender !== undefined ? `&gender=${filter.gender}` : '') +
+            (filter.absent !== undefined ? `&absent=${filter.absent}` : '');
 
-        const params: string = [groupParam, genderParam].filter(it => it !== '').join('&');
-
-        const url: string = 'competitors' + ((params === '') ? params : '?' + params);
+        const url: string = 'competitors' + ((params === '') ? '' : `?${params}`);
         return this.rest.getRequest(url, competitorsJsonSchema);
     }
 
