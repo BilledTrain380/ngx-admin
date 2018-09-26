@@ -8,10 +8,12 @@ import {GroupModule} from '../../../modules/group/group.module';
 import {AthleticsRoutingModule} from '../athletics-routing.module';
 import {ResultsComponent} from './results.component';
 import {FormsModule} from '@angular/forms';
+import {ThemeModule} from '../../../@theme/theme.module';
 
 @NgModule({
     imports: [
         CommonModule,
+        ThemeModule,
         NbCardModule,
         NbSpinnerModule,
         Ng2SmartTableModule,

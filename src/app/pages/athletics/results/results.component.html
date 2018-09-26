@@ -1,3 +1,5 @@
+<ngx-page-title title="Resultate"></ngx-page-title>
+
 <div>
 
     <div>
@@ -6,78 +8,61 @@
 
             <nb-card-header>
 
-                Resultate
+                Wettkämpfer
 
             </nb-card-header>
 
             <nb-card-body>
 
-                <nb-card>
+                <div class="row">
 
-                    <nb-card-header>
-                        Darstellungsoptionen
-                    </nb-card-header>
+                    <div class="col-lg-3">
 
-                    <nb-card-body>
-
-                        <div class="row">
-
-                            <div class="col-lg-3">
-
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <input type="checkbox" [(ngModel)]="isMale" (change)="maleChanged()">
-                                        </div>
-                                    </div>
-                                    <input type="text" class="form-control" value="Knaben" disabled>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="checkbox" [(ngModel)]="isMale" (change)="maleChanged()">
                                 </div>
-
                             </div>
-
-                            <div class="col-lg-3">
-
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <div class="input-group-text">
-                                            <input type="checkbox" [(ngModel)]="isFemale" (change)="femaleChanged()">
-                                        </div>
-                                    </div>
-                                    <input type="text" class="form-control" value="Mädchen" disabled>
-                                </div>
-
-                            </div>
-
-                            <div class="col-lg-3">
-                                <ngx-smart-select
-                                    label="Gruppe"
-                                    [data]="groups"
-                                    [settings]="groupSelectSettings"
-                                    (onChange)="onGroupChange($event)">
-                                </ngx-smart-select>
-                            </div>
-
-                            <div class="col-lg-3">
-                                <ngx-smart-select
-                                    label="Disziplin"
-                                    [data]="disciplines"
-                                    [settings]="disciplineSelectSettings"
-                                    (onChange)="onDisciplineChange($event)">
-                                </ngx-smart-select>
-                            </div>
-
+                            <input type="text" class="form-control" value="Knaben" disabled>
                         </div>
 
-                    </nb-card-body>
+                    </div>
 
-                </nb-card>
+                    <div class="col-lg-3">
 
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <input type="checkbox" [(ngModel)]="isFemale" (change)="femaleChanged()">
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" value="Mädchen" disabled>
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-3">
+                        <ngx-smart-select
+                            label="Gruppe"
+                            [data]="groups"
+                            [settings]="groupSelectSettings"
+                            (onChange)="onGroupChange($event)">
+                        </ngx-smart-select>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <ngx-smart-select
+                            label="Disziplin"
+                            [data]="disciplines"
+                            [settings]="disciplineSelectSettings"
+                            (onChange)="onDisciplineChange($event)">
+                        </ngx-smart-select>
+                    </div>
+
+                </div>
 
                 <nb-card [nbSpinner]="isLoading">
-
-                    <nb-card-header>
-                        Wettkämpfer
-                    </nb-card-header>
 
                     <nb-card-body>
 

@@ -5,10 +5,12 @@ import {NbAccordionModule, NbBadgeModule, NbCardModule, NbListModule} from '@neb
 import {RouterModule} from '@angular/router';
 import {ConfirmationModule} from '../../modules/confirmation/confirmation.module';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
+import {ThemeModule} from '../../@theme/theme.module';
 
 @NgModule({
     imports: [
         CommonModule,
+        ThemeModule,
         NbCardModule,
         NbListModule,
         RouterModule,
