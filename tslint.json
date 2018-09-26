@@ -3,15 +3,6 @@
         "node_modules/codelyzer"
     ],
     "rules": {
-        "typedef": [
-            true,
-            "parameter",
-            "array-destructuring",
-            "call-signature",
-            "member-variable-declaration",
-            "property-declaration",
-            "variable-declaration"
-        ],
         "trailing-comma": [
             true,
             {
