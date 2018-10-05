@@ -126,9 +126,18 @@ export class RoleGuard implements CanActivate, CanActivateChild {
  * @author Nicolas Märchy <billedtrain380@gmail.com>
  * @since 1.0.0
  */
+@Injectable()
 export class RoleProvider implements NbRoleProvider {
 
+    constructor(
+        private readonly authService: NbAuthService,
+    ) {}
+
     getRole(): Observable<string | string[]> {
-        throw new Error('Not implemented yet');
+
+        return this.authService.onTokenChange()
+            .pipe(map((it: NbAuthOAuth2JWTToken) => {
+                return it.getAccessTokenPayload()['authorities'];
+            }));
     }
 }

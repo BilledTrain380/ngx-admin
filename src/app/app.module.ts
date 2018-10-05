@@ -16,8 +16,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpModule} from './modules/http/http.module';
 import {GlobalErrorHandler} from './app.errorhandler';
 import {PreviousRouteModule} from './modules/previous-route/previous-route.module';
-import {AuthGuard, RoleGuard} from './app.security';
-import {NbSecurityModule} from '@nebular/security';
+import {AuthGuard, RoleGuard, RoleProvider} from './app.security';
+import {NbRoleProvider, NbSecurityModule} from '@nebular/security';
 import {NbAuthModule, NbAuthOAuth2JWTToken, NbOAuth2AuthStrategy, NbOAuth2ResponseType} from '@nebular/auth';
 import {environment} from '../environments/environment';
 import {LoginComponent} from './auth/login/login.component';
@@ -79,6 +79,10 @@ import {OauthcallbackComponent} from './auth/oauthcallback/oauthcallback.compone
         {
             provide: ErrorHandler,
             useClass: GlobalErrorHandler,
+        },
+        {
+            provide: NbRoleProvider,
+            useClass: RoleProvider,
         },
         AuthGuard,
         RoleGuard,

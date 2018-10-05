@@ -3,6 +3,7 @@ import {Group} from '../../../modules/group/group-models';
 import {GROUP_PROVIDER, GroupProvider} from '../../../modules/group/group-providers';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ImportComponent} from './import/import.component';
+import {NbAccessChecker} from '@nebular/security';
 
 class GroupModel {
 
@@ -32,6 +33,7 @@ export class GroupOverviewComponent implements OnInit {
         private readonly groupProvider: GroupProvider,
 
         private readonly modalService: NgbModal,
+        readonly accessChecker: NbAccessChecker,
     ) {}
 
     ngOnInit(): void {
@@ -52,6 +54,9 @@ export class GroupOverviewComponent implements OnInit {
         modal.result.then(() => {
             this.ngOnInit();
             this.importSuccessful = true;
+            setTimeout(() => {
+                this.importSuccessful = false;
+            }, 5000);
         }).catch(() => {});
     }
 }
