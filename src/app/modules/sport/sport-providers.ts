@@ -48,7 +48,7 @@ export class HttpSportProvider implements SportProvider {
     ) {}
 
     async getAll(): Promise<Array<Sport>> {
-        return this.rest.getRequest<Array<Sport>>('sports', sportListJsonSchema);
+        return this.rest.getRequest<Array<Sport>>('api/sports', sportListJsonSchema);
     }
 
     getOne(name: string): Promise<Sport> {

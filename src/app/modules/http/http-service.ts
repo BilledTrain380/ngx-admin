@@ -3,12 +3,14 @@ import {DataSource} from 'ng2-smart-table/lib/data-source/data-source';
 import {environment} from '../../../environments/environment';
 import * as AjvImpl from 'ajv';
 import {AuthenticationError, BadRequestError, RequestError, ResourceNotFoundError} from './http-errors';
-import {responseErrorSchema} from './json-schema';
 import {NoConnectionError} from '../../app.errors';
+import {NbAuthService, NbAuthToken} from '@nebular/auth';
+import {Router} from '@angular/router';
 
 export type RequestBody = Blob | DataSource | string;
 
 export const REST_SERVICE: InjectionToken<RestService> = new InjectionToken('token for rest service');
+export const HTTP_SERVICE: InjectionToken<HttpService> = new InjectionToken('token for http service');
 
 /**
  * Describes a service for REST requests.
@@ -106,58 +108,6 @@ export interface RestService {
 }
 
 /**
- * {@link RestService} implementation for the same origin.
- *
- * This service manages any kind of authentication.
- *
- * @author Nicolas Märchy <billedtrain380@gmail.com>
- * @since 1.0.0
- */
-@Injectable()
-export class CorsRestService implements RestService {
-
-    async getRequest<T>(url: string, jsonSchema: object): Promise<T> {
-        return this.fetchRequest<T>(url, 'GET', undefined, jsonSchema);
-    }
-
-    async postRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
-        return this.fetchRequest<T>(url, 'POST', body, jsonSchema);
-    }
-
-    async patchRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
-        return this.fetchRequest<T>(url, 'PATCH', body, jsonSchema);
-    }
-
-    async putRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
-        return this.fetchRequest<T>(url, 'PUT', body, jsonSchema);
-    }
-
-    deleteRequest<T>(url: string, body?: RequestBody, jsonSchema?: object): Promise<T> {
-        return this.fetchRequest<T>(url, 'DELETE', body, jsonSchema);
-    }
-
-    private async fetchRequest<T>(url: string, method: string, body?: RequestBody, jsonSchema?: object): Promise<T> {
-
-        const response: Response = await run(fetch, `${environment.host}/${url}`, {
-            method,
-            mode: 'cors',
-            body: body as any, // because typescript sucks and can not recognize the type
-            headers: { 'Content-Type': 'application/json' },
-        });
-
-        await handleResponse(response);
-
-        if (jsonSchema) {
-            return validateResponseBody(response, jsonSchema);
-        }
-
-        return '' as any; // the json schema was not defined, so we return an empty body
-    }
-}
-
-export const HTTP_SERVICE: InjectionToken<HttpService> = new InjectionToken('token for http service');
-
-/**
  * Describes a http service for basic http requests.
  *
  * @author Nicolas Märchy <billedtrain380@gmail.com>
@@ -181,20 +131,85 @@ export interface HttpService {
     postForm(url: string, formData: FormData, headers?: Headers): Promise<Response>;
 }
 
-const defaultFormHeaders: Headers = new Headers();
-
 /**
- * {@link HttpService} implementation for the same origin.
+ * {@link RestService} implementation which uses {@link NbAuthService} to
+ * get a Bearer access token. The token will not be validated by this class.
  *
  * @author Nicolas Märchy <billedtrain380@gmail.com>
  * @since 1.0.0
  */
 @Injectable()
-export class CorsHttpService implements HttpService {
+export class AuthRestService implements RestService {
 
-    async postForm(url: string, formData: FormData, headers: Headers = defaultFormHeaders): Promise<Response> {
+    constructor(
+        private readonly authService: NbAuthService,
+    ) {}
 
-        const response: Response = await fetch(`${environment.host}/import-group`, {
+    async getRequest<T>(url: string, jsonSchema: object): Promise<T> {
+        return this.fetchRequest<T>(url, 'GET', undefined, jsonSchema);
+    }
+
+    async postRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
+        return this.fetchRequest<T>(url, 'POST', body, jsonSchema);
+    }
+
+    async patchRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
+        return this.fetchRequest<T>(url, 'PATCH', body, jsonSchema);
+    }
+
+    async putRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
+        return this.fetchRequest<T>(url, 'PUT', body, jsonSchema);
+    }
+
+    deleteRequest<T>(url: string, body?: RequestBody, jsonSchema?: object): Promise<T> {
+        return this.fetchRequest<T>(url, 'DELETE', body, jsonSchema);
+    }
+
+    private async fetchRequest<T>(url: string, method: string, body?: RequestBody, jsonSchema?: object): Promise<T> {
+
+        const token: NbAuthToken = await this.authService.getToken().toPromise();
+
+        const response: Response = await run(fetch, `${environment.host}/${url}`, {
+            method,
+            mode: 'cors',
+            body: body as any, // because typescript sucks and can not recognize the type
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token.getValue()}`,
+            },
+        });
+
+        await handleResponse(response);
+
+        if (jsonSchema) {
+            return validateResponseBody(response, jsonSchema);
+        }
+
+        return '' as any; // the json schema was not defined, so we return an empty body
+    }
+}
+
+/**
+ * {@link HttpService} implementation which uses {@link NbAuthService} to
+ * get a Bearer access token. The token will not be validated by this class.
+ *
+ * @author Nicolas Märchy <billedtrain380@gmail.com>
+ * @since 1.0.0
+ */
+@Injectable()
+export class AuthHttpService implements HttpService {
+
+    constructor(
+        private readonly authService: NbAuthService,
+    ) {}
+
+    async postForm(url: string, formData: FormData, headers: Headers = new Headers()): Promise<Response> {
+
+        const token: NbAuthToken = await this.authService.getToken().toPromise();
+
+        headers.append('Authorization', `Bearer ${token.getValue()}`);
+
+        const response: Response = await run(fetch, `${environment.host}/${url}`, {
             method: 'POST',
             mode: 'cors',
             headers: headers,
@@ -204,6 +219,105 @@ export class CorsHttpService implements HttpService {
         await handleResponse(response);
 
         return response;
+    }
+}
+
+/**
+ * Wrapper class for {@link AuthRestService} which filters authentication errors.
+ *
+ * @author Nicolas Märchy <billedtrain380@gmail.com>
+ * @since 1.0.0
+ */
+@Injectable()
+export class PSARestService implements RestService, HttpService {
+
+    constructor(
+        private readonly authService: NbAuthService,
+        private readonly rest: AuthRestService,
+        private readonly http: AuthHttpService,
+        private readonly router: Router,
+    ) {}
+
+    async deleteRequest<T>(url: string, body?: RequestBody, jsonSchema?: object): Promise<T> {
+
+        try {
+            await this.doFilter(url);
+            return await this.rest.deleteRequest<T>(url, body, jsonSchema);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async getRequest<T>(url: string, jsonSchema: object): Promise<T> {
+
+        try {
+            await this.doFilter(url);
+            return await this.rest.getRequest<T>(url, jsonSchema);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async patchRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
+
+        try {
+            await this.doFilter(url);
+            return await this.rest.patchRequest<T>(url, body, jsonSchema);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async postRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
+
+        try {
+            await this.doFilter(url);
+            return await this.rest.postRequest<T>(url, body, jsonSchema);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async putRequest<T>(url: string, body: RequestBody, jsonSchema?: object): Promise<T> {
+
+        try {
+            await this.doFilter(url);
+            return await this.rest.putRequest<T>(url, body, jsonSchema);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async postForm(url: string, formData: FormData, headers: Headers = new Headers()): Promise<Response> {
+
+        try {
+            await this.doFilter(url);
+            return await this.http.postForm(url, formData, headers);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    private async doFilter(url: string): Promise<void> {
+
+        const isAuthenticated: boolean = await this.authService.isAuthenticated().toPromise();
+        const isTokenValid: boolean = (await this.authService.getToken().toPromise()).isValid();
+
+        if (!(isAuthenticated && isTokenValid)) {
+            throw new AuthenticationError(
+                'User is not authenticated or has an invalid token',
+                timestamp(),
+                url);
+        }
+    }
+
+    private handleError(error: any): void {
+
+        if (error instanceof AuthenticationError) {
+            this.router.navigate(['/auth/login']);
+        }
+
+        throw error;
     }
 }
 
@@ -221,23 +335,21 @@ async function handleResponse(response: Response): Promise<void> {
         return;
     }
 
-    const errorResponse: ErrorResponse = await validateResponseBody(response, responseErrorSchema);
+    if (response.status === 400)
+        throw new BadRequestError(response.statusText, timestamp(), response.url);
 
-    if (errorResponse.status === 400)
-        throw new BadRequestError(errorResponse.message, errorResponse.timestamp, errorResponse.path);
+    if (response.status === 401)
+        throw new AuthenticationError(response.statusText, timestamp(), response.url);
 
-    if (errorResponse.status === 401)
-        throw new AuthenticationError(errorResponse.message, errorResponse.timestamp, errorResponse.path);
-
-    if (errorResponse.status === 404)
-        throw new ResourceNotFoundError(errorResponse.message, errorResponse.timestamp, errorResponse.path);
+    if (response.status === 404)
+        throw new ResourceNotFoundError(response.statusText, timestamp(), response.url);
 
     throw new RequestError(
-        errorResponse.message,
-        errorResponse.timestamp,
-        errorResponse.status,
-        errorResponse.error,
-        errorResponse.path);
+        response.statusText,
+        timestamp(),
+        response.status,
+        'Could not resolve request',
+        response.url);
 }
 
 async function validateResponseBody(response: Response, schema: object): Promise<any> {
@@ -252,10 +364,6 @@ async function validateResponseBody(response: Response, schema: object): Promise
     return body;
 }
 
-interface ErrorResponse {
-    readonly timestamp: string;
-    readonly status: number;
-    readonly error: string;
-    readonly message: string;
-    readonly path: string;
+function timestamp(): string {
+    return Date.now().toString(10);
 }

@@ -107,20 +107,20 @@ export class HttpParticipantProvider implements ParticipantProvider {
     ) {}
 
     async getAll(): Promise<Array<Participant>> {
-        return this.rest.getRequest<Array<Participant>>('participants', participantListJsonSchema);
+        return this.rest.getRequest<Array<Participant>>('api/participants', participantListJsonSchema);
     }
 
     getByGroup(group: Group): Promise<Array<Participant>> {
 
         return this.rest.getRequest<Array<Participant>>(
-            `participants?group=${group.name}`,
+            `api/participants?group=${group.name}`,
             participantListJsonSchema);
     }
 
     getOne(id: number): Promise<Participant> {
 
         return this.rest.getRequest<Participant>(
-            `participant/${id}`,
+            `api/participant/${id}`,
             participantJsonSchema);
     }
 
@@ -129,7 +129,7 @@ export class HttpParticipantProvider implements ParticipantProvider {
         const body: ParticipantRelations = {sport};
 
         return this.rest.putRequest<void>(
-            `participant/${participant.id}`,
+            `api/participant/${participant.id}`,
             JSON.stringify(body));
     }
 
@@ -145,7 +145,7 @@ export class HttpParticipantProvider implements ParticipantProvider {
         };
 
         return this.rest.patchRequest<void>(
-            `participant/${participant.id}`,
+            `api/participant/${participant.id}`,
             JSON.stringify(body));
     }
 
@@ -161,11 +161,11 @@ export class HttpParticipantProvider implements ParticipantProvider {
             sport: participant.sport,
         };
 
-        await this.rest.postRequest(`participants?group=${participant.group.name}`, JSON.stringify(body));
+        await this.rest.postRequest(`api/participants?group=${participant.group.name}`, JSON.stringify(body));
     }
 
     async delete(participant: Participant): Promise<void> {
-        await this.rest.deleteRequest(`participant/${participant.id}`);
+        await this.rest.deleteRequest(`api/participant/${participant.id}`);
     }
 }
 
