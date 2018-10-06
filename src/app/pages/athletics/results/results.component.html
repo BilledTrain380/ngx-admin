@@ -49,6 +49,7 @@
                             [settings]="groupSelectSettings"
                             (onChange)="onGroupChange($event)">
                         </ngx-smart-select>
+                        <small *ngIf="groups.length < 1" class="form-text text-info p-3">Keine Gruppen mit Wettkämpfer vorhanden</small>
                     </div>
 
                     <div class="col-lg-3">
