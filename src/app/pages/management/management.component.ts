@@ -5,6 +5,7 @@ import {Group} from '../../modules/group/group-models';
 import {ParticipationStatus} from '../../modules/participation/participation-models';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmationComponent} from '../../modules/confirmation/confirmation.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'ngx-management',
@@ -20,6 +21,7 @@ export class ManagementComponent implements OnInit {
 
     constructor(
         private readonly modalService: NgbModal,
+        private readonly translateService: TranslateService,
 
         @Inject(GROUP_PROVIDER)
         private readonly groupProvider: GroupProvider,
@@ -44,13 +46,15 @@ export class ManagementComponent implements OnInit {
         this.participationStatus = ParticipationStatus.CLOSE;
     }
 
-    resetParticipation(): void {
+    async resetParticipation(): Promise<void> {
+
+        const message: string = await this.translateService.get('participation.alert.confirmReset').toPromise();
 
         const modal: NgbModalRef = this.modalService.open(ConfirmationComponent, {
             size: 'lg', container: 'nb-layout',
         });
 
-        modal.componentInstance.message = 'Möchten Sie die Teilnahme wirklich zurücksetzen?';
+        modal.componentInstance.message = message;
 
         // we catch the modal dismiss, so it won't bubble the error
         modal.result

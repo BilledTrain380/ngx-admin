@@ -1,4 +1,4 @@
-<ngx-page-title title="Verwaltung"></ngx-page-title>
+<ngx-page-title [title]="'page.management' | translate"></ngx-page-title>
 
 <div class="row">
 
@@ -7,7 +7,7 @@
         <nb-card status="info" *ngIf="participationStatus === 'CLOSE'">
 
             <nb-card-header>
-                Teilnahme ist abgeschlossen
+                {{ 'participation.status.closed' | translate }}
             </nb-card-header>
 
         </nb-card>
@@ -16,12 +16,12 @@
 
             <nb-card-header>
 
-                <span>Teilnahme</span>
+                <span>{{ 'participation.title.default' | translate }}</span>
 
                 <div class="float-right btn-group btn-divided-group">
 
                     <button type="button" class="btn active btn-sm btn-primary" (click)="closeParticipation()">
-                        Abschliessen
+                        {{ 'participation.action.close' | translate }}
                     </button>
 
                 </div>
@@ -30,20 +30,16 @@
 
             <nb-card-body>
 
-                <p>
-                    Um die Leichtathletik starten zu können, müssen Sie die Teinahme abschliessen.
-                    <br>
-                    Dadurch werden die Startnummern generiert und Sie können die Wettkampfblätter herunterladen.
-                </p>
+                <p [innerHTML]="'participation.text.toCloseParticipation' | translate"></p>
 
                 <div class="alert alert-primary" role="alert">
-                    <strong>Achtung!</strong> Wenn Sie die Teilnahme abschliessen, kann ein Teinehmer nur noch durch eine Ummeldung einer anderen Sportart zugewiesen werden.
+                    <strong>{{ 'alert.attention' | translate }}</strong> {{ 'participation.alert.closeParticipation' | translate }}
                 </div>
 
                 <nb-card size="small" *ngIf="groupList.length > 0">
 
                     <nb-card-header>
-                        Gruppen mit noch offenen Teilnahmen
+                        {{ 'participation.title.groupsWithPendingParticipation' | translate }}
                     </nb-card-header>
 
                     <nb-card-body>
@@ -51,7 +47,7 @@
                         <nb-list>
                             <nb-list-item *ngFor="let group of groupList">
                                 <a routerLink="/pages/group/detail/{{ group.name }}" class="text-heading">
-                                    <b>Gruppe:</b> {{ group.name }}
+                                    <b>{{ 'group.title.default' | translate }}:</b> {{ group.name }}
                                 </a>
                             </nb-list-item>
                         </nb-list>
@@ -72,12 +68,12 @@
 
             <nb-card-header>
 
-                <span>Teilnahme Zurücksetzen</span>
+                <span>{{ 'participation.title.resetParticipation' | translate }}</span>
 
                 <div class="float-right btn-group btn-divided-group">
 
                     <button type="button" class="btn active btn-sm btn-danger" (click)="resetParticipation()">
-                        Zurücksetzen
+                        {{ 'participation.action.reset' | translate }}
                     </button>
 
                 </div>
@@ -87,17 +83,13 @@
             <nb-card-body>
 
                 <div *ngIf="resetSuccess" class="alert alert-success" role="alert">
-                    <strong>Super!</strong> Die Teilnahme wurde zurückgesetzt.
+                    <strong>{{ 'alert.great' | translate }}</strong> {{ 'participation.alert.resetSuccess' | translate }}
                 </div>
 
-                <p>
-                    Um die Datenerfassung von neuem zu beginnen müssen Sie die Teilnahme zurücksetzens.
-                    <br>
-                    Dadurch werden alle Teilnehmer Daten gelöscht und Sie können die Teilnehmer von Anfang neu erfassen.
-                </p>
+                <p [innerHTML]="'participation.text.toResetParticipation' | translate"></p>
 
                 <div class="alert alert-danger" role="alert">
-                    <strong>Warnung!</strong> Wenn Sie die Teilnahme zurücksetzen werden alle Teilnehmer Daten unwiederruflich gelöscht.
+                    <strong>{{ 'alert.warning' | translate }}</strong> {{ 'participation.alert.resetParticipation' | translate }}
                 </div>
 
             </nb-card-body>

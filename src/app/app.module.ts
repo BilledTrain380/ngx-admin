@@ -22,6 +22,8 @@ import {NbAuthModule, NbAuthOAuth2JWTToken, NbOAuth2AuthStrategy, NbOAuth2Respon
 import {environment} from '../environments/environment';
 import {LoginComponent} from './auth/login/login.component';
 import {OauthcallbackComponent} from './auth/oauthcallback/oauthcallback.component';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {JSONTranslateLoader} from './@core/lang/translate.service';
 
 @NgModule({
     declarations: [AppComponent, LoginComponent, OauthcallbackComponent],
@@ -32,7 +34,12 @@ import {OauthcallbackComponent} from './auth/oauthcallback/oauthcallback.compone
         HttpClientModule,
         AppRoutingModule,
         HttpModule,
-
+        TranslateModule.forRoot({
+            loader: {
+                provide: TranslateLoader,
+                useClass: JSONTranslateLoader,
+            },
+        }),
         PreviousRouteModule.forRoot(),
         NgbModule.forRoot(),
         ThemeModule.forRoot(),

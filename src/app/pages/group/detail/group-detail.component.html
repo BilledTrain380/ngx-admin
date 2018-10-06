@@ -1,4 +1,4 @@
-<ngx-page-title [title]="'Gruppe ' + activeGroup.name + ' -'" [subtitle]="activeGroup.coach.name"></ngx-page-title>
+<ngx-page-title [title]="('page.group' | translate:{name: activeGroup.name}) + ' -'" [subtitle]="activeGroup.coach.name"></ngx-page-title>
 
 <div class="row">
 
@@ -8,12 +8,12 @@
 
             <nb-card-header style="position: relative">
 
-                <span>Teilnehmer</span>
+                <span>{{ 'group.title.participants' | translate }}</span>
 
                 <div class="float-right btn-group btn-divided-group btn-outline-divided-group">
 
                     <button type="button" class="btn btn-outline-primary btn-with-icon" (click)="openParticipateModel()">
-                        <i class="fa fa-plus-circle"></i> Nachmeldung
+                        <i class="fa fa-plus-circle"></i> {{ 'participation.action.lateParticipation' | translate }}
                     </button>
 
                 </div>
@@ -23,28 +23,28 @@
             <nb-card-body>
 
                 <div *ngIf="createSuccess" class="alert alert-success" role="alert">
-                    <strong>Super!</strong> Der Teinehmer wurde erstellt.
+                    <strong>{{ 'alert.great' | translate }}</strong> {{ 'participant.alert.createSuccess' | translate }}
                 </div>
 
                 <div *ngIf="editSuccess" class="alert alert-success" role="alert">
-                    <strong>Super!</strong> Der Teinehmer wurde gespeichert.
+                    <strong>{{ 'alert.great' | translate }}</strong> {{ 'participant.alert.saveSuccess' | translate }}
                 </div>
 
                 <div *ngIf="deleteSuccess" class="alert alert-success" role="alert">
-                    <strong>Super!</strong> Der Teilnehmer wurde gelöscht.
+                    <strong>{{ 'alert.great' | translate }}</strong> {{ 'participant.alert.deleteSuccess' | translate }}
                 </div>
 
                 <table class="table">
 
                     <thead>
                     <tr class="ng2-smart-titles">
-                        <th class="ng2-smart-th">Aktionen</th>
-                        <th class="ng2-smart-th">Nachname</th>
-                        <th class="ng2-smart-th">Vorname</th>
-                        <th class="ng2-smart-th">Geschlecht</th>
-                        <th class="ng2-smart-th">Adresse</th>
-                        <th class="ng2-smart-th">Abwesend</th>
-                        <th class="ng2-smart-th">Sportart</th>
+                        <th class="ng2-smart-th">{{ 'group.label.actions' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'participant.label.surname' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'participant.label.prename' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'participant.label.gender' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'participant.label.address' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'participant.label.absent' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'participation.label.sports' | translate }}</th>
                     </tr>
                     </thead>
 
@@ -59,7 +59,7 @@
                         </td>
                         <td>{{ participant.surname }}</td>
                         <td>{{ participant.prename }}</td>
-                        <td>{{ participant.gender }}</td>
+                        <td>{{ participant.gender | translate }}</td>
                         <td>{{ participant.address }}</td>
                         <td>
                             <input type="checkbox" class="form-control" [(ngModel)]="participant.absent" (change)="participant.absentChanged()">
@@ -69,7 +69,7 @@
 
                             <div class="input-group">
                                 <select class="form-control" [(ngModel)]="participant.sport" (change)="participant.sportChanged()">
-                                    <option *ngFor="let sport of sports" [value]="sport.name">{{ sport.name }}</option>
+                                    <option *ngFor="let sport of sports" [value]="sport.name">{{ sport.name | translate }}</option>
                                 </select>
                                 <span class="input-group-append" *ngIf="participant.isReparticipate">
                                     <button class="btn btn-secondary btn-icon input-group-text" (click)="participant.isReparticipate = false">
@@ -80,7 +80,7 @@
 
                         </td>
 
-                        <td *ngIf="participationIsClosed() && !participant.isReparticipate">{{ participant.sport ? participant.sport : 'N/D' }}</td>
+                        <td *ngIf="participationIsClosed() && !participant.isReparticipate">{{ participant.sport ? (participant.sport | translate) : ('label.notDefined' | translate) }}</td>
 
                     </tr>
                     </tbody>

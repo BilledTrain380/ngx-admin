@@ -1,4 +1,4 @@
-<ngx-page-title title="Resultate"></ngx-page-title>
+<ngx-page-title [title]="'athleticsPage.results.title.default' | translate"></ngx-page-title>
 
 <div class="row">
 
@@ -8,7 +8,7 @@
 
             <nb-card-header>
 
-                Wettkämpfer
+                {{ 'athleticsPage.results.title.competitors' | translate }}
 
             </nb-card-header>
 
@@ -18,8 +18,8 @@
 
                     <div *ngIf="isParticipationOpen" class="col-lg-12">
                         <div class="alert alert-primary" role="alert">
-                            <strong>Information!</strong> Die Teilnahme wurde noch nicht abgeschlossen.
-                            <span *nbIsGranted="['view', 'management']">Klicken Sie <a routerLink="/pages/management">hier</a> um die Teilnahme abzuschliessen.</span>
+                            <strong>Information!</strong> {{ 'participation.status.open' | translate }}.
+                            <!--<span *nbIsGranted="['view', 'management']">Klicken Sie <a routerLink="/pages/management">hier</a> um die Teilnahme abzuschliessen.</span>-->
                         </div>
                     </div>
 
@@ -31,7 +31,7 @@
                                     <input type="checkbox" [(ngModel)]="isMale" (change)="maleChanged()">
                                 </div>
                             </div>
-                            <input type="text" class="form-control" value="Knaben" disabled>
+                            <input type="text" class="form-control" [value]="'MALE' | translate" disabled>
                         </div>
 
                     </div>
@@ -44,7 +44,7 @@
                                     <input type="checkbox" [(ngModel)]="isFemale" (change)="femaleChanged()">
                                 </div>
                             </div>
-                            <input type="text" class="form-control" value="Mädchen" disabled>
+                            <input type="text" class="form-control" [value]="'FEMALE' | translate" disabled>
                         </div>
 
                     </div>
@@ -56,7 +56,7 @@
                             [settings]="groupSelectSettings"
                             (onChange)="onGroupChange($event)">
                         </ngx-smart-select>
-                        <small *ngIf="groups.length < 1" class="form-text text-info p-3">Keine Gruppen mit Wettkämpfer vorhanden</small>
+                        <small *ngIf="groups.length < 1" class="form-text text-info p-3">{{ 'athleticsPage.results.status.noGroups' | translate }}</small>
                     </div>
 
                     <div class="col-lg-3">
@@ -78,12 +78,12 @@
 
                             <thead>
                             <tr class="ng2-smart-titles">
-                                <th class="ng2-smart-th">Startnummer</th>
-                                <th class="ng2-smart-th">Nachname</th>
-                                <th class="ng2-smart-th">Vorname</th>
-                                <th class="ng2-smart-th">Geschlecht</th>
-                                <th class="ng2-smart-th">Leistung</th>
-                                <th class="ng2-smart-th">Punkte</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.startNumber' | translate }}</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.surname' | translate }}</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.prename' | translate }}</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.gender' | translate }}</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.result' | translate }}</th>
+                                <th class="ng2-smart-th">{{ 'athleticsPage.results.label.points' | translate }}</th>
                             </tr>
                             </thead>
 
@@ -93,13 +93,13 @@
                                 <td>{{ competitor.startNumber }}</td>
                                 <td>{{ competitor.surname }}</td>
                                 <td>{{ competitor.prename }}</td>
-                                <td>{{ competitor.gender }}</td>
+                                <td>{{ competitor.gender | translate }}</td>
                                 <td>
 
                                     <div class="input-group input-group-sm"  *ngIf="competitor.result">
                                 <span class="input-group-prepend" *ngIf="competitor.result.distance">
                                     <button class="btn btn-secondary input-group-text" style="text-transform: none" tabindex="-1">
-                                      Distanz: {{ competitor.result.distance }}
+                                      {{ 'athleticsPage.results.label.distance' | translate }}: {{ competitor.result.distance }}
                                     </button>
                                 </span>
                                         <input type="text" class="form-control" style="max-width: 100px"
@@ -141,7 +141,7 @@
         <nb-card>
 
             <nb-card-header>
-                Abwesende Wettkämpfer
+                {{ 'athleticsPage.results.title.absentCompetitors' | translate }}
             </nb-card-header>
 
             <nb-card-body>
@@ -150,10 +150,10 @@
 
                     <thead>
                     <tr class="ng2-smart-titles">
-                        <th class="ng2-smart-th">Startnummer</th>
-                        <th class="ng2-smart-th">Nachname</th>
-                        <th class="ng2-smart-th">Vorname</th>
-                        <th class="ng2-smart-th">Geschlecht</th>
+                        <th class="ng2-smart-th">{{ 'athleticsPage.results.label.startNumber' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'athleticsPage.results.label.surname' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'athleticsPage.results.label.prename' | translate }}</th>
+                        <th class="ng2-smart-th">{{ 'athleticsPage.results.label.gender' | translate }}</th>
                     </tr>
                     </thead>
 

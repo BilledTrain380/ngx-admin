@@ -7,6 +7,7 @@ import {ThemeModule} from '../@theme/theme.module';
 import {MiscellaneousModule} from './miscellaneous/miscellaneous.module';
 import {GroupPageModule} from './group/group-page.module';
 import {ManagementModule} from './management/management.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 const PAGES_COMPONENTS: Array<any> = [
     PagesComponent,
@@ -20,6 +21,7 @@ const PAGES_COMPONENTS: Array<any> = [
         MiscellaneousModule,
         GroupPageModule,
         ManagementModule,
+        TranslateModule,
     ],
     declarations: [
         ...PAGES_COMPONENTS,

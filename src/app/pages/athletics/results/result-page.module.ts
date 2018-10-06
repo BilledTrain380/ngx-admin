@@ -5,10 +5,10 @@ import {Ng2SmartTableModule} from 'ng2-smart-table';
 import {SmartSelectModule} from '../../../modules/smart-select/smart-select.module';
 import {AthleticsModule} from '../../../modules/athletics/athletics.module';
 import {GroupModule} from '../../../modules/group/group.module';
-import {AthleticsRoutingModule} from '../athletics-routing.module';
 import {ResultsComponent} from './results.component';
 import {FormsModule} from '@angular/forms';
 import {ThemeModule} from '../../../@theme/theme.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -22,7 +22,7 @@ import {ThemeModule} from '../../../@theme/theme.module';
         SmartSelectModule,
         AthleticsModule,
         GroupModule,
-        AthleticsRoutingModule,
+        TranslateModule,
     ],
     entryComponents: [
         ResultsComponent,

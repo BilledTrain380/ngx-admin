@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <span>Bestätigen</span>
+    <span>{{ 'module.confirmation.confirm' | translate }}</span>
     <button class="close" aria-label="Close" (click)="dismissModal()">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -14,11 +14,11 @@
 <div class="modal-footer">
 
     <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
-        Abbrechen
+        {{ 'form.action.abort' | translate }}
     </button>
 
     <button class="btn btn-md btn-{{ severity }}" type="button" (click)="confirm()">
-        Bestätigen
+        {{ 'module.confirmation.confirm' | translate }}
     </button>
 
 </div>

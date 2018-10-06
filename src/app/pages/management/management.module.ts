@@ -6,6 +6,7 @@ import {RouterModule} from '@angular/router';
 import {ConfirmationModule} from '../../modules/confirmation/confirmation.module';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {ThemeModule} from '../../@theme/theme.module';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -18,6 +19,7 @@ import {ThemeModule} from '../../@theme/theme.module';
         NbBadgeModule,
         ConfirmationModule,
         NgbModalModule,
+        TranslateModule,
     ],
     declarations: [ManagementComponent],
 })

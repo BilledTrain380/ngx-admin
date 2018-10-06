@@ -3,13 +3,12 @@
         <nb-card>
             <nb-card-body>
                 <div class="flex-centered col-xl-4 col-lg-6 col-md-8 col-sm-12">
-                    <h2 class="title">No server connection :(</h2>
+                    <h2 class="title">{{ 'error.noConnection.title' | translate }}</h2>
                     <small class="sub-title">
-                        Sporttag PSA kann keine Verbindung mit dem Server aufnehmen. Versuchen Sie es später noch einmal.
-                        Sollte das Problem weiterhin bestehen wenden Sie sich an den Administrator.
+                        {{ 'error.noConnection.text' | translate }}
                     </small>
                     <button (click)="retry()" type="button" class="btn btn-block btn-hero-primary">
-                        Erneut versuchen
+                        {{ 'error.noConnection.action' | translate }}
                     </button>
                 </div>
             </nb-card-body>

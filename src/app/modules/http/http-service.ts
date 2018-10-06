@@ -317,6 +317,8 @@ export class PSARestService implements RestService, HttpService {
             this.router.navigate(['/auth/login']);
         }
 
+        // TODO: redirect to no connection page if NoConnectionError
+
         throw error;
     }
 }

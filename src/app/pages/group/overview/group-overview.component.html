@@ -1,4 +1,4 @@
-<ngx-page-title title="Gruppen"></ngx-page-title>
+<ngx-page-title [title]="'group.title.groups' | translate"></ngx-page-title>
 
 <div class="row">
 
@@ -7,13 +7,13 @@
         <nb-card>
             <nb-card-header>
 
-                <span>Übersicht</span>
+                <span>{{ 'group.title.overview' | translate }}</span>
 
                 <div *nbIsGranted="['create', 'groups']" class="float-right btn-group btn-divided-group btn-outline-divided-group">
 
                     <button type="button" class="btn btn-sm btn-outline-primary" (click)="showImportModal()">
                         <i class="fa fa-upload"></i>
-                        Import
+                        {{ 'group.action.import' | translate }}
                     </button>
                 </div>
 
@@ -21,22 +21,22 @@
             <nb-card-body>
 
                 <div *ngIf="importSuccessful" class="alert alert-success" role="alert">
-                    <strong>Super!</strong> Gruppen wurden erfolgreich importiert.
+                    <strong>{{ 'alert.great' | translate }}</strong> {{ 'group.alert.importSuccess' | translate }}
                 </div>
 
                 <div *ngIf="groupList.length < 1" class="alert alert-primary" role="alert">
-                    <strong>Information!</strong> Sie haben noch keine Gruppen erfasst.
+                    <strong>{{ 'alert.info' | translate }}</strong> {{ 'group.status.noGroup' | translate }}
                 </div>
 
                 <nb-card *ngFor="let group of groupList">
                     <nb-card-header>
 
                         <a *ngIf="accessChecker.isGranted('view', 'group') | async" routerLink="/pages/group/detail/{{ group.name }}" class="text-heading">
-                            <b>Gruppe:</b> {{ group.name }}
+                            <b>{{ 'group.title.default' | translate }}:</b> {{ group.name }}
                         </a>
 
                         <span *ngIf="!accessChecker.isGranted('view', 'group') | async" class="text-heading">
-                            <b>Gruppe:</b> {{ group.name }}
+                            <b>{{ 'group.title.default' | translate }}:</b> {{ group.name }}
                         </span>
 
                         &nbsp;
@@ -46,11 +46,11 @@
                         </button>
 
                         <div *ngIf="group.pendingParticipation" class="float-right">
-                            <i class="fa fa-exclamation-triangle text-warning"></i> Noch offene Teilnehmer
+                            <i class="fa fa-exclamation-triangle text-warning"></i> {{ 'group.status.withPendingParticipation' | translate }}
                         </div>
 
                         <div *ngIf="!group.pendingParticipation" class="float-right">
-                            <i class="fa fa-check-circle text-success"></i> Teilnahme abgeschlossen
+                            <i class="fa fa-check-circle text-success"></i> {{ 'group.status.withNoPendingParticipation' | translate }}
                         </div>
 
                     </nb-card-header>

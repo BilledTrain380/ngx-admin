@@ -15,6 +15,7 @@ import {ConfirmationComponent} from '../../../modules/confirmation/confirmation.
 import {EditComponent} from './edit/edit.component';
 import {ParticipationComponent} from './participation/participation.component';
 import {ParticipantAction, ParticipantModel} from './group-detail.models';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'ngx-group-detail',
@@ -37,6 +38,7 @@ export class GroupDetailComponent implements OnInit {
         private readonly router: Router,
         private readonly route: ActivatedRoute,
         private readonly modalService: NgbModal,
+        private readonly translateService: TranslateService,
 
         @Inject(PARTICIPATION_PROVIDER)
         private readonly participationProvider: ParticipationProvider,
@@ -151,8 +153,11 @@ export class GroupDetailComponent implements OnInit {
             size: 'lg', container: 'nb-layout',
         });
 
-        modal.componentInstance.message =
-            `Möchten Sie den Teilnehmer '${participant.prename} ${participant.surname}' wirlich löschen?`;
+        const message: string = await this.translateService.get('participant.alert.confirmDelete', {
+            name: `${participant.prename} ${participant.surname}`,
+        }).toPromise();
+
+        modal.componentInstance.message = message;
 
         // we catch the modal dismiss, so it won't bubble the error
         modal.result

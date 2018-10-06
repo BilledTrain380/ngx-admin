@@ -15,6 +15,7 @@ import {NbCalendarModule, NbSpinnerModule} from '@nebular/theme';
 import {ConfirmationModule} from '../../modules/confirmation/confirmation.module';
 import {EditComponent} from './detail/edit/edit.component';
 import {ParticipationComponent} from './detail/participation/participation.component';
+import {TranslateModule} from '@ngx-translate/core';
 
 @NgModule({
     imports: [
@@ -31,6 +32,7 @@ import {ParticipationComponent} from './detail/participation/participation.compo
         NbSpinnerModule,
         ConfirmationModule,
         NbCalendarModule,
+        TranslateModule,
     ],
     entryComponents: [
         ImportComponent,

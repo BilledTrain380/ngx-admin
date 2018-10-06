@@ -22,7 +22,7 @@ interface RouteSecurity {
     readonly match: RouteMatch;
     readonly authority: string;
 }
-
+// TODO: add error pages
 const routeSecurity: Array<RouteSecurity> = [{
         route: '/pages/group/overview',
         match: RouteMatch.FULL,

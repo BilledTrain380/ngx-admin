@@ -1,5 +1,5 @@
 <div class="modal-header">
-    <span>Import</span>
+    <span>{{ 'group.action.import' | translate }}</span>
     <button class="close" aria-label="Close" (click)="dismissModal()">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -8,21 +8,13 @@
 <div class="modal-body" [nbSpinner]="loading">
 
     <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-        <strong>Fehler!</strong> Die Datei konnte nicht hochgeladen werden.
+        <strong>{{ 'alert.error' | translate }}</strong> {{ 'group.alert.fileUploadError' | translate }}
         <br>
         {{ errorMessage }}
     </div>
 
-    <h4>CSV Format</h4>
-    <ul class="mb-5">
-        <li>Muss die Dateiendung <mark>.csv</mark> entsprechen</li>
-        <li>
-            Muss die folgende Reihenfolge der Attribute einhalten:<br>
-            <i>Gruppe,Nachname,Vorname,Geschlecht,Strasse,PLZ,Ort,Geburtsdatum,Gruppenleiter</i>
-        </li>
-        <li>Das Geschlecht muss <mark>m</mark> für Knaben und <mark>w</mark> für Mädchen entsprechen</li>
-        <li>Das Gebutsdatum muss dem Format <mark>dd.MM.YYYY</mark> entsprechen; z.B. 06.10.2009 </li>
-        <li>Das Trennzeichen muss dem Komma (,) entsprechen</li>
+    <h4>{{ 'group.title.csvFormat' | translate }}</h4>
+    <ul class="mb-5" [innerHTML]="'group.text.fileRequirements' | translate">
     </ul>
 
     <ngx-dropzone (onFileDrop)="setFile($event)"></ngx-dropzone>
@@ -32,10 +24,10 @@
 <div class="modal-footer">
 
     <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
-        Close
+        {{ 'form.action.abort' | translate }}
     </button>
 
     <button class="btn btn-md btn-primary" type="button" [disabled]="!file" (click)="upload()">
-        Upload
+        {{ 'group.action.import' | translate }}
     </button>
 </div>
