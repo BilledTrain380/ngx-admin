@@ -12,6 +12,8 @@ import {
 import {Gender} from '../../../modules/participant/participant-models';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {CompetitorModel} from './result.models';
+import {PARTICIPATION_PROVIDER, ParticipationProvider} from '../../../modules/participation/participation-providers';
+import {ParticipationStatus} from '../../../modules/participation/participation-models';
 
 
 @Component({
@@ -36,6 +38,7 @@ export class ResultsComponent implements OnInit {
     selectedDiscipline?: Discipline;
 
     isLoading: boolean = false;
+    isParticipationOpen: boolean = false;
 
     groups: ReadonlyArray<Group> = [];
     disciplines: ReadonlyArray<Discipline> = [];
@@ -51,11 +54,15 @@ export class ResultsComponent implements OnInit {
 
         @Inject(DISCIPLINE_PROVIDER)
         private readonly disciplineProvider: DisciplineProvider,
+
+        @Inject(PARTICIPATION_PROVIDER)
+        private readonly participationProvider: ParticipationProvider,
     ) {}
 
     ngOnInit(): void {
         this.groupProvider.getGroupList({competitive: true}).then(it => this.groups = it);
         this.disciplineProvider.getAll().then(it => this.disciplines = it);
+        this.participationProvider.getStatus().then(it => this.isParticipationOpen = it === ParticipationStatus.OPEN);
     }
 
     onGroupChange(group: Group): void {
