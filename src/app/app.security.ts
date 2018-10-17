@@ -10,7 +10,7 @@ import {map, tap} from 'rxjs/operators';
  *
  * - FULL means the whole route has to be exactly the same
  * - START means the route only has to start the same, but can differ towards the end.
- *   This is usefull to match path parameter routes.
+ *   This is useful to match path parameter routes.
  */
 enum RouteMatch {
     FULL = 'FULL',
@@ -38,6 +38,10 @@ const routeSecurity: Array<RouteSecurity> = [{
     }, {
         route: '/pages/management',
         match: RouteMatch.FULL,
+        authority: 'ROLE_ADMIN',
+    }, {
+        route: '/pages/settings',
+        match: RouteMatch.START,
         authority: 'ROLE_ADMIN',
     },
 ];

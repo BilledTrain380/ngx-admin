@@ -86,7 +86,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
         children: [
             {
                 title: 'Users',
-                link: '/pages/forms/inputs',
+                link: '/pages/settings/users',
             },
         ],
     },
