@@ -108,6 +108,42 @@ export const LANG_DE = {
         },
     },
 
+    settings: {
+        users: {
+            title: {
+                default: 'Benutzerliste',
+            },
+            label: {
+                username: 'Benutzername',
+                enabled: 'Aktiviert',
+                password: 'Passwort',
+            },
+            action: {
+                create: 'Benutzer erstellen',
+                changePassword: 'Password ändern',
+            },
+            alert: {
+                confirmDelete: 'Möchten Sie den Benutzer "{{ username }}" wircklich löschen.',
+            },
+            text: {
+                passwordRequirements: '<ul>\n' +
+                    '                    <li>Muss zwischen 8 und 64 Zeichen lang sein</li>\n' +
+                    '                    <li>Muss mindestens eine Zahl enthalten</li>\n' +
+                    '                    <li>Muss mindestens einen Kleinbuchstaben enthalten</li>\n' +
+                    '                    <li>Muss mindestens einen Grossbuchstaben enthalten</li>\n' +
+                    '                    <li>Muss mindestens ein Sonderzeichen enthalten</li>\n' +
+                    '                    <li>Darf keine Leerzeichen enthalten</li>\n' +
+                    '                </ul>',
+                noUsers: 'Es sind keine Benutzer vorhanden',
+            },
+            form: {
+                validation: {
+                    usernameIsTaken: 'Der Benutzername wird bereits genutzt',
+                },
+            },
+        },
+    },
+
     alert: {
         great: 'Super!',
         info: 'Information!',
@@ -125,11 +161,13 @@ export const LANG_DE = {
         results: 'Resultate',
         ranking: 'Ranglisten',
         management: 'Verwaltung',
+        users: 'Benutzer',
     },
 
     form: {
         validation: {
             required: 'Dieses Feld wird benötigt',
+            pattern: 'Das Feld entspricht nicht den Anforderungen',
         },
         action: {
             abort: 'Abbrechen',
@@ -140,6 +178,8 @@ export const LANG_DE = {
 
     label: {
         notDefined: 'N/A',
+        actions: 'Aktionen',
+        password: 'Password',
     },
 
     module: {

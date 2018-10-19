@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {SettingsRoutingModule} from './settings-routing.module';
-import {UsersModule} from './users/users.module';
+import {UserPageModule} from './users/user-page.module';
 
 @NgModule({
     imports: [
         CommonModule,
-        UsersModule,
+        UserPageModule,
         SettingsRoutingModule,
     ],
     declarations: [],
