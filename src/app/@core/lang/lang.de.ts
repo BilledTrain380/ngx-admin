@@ -161,6 +161,7 @@ export const LANG_DE = {
         results: 'Resultate',
         ranking: 'Ranglisten',
         management: 'Verwaltung',
+        settings: 'Einstellungen',
         users: 'Benutzer',
     },
 

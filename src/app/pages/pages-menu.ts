@@ -1,5 +1,6 @@
 import {NbMenuItem} from '@nebular/theme';
 import {NbAccessChecker} from '@nebular/security';
+import {Observable} from 'rxjs';
 
 /*
  * In order to ACL the menu items, we add a object
@@ -16,7 +17,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/pages/group/overview',
         home: true,
         data: {
-            canShow: (it: NbAccessChecker) => it.isGranted('view', 'groups'),
+            canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'groups'),
             translation: 'page.groups',
         },
     },
@@ -25,7 +26,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
         icon: 'nb-list',
         link: '/pages/classes',
         data: {
-            canShow: (it: NbAccessChecker) => it.isGranted('view', 'participant-list'),
+            canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'participant-list'),
             translation: 'page.participantList',
         },
     },
@@ -46,7 +47,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 title: 'Event Sheets',
                 link: '/pages/ui-features/grid',
                 data: {
-                    canShow: (it: NbAccessChecker) => it.isGranted('view', 'event-sheet'),
+                    canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'event-sheet'),
                     translation: 'page.eventSheets',
                 },
             },
@@ -54,7 +55,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 title: 'Results',
                 link: '/pages/athletics/results',
                 data: {
-                    canShow: (it: NbAccessChecker) => it.isGranted('view', 'results'),
+                    canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'results'),
                     translation: 'page.results',
                 },
             },
@@ -62,7 +63,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 title: 'Ranking',
                 link: '/pages/ui-features/modals',
                 data: {
-                    canShow: (it: NbAccessChecker) => it.isGranted('view', 'ranking'),
+                    canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'ranking'),
                     translation: 'page.ranking',
                 },
             },
@@ -73,7 +74,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
         icon: 'fa fa-building',
         link: '/pages/management',
         data: {
-            canShow: (it: NbAccessChecker) => it.isGranted('view', 'management'),
+            canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'management'),
             translation: 'page.management',
         },
     },
@@ -81,12 +82,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Settings',
         icon: 'nb-gear',
         data: {
-            canShow: (it: NbAccessChecker) => it.isGranted('view', 'settings'),
+            canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'settings'),
+            translation: 'page.settings',
         },
         children: [
             {
                 title: 'Users',
                 link: '/pages/settings/users',
+                data: {
+                    translation: 'page.users',
+                },
             },
         ],
     },

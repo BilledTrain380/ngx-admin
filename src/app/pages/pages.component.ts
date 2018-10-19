@@ -6,6 +6,7 @@ import {NbAuthService} from '@nebular/auth';
 import {takeWhile} from 'rxjs/operators';
 import {NbMenuItem} from '@nebular/theme';
 import {TranslateService} from '@ngx-translate/core';
+import {Observable} from 'rxjs';
 
 @Component({
     selector: 'ngx-pages',
@@ -33,12 +34,18 @@ export class PagesComponent implements OnInit, OnDestroy {
             .pipe(takeWhile(() => this.alive))
             .forEach(it => {
 
-                this.menu.forEach(item => {
-                    const canShow: boolean = item.data === undefined
-                        || item.data.canShow === undefined
-                        || item.data.canShow(accessChecker);
-                    item.hidden = !canShow;
-                });
+                this.menu
+                    .filter(item => item.data !== undefined && item.data.canShow !== undefined)
+                    .forEach(item => {
+
+                        const canShowObservable: Observable<boolean> = item.data.canShow(accessChecker);
+
+                        canShowObservable
+                            .pipe(takeWhile(() => this.alive))
+                            .forEach(canShow => {
+                                item.hidden = !canShow;
+                            });
+                    });
             });
     }
 
