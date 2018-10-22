@@ -9,9 +9,9 @@
 
                 <span>{{ 'group.title.overview' | translate }}</span>
 
-                <div *nbIsGranted="['create', 'groups']" class="float-right btn-group btn-divided-group btn-outline-divided-group">
+                <div *nbIsGranted="['create', 'groups']" class="float-right btn-group btn-divided-group">
 
-                    <button type="button" class="btn btn-sm btn-outline-primary" (click)="showImportModal()">
+                    <button type="button" class="btn btn-sm btn-primary active" (click)="showImportModal()">
                         <i class="fa fa-upload"></i>
                         {{ 'group.action.import' | translate }}
                     </button>
