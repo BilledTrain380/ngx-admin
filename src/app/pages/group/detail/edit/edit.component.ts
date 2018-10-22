@@ -30,7 +30,7 @@ export class EditComponent {
 
     constructor(
         private readonly activeModal: NgbActiveModal,
-        private readonly formBuilder: FormBuilder,
+        formBuilder: FormBuilder,
 
         @Inject(PARTICIPANT_PROVIDER)
         private readonly participantProvider: ParticipantProvider,

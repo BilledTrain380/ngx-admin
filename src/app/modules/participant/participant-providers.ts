@@ -4,7 +4,6 @@ import {Sport} from '../sport/sport-models';
 import {Group} from '../group/group-models';
 import {participantJsonSchema, participantListJsonSchema} from './json-schemas';
 import {REST_SERVICE, RestService} from '../http/http-service';
-import {AuthenticationError} from '../http/http-errors';
 
 export const PARTICIPANT_PROVIDER: InjectionToken<ParticipantProvider> =
     new InjectionToken('token for participant provider');

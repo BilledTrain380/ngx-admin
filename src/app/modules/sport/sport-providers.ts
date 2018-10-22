@@ -2,7 +2,6 @@ import {Sport} from './sport-models';
 import {Inject, Injectable, InjectionToken} from '@angular/core';
 import {REST_SERVICE, RestService} from '../http/http-service';
 import {sportListJsonSchema} from './json-schemas';
-import {AuthenticationError} from '../http/http-errors';
 
 export const SPORT_PROVIDER: InjectionToken<SportProvider> = new InjectionToken('token for sport provider');
 

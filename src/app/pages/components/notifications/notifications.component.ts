@@ -16,7 +16,7 @@ export class NotificationsComponent {
   position = 'toast-top-right';
   animationType = 'fade';
   title = 'HI there!';
-  content = `I'm cool toaster!`;
+  content = "I'm cool toaster!";
   timeout = 5000;
   toastsLimit = 5;
   type = 'default';

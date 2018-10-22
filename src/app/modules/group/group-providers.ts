@@ -1,7 +1,6 @@
 import {Inject, Injectable, InjectionToken} from '@angular/core';
 import {Group} from './group-models';
 import {groupJsonSchema, groupsJsonSchema} from './json-schemas';
-import {AuthenticationError, BadRequestError, ResourceNotFoundError} from '../http/http-errors';
 import {HTTP_SERVICE, HttpService, REST_SERVICE, RestService} from '../http/http-service';
 
 export const GROUP_PROVIDER: InjectionToken<GroupProvider> = new InjectionToken('Token for a group provider');

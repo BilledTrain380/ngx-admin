@@ -1,8 +1,7 @@
 import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {Participant} from '../participant/participant-models';
 import {SearchSettings} from './search-settings';
 import {FormControl} from '@angular/forms';
-import {debounceTime, distinctUntilChanged, filter, tap} from 'rxjs/operators';
+import {debounceTime, distinctUntilChanged, filter} from 'rxjs/operators';
 
 @Component({
     selector: 'ngx-smart-search',

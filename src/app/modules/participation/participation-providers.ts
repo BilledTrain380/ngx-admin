@@ -1,7 +1,6 @@
 import {Participation, ParticipationStatus} from './participation-models';
 import {Inject, Injectable, InjectionToken} from '@angular/core';
 import {REST_SERVICE, RestService} from '../http/http-service';
-import {AuthenticationError} from '../http/http-errors';
 import {participationStatusJsonSchema} from './json-schemas';
 
 export const PARTICIPATION_PROVIDER: InjectionToken<ParticipationProvider> =

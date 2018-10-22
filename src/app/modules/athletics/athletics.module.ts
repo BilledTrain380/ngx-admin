@@ -4,7 +4,7 @@ import {
     COMPETITOR_PROVIDER,
     DISCIPLINE_PROVIDER,
     HttpCompetitorProvider,
-    HttpDisciplineProvider
+    HttpDisciplineProvider,
 } from './athletics-providers';
 
 @NgModule({
