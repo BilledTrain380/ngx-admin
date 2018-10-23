@@ -35,7 +35,7 @@
                             <b>{{ 'group.title.default' | translate }}:</b> {{ group.name }}
                         </a>
 
-                        <span *ngIf="!accessChecker.isGranted('view', 'group') | async" class="text-heading">
+                        <span *ngIf="!(accessChecker.isGranted('view', 'group') | async)" class="text-heading">
                             <b>{{ 'group.title.default' | translate }}:</b> {{ group.name }}
                         </span>
 

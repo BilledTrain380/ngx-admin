@@ -69,7 +69,7 @@ import {JSONTranslateLoader} from './@core/lang/translate.service';
         NbSecurityModule.forRoot({
             accessControl: {
                 ROLE_USER: {
-                    view: ['groups', 'results'],
+                    view: ['groups', 'results', 'user'],
                     create: ['results'],
                 },
                 ROLE_ADMIN: {
