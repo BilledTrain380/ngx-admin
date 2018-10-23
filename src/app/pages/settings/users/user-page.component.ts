@@ -5,7 +5,7 @@ import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
 import {ConfirmationComponent} from '../../../modules/confirmation/confirmation.component';
 import {CreateComponent} from './create/create.component';
-import {ChangePasswordComponent} from './change-password/change-password.component';
+import {ChangePasswordComponent} from '../../../modules/user/change-password/change-password.component';
 
 @Component({
     selector: 'ngx-users',

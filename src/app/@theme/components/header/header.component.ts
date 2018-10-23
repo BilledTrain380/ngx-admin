@@ -1,49 +1,87 @@
-import { Component, Input, OnInit } from '@angular/core';
-
-import { NbMenuService, NbSidebarService } from '@nebular/theme';
-import { UserService } from '../../../@core/data/users.service';
-import { AnalyticsService } from '../../../@core/utils/analytics.service';
+import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
+import {NbMenuService, NbSidebarService} from '@nebular/theme';
+import {AnalyticsService} from '../../../@core/utils/analytics.service';
+import {filter, takeWhile} from 'rxjs/operators';
+import {User} from '../../../modules/user/user-models';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {ChangePasswordComponent} from '../../../modules/user/change-password/change-password.component';
+import {USER_SUPPLIER, UserSupplier} from '../../../modules/user/user-providers';
 
 @Component({
-  selector: 'ngx-header',
-  styleUrls: ['./header.component.scss'],
-  templateUrl: './header.component.html',
+    selector: 'ngx-header',
+    styleUrls: ['./header.component.scss'],
+    templateUrl: './header.component.html',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
+    private alive: boolean = true;
 
-  @Input() position = 'normal';
+    @Input() position = 'normal';
 
-  user: any;
+    user: User;
 
-  userMenu = [{ title: 'Profile' }, { title: 'Log out' }];
+    userMenu = [
+        {
+            title: 'Change Password',
+            data: {
+                click: function () {
+
+                    const modal: NgbModalRef = this.modalService.open(ChangePasswordComponent, {
+                        size: 'lg', container: 'nb-layout',
+                    });
+
+                    modal.componentInstance.user = this.user;
+                },
+            },
+        },
+        {title: 'Log out'}, // TODO: Log out user
+    ];
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
-              private userService: UserService,
-              private analyticsService: AnalyticsService) {
-  }
 
-  ngOnInit() {
-    this.userService.getUsers()
-      .subscribe((users: any) => this.user = users.nick);
-  }
+              @Inject(USER_SUPPLIER)
+              private readonly userSupplier: UserSupplier,
 
-  toggleSidebar(): boolean {
-    this.sidebarService.toggle(true, 'menu-sidebar');
-    return false;
-  }
+              private analyticsService: AnalyticsService,
+              private readonly modalService: NgbModal,
+  ) {}
 
-  toggleSettings(): boolean {
-    this.sidebarService.toggle(false, 'settings-sidebar');
-    return false;
-  }
+    ngOnInit() {
 
-  goToHome() {
-    this.menuService.navigateHome();
-  }
+        this.userSupplier.getActiveUser()
+            .pipe(takeWhile(() => this.alive))
+            .forEach(user => {
+                this.user = user;
+            });
 
-  startSearch() {
-    this.analyticsService.trackEvent('startSearch');
-  }
+        this.menuService.onItemClick()
+            .pipe(filter(({ tag }) => tag === 'user-context-menu'))
+            // .pipe(map(({item: { title }}) => title))
+            .subscribe(({ item }) => {
+                if (item.data && item.data.click) item.data.click.apply(this);
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.alive = false;
+    }
+
+    toggleSidebar(): boolean {
+        this.sidebarService.toggle(true, 'menu-sidebar');
+        return false;
+    }
+
+    toggleSettings(): boolean {
+        this.sidebarService.toggle(false, 'settings-sidebar');
+        return false;
+    }
+
+    goToHome() {
+        this.menuService.navigateHome();
+    }
+
+    startSearch() {
+        this.analyticsService.trackEvent('startSearch');
+    }
 }

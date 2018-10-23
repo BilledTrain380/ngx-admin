@@ -43,8 +43,9 @@ import {DEFAULT_THEME} from './styles/theme.default';
 import {COSMIC_THEME} from './styles/theme.cosmic';
 import {CORPORATE_THEME} from './styles/theme.corporate';
 import {PageTitleComponent} from './page-title/page-title.component';
+import {UserModule} from '../modules/user/user.module';
 
-const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule];
+const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule, UserModule];
 
 const NB_MODULES = [
     NbBadgeModule,

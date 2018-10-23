@@ -7,7 +7,6 @@ import {NbCardModule} from '@nebular/theme';
 import {UserModule} from '../../../modules/user/user.module';
 import {ConfirmationModule} from '../../../modules/confirmation/confirmation.module';
 import {CreateComponent} from './create/create.component';
-import {ChangePasswordComponent} from './change-password/change-password.component';
 
 @NgModule({
     imports: [
@@ -19,8 +18,8 @@ import {ChangePasswordComponent} from './change-password/change-password.compone
         ConfirmationModule,
     ],
     exports: [UserPageComponent],
-    declarations: [UserPageComponent, CreateComponent, ChangePasswordComponent],
-    entryComponents: [UserPageComponent, CreateComponent, ChangePasswordComponent],
+    declarations: [UserPageComponent, CreateComponent],
+    entryComponents: [UserPageComponent, CreateComponent],
 })
 export class UserPageModule {
 }

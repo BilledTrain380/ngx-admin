@@ -1,38 +1,36 @@
+import {Observable, of as observableOf} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {User} from '../../modules/user/user-models';
+import {map} from 'rxjs/operators';
+import {NbAuthOAuth2JWTToken, NbAuthService} from '@nebular/auth';
 
-import { of as observableOf,  Observable } from 'rxjs';
-import { Injectable } from '@angular/core';
-
-
-let counter = 0;
 
 @Injectable()
+/**
+ * @deprecated use UserSupplier instead
+ */
 export class UserService {
 
-  private users = {
-    nick: { name: 'Nick Jones', picture: 'assets/images/nick.png' },
-    eva: { name: 'Eva Moor', picture: 'assets/images/eva.png' },
-    jack: { name: 'Jack Williams', picture: 'assets/images/jack.png' },
-    lee: { name: 'Lee Wong', picture: 'assets/images/lee.png' },
-    alan: { name: 'Alan Thompson', picture: 'assets/images/alan.png' },
-    kate: { name: 'Kate Martinez', picture: 'assets/images/kate.png' },
-  };
+    constructor(
+        private readonly authService: NbAuthService,
+    ) {}
 
-  private userArray: any[];
+    getActiveUser(): Observable<User> {
 
-  constructor() {
-    // this.userArray = Object.values(this.users);
-  }
+        return this.authService.onTokenChange()
+            .pipe(map<NbAuthOAuth2JWTToken, User>(it => {
 
-  getUsers(): Observable<any> {
-    return observableOf(this.users);
-  }
+                const payload: any = it.getAccessTokenPayload();
 
-  getUserArray(): Observable<any[]> {
-    return observableOf(this.userArray);
-  }
+                return {
+                    id: 1, // TODO: get id from JWT
+                    username: payload.user_name,
+                    enabled: true, // can not be false, because the user would not be able to log in then
+                };
+            }));
+    }
 
-  getUser(): Observable<any> {
-    counter = (counter + 1) % this.userArray.length;
-    return observableOf(this.userArray[counter]);
-  }
+    getUsers(): Observable<any> {
+        return observableOf([]);
+    }
 }
