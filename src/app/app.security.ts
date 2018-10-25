@@ -2,7 +2,7 @@ import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, Router, RouterSta
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {NbRoleProvider} from '@nebular/security';
-import {NbAuthOAuth2JWTToken, NbAuthService} from '@nebular/auth';
+import {NbAuthOAuth2JWTToken, NbAuthService, NbAuthSimpleToken} from '@nebular/auth';
 import {map, tap} from 'rxjs/operators';
 
 /**
@@ -140,8 +140,14 @@ export class RoleProvider implements NbRoleProvider {
     getRole(): Observable<string | string[]> {
 
         return this.authService.onTokenChange()
-            .pipe(map((it: NbAuthOAuth2JWTToken) => {
-                return it.getAccessTokenPayload()['authorities'];
+            .pipe(map((it: NbAuthSimpleToken) => {
+                // console.log(it);
+
+                if (it instanceof NbAuthOAuth2JWTToken) {
+                    return it.getAccessTokenPayload()['authorities'];
+                }
+
+                return [];
             }));
     }
 }
