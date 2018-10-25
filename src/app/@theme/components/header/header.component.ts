@@ -6,6 +6,8 @@ import {User} from '../../../modules/user/user-models';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ChangePasswordComponent} from '../../../modules/user/change-password/change-password.component';
 import {USER_SUPPLIER, UserSupplier} from '../../../modules/user/user-providers';
+import {NbTokenService} from '@nebular/auth';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'ngx-header',
@@ -24,6 +26,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         {
             title: 'Change Password',
             data: {
+                // HeaderComponent will be bind to this
                 click: function () {
 
                     const modal: NgbModalRef = this.modalService.open(ChangePasswordComponent, {
@@ -34,18 +37,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 },
             },
         },
-        {title: 'Log out'}, // TODO: Log out user
+        {
+            title: 'Log out',
+            data: {
+                // HeaderComponent will be bind to this
+                click: function () {
+                    // Logout should be done through NbAuthService.logout(), but it does not seem to work.
+                    this.tokenService.clear();
+                    this.router.navigateByUrl('/auth/login');
+                },
+            },
+        },
     ];
 
-  constructor(private sidebarService: NbSidebarService,
-              private menuService: NbMenuService,
-
-              @Inject(USER_SUPPLIER)
-              private readonly userSupplier: UserSupplier,
-
-              private analyticsService: AnalyticsService,
-              private readonly modalService: NgbModal,
-  ) {}
+    constructor(
+        private readonly sidebarService: NbSidebarService,
+        private readonly menuService: NbMenuService,
+        private readonly tokenService: NbTokenService,
+        private readonly router: Router,
+        @Inject(USER_SUPPLIER) private readonly userSupplier: UserSupplier,
+        private readonly analyticsService: AnalyticsService,
+        private readonly modalService: NgbModal,
+    ) {
+    }
 
     ngOnInit() {
 
@@ -57,7 +71,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
         this.menuService.onItemClick()
             .pipe(filter(({ tag }) => tag === 'user-context-menu'))
-            // .pipe(map(({item: { title }}) => title))
             .subscribe(({ item }) => {
                 if (item.data && item.data.click) item.data.click.apply(this);
             });
