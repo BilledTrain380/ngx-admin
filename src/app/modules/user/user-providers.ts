@@ -4,7 +4,7 @@ import {REST_SERVICE, RestService} from '../http/http-service';
 import {userJsonSchema, userListJsonSchema} from './json-schema';
 import {Observable} from 'rxjs';
 import {NbAuthOAuth2JWTToken, NbAuthService} from '@nebular/auth';
-import {map} from 'rxjs/operators';
+import {filter, map} from 'rxjs/operators';
 
 export const USER_PROVIDER: InjectionToken<UserProvider> = new InjectionToken('Token for user provider');
 export const USER_SUPPLIER: InjectionToken<UserSupplier> = new InjectionToken('Token for user supplier');
@@ -114,12 +114,13 @@ export class JWTUserSupplier implements UserSupplier {
     getActiveUser(): Observable<User> {
 
         return this.authService.onTokenChange()
+            .pipe(filter(it => (it instanceof NbAuthOAuth2JWTToken)))
             .pipe(map<NbAuthOAuth2JWTToken, User>(it => {
 
                 const payload: any = it.getAccessTokenPayload();
 
                 return {
-                    id: 1, // TODO: get id from JWT
+                    id: payload.user_id,
                     username: payload.user_name,
                     enabled: true, // can not be false, because the user would not be able to log in then
                 };
