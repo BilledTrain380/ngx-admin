@@ -63,19 +63,19 @@ export class HttpUserProvider implements UserProvider {
             password,
         };
 
-        await this.rest.postRequest('api/users', JSON.stringify(body));
+        await this.rest.postRequest('api/rest/users', JSON.stringify(body));
     }
 
     async deleteUser(user: User): Promise<void> {
-        await this.rest.deleteRequest(`api/user/${user.id}`);
+        await this.rest.deleteRequest(`api/rest/user/${user.id}`);
     }
 
     async getUser(id: number): Promise<User> {
-        return await this.rest.getRequest<User>(`api/user/${id}`, userJsonSchema);
+        return await this.rest.getRequest<User>(`api/rest/user/${id}`, userJsonSchema);
     }
 
     async getUsers(): Promise<ReadonlyArray<User>> {
-        return await this.rest.getRequest<ReadonlyArray<User>>('api/users', userListJsonSchema);
+        return await this.rest.getRequest<ReadonlyArray<User>>('api/rest/users', userListJsonSchema);
     }
 
     async updateUser(user: User): Promise<void> {
@@ -85,7 +85,7 @@ export class HttpUserProvider implements UserProvider {
             enabled: user.enabled,
         };
 
-        await this.rest.patchRequest(`api/user/${user.id}`, JSON.stringify(body));
+        await this.rest.patchRequest(`api/rest/user/${user.id}`, JSON.stringify(body));
     }
 
     async updateUserPassword(user: User, password: string): Promise<void> {
@@ -94,7 +94,7 @@ export class HttpUserProvider implements UserProvider {
             password,
         };
 
-        await this.rest.putRequest(`api/user/${user.id}`, JSON.stringify(body));
+        await this.rest.putRequest(`api/rest/user/${user.id}`, JSON.stringify(body));
     }
 }
 

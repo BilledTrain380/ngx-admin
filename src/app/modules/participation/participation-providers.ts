@@ -59,7 +59,7 @@ export class HttpParticipationProvider implements ParticipationProvider {
     async getStatus(): Promise<ParticipationStatus> {
 
         const participation: Participation = await this.rest.getRequest<Participation>(
-            'api/participation',
+            'api/rest/participation',
             participationStatusJsonSchema,
         );
 
@@ -76,6 +76,6 @@ export class HttpParticipationProvider implements ParticipationProvider {
             status,
         };
 
-        return this.rest.patchRequest('api/participation', JSON.stringify(body));
+        return this.rest.patchRequest('api/rest/participation', JSON.stringify(body));
     }
 }

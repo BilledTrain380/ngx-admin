@@ -68,13 +68,13 @@ export class HttpGroupProvider implements GroupProvider {
         const params: string = (filter.competitive !== undefined ? `competitive=${filter.competitive}` : '') +
             (filter.pendingParticipation !== undefined ? `&pendingParticipation=${filter.pendingParticipation}` : '');
 
-        const url: string = 'api/groups' + (params === '' ? '' : `?${params}`);
+        const url: string = 'api/rest/groups' + (params === '' ? '' : `?${params}`);
 
         return this.rest.getRequest<Array<Group>>(url, groupsJsonSchema);
     }
 
     async getGroup(name: string): Promise<Group> {
-        return this.rest.getRequest<Group>(`api/group/${name}`, groupJsonSchema);
+        return this.rest.getRequest<Group>(`api/rest/group/${name}`, groupJsonSchema);
     }
 
     async import(file: File): Promise<void> {
@@ -82,6 +82,6 @@ export class HttpGroupProvider implements GroupProvider {
         const formData: FormData = new FormData();
         formData.append('group-input', file);
 
-        await this.http.postForm('api/import-group', formData);
+        await this.http.postForm('api/web/import-group', formData);
     }
 }

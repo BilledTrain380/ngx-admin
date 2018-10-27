@@ -106,20 +106,20 @@ export class HttpParticipantProvider implements ParticipantProvider {
     ) {}
 
     async getAll(): Promise<Array<Participant>> {
-        return this.rest.getRequest<Array<Participant>>('api/participants', participantListJsonSchema);
+        return this.rest.getRequest<Array<Participant>>('api/rest/participants', participantListJsonSchema);
     }
 
     getByGroup(group: Group): Promise<Array<Participant>> {
 
         return this.rest.getRequest<Array<Participant>>(
-            `api/participants?group=${group.name}`,
+            `api/rest/participants?group=${group.name}`,
             participantListJsonSchema);
     }
 
     getOne(id: number): Promise<Participant> {
 
         return this.rest.getRequest<Participant>(
-            `api/participant/${id}`,
+            `api/rest/participant/${id}`,
             participantJsonSchema);
     }
 
@@ -128,7 +128,7 @@ export class HttpParticipantProvider implements ParticipantProvider {
         const body: ParticipantRelations = {sport};
 
         return this.rest.putRequest<void>(
-            `api/participant/${participant.id}`,
+            `api/rest/participant/${participant.id}`,
             JSON.stringify(body));
     }
 
@@ -144,7 +144,7 @@ export class HttpParticipantProvider implements ParticipantProvider {
         };
 
         return this.rest.patchRequest<void>(
-            `api/participant/${participant.id}`,
+            `api/rest/participant/${participant.id}`,
             JSON.stringify(body));
     }
 
@@ -160,11 +160,11 @@ export class HttpParticipantProvider implements ParticipantProvider {
             sport: participant.sport,
         };
 
-        await this.rest.postRequest(`api/participants?group=${participant.group.name}`, JSON.stringify(body));
+        await this.rest.postRequest(`api/rest/participants?group=${participant.group.name}`, JSON.stringify(body));
     }
 
     async delete(participant: Participant): Promise<void> {
-        await this.rest.deleteRequest(`api/participant/${participant.id}`);
+        await this.rest.deleteRequest(`api/rest/participant/${participant.id}`);
     }
 }
 

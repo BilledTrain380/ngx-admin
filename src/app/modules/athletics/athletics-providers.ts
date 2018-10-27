@@ -57,13 +57,13 @@ export class HttpCompetitorProvider implements CompetitorProvider {
             (filter.gender !== undefined ? `&gender=${filter.gender}` : '') +
             (filter.absent !== undefined ? `&absent=${filter.absent}` : '');
 
-        const url: string = 'api/competitors' + ((params === '') ? '' : `?${params}`);
+        const url: string = 'api/rest/competitors' + ((params === '') ? '' : `?${params}`);
         return this.rest.getRequest(url, competitorsJsonSchema);
     }
 
     saveResults(competitor: Competitor, results: ReadonlyArray<TemporaryResult>): Promise<ReadonlyArray<Result>> {
 
-        const url: string = `api/competitor/${competitor.id}`;
+        const url: string = `api/rest/competitor/${competitor.id}`;
 
         const body: object = {
             results: results,
@@ -105,6 +105,6 @@ export class HttpDisciplineProvider implements DisciplineProvider {
     ) {}
 
     getAll(): Promise<ReadonlyArray<Discipline>> {
-        return this.rest.getRequest('api/disciplines', disciplineListJsonSchema);
+        return this.rest.getRequest('api/rest/disciplines', disciplineListJsonSchema);
     }
 }
