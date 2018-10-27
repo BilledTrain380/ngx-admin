@@ -53,7 +53,22 @@ import {JSONTranslateLoader} from './@core/lang/translate.service';
                     authorize: {
                         endpoint: `${environment.host}/oauth/authorize`,
                         responseType: NbOAuth2ResponseType.TOKEN,
-                        scope: 'user group_read group_write sport_read discipline_read competitor_read competitor_write participant_read participant_write participation', // tslint:disable-line: max-line-length
+                        scope: [
+                            'user',
+                            'group_read',
+                            'group_write',
+                            'sport_read',
+                            'discipline_read',
+                            'competitor_read',
+                            'competitor_write',
+                            'participant_read',
+                            'participant_write',
+                            'participation',
+                            'files',
+                            'ranking',
+                            'event_sheets',
+                            'participant_list',
+                        ].join(' '),
                         redirectUri: `${window.location.origin}/auth/callback`,
                     },
                     redirect: {
