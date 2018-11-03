@@ -67,6 +67,16 @@ export const LANG_DE = {
         },
     },
 
+    eventPage: {
+        title: {
+            participantList: 'Teilnehmerliste',
+            eventSheets: 'Wettkampfblätter',
+        },
+        action: {
+            export: 'Export',
+        },
+    },
+
     participant: {
         label: {
             prename: 'Vorname',
@@ -155,9 +165,8 @@ export const LANG_DE = {
     page: {
         groups: 'Gruppen',
         group: 'Gruppe {{ name }}',
-        participantList: 'Teilnehmerlisten',
+        event: 'Veranstaltung',
         athletics: 'Leichtathletik',
-        eventSheets: 'Wettkampfblätter',
         results: 'Resultate',
         ranking: 'Ranglisten',
         management: 'Verwaltung',

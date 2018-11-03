@@ -43,6 +43,10 @@ const routeSecurity: Array<RouteSecurity> = [{
         route: '/pages/settings',
         match: RouteMatch.START,
         authority: 'ROLE_ADMIN',
+    }, {
+        route: '/pages/event',
+        match: RouteMatch.FULL,
+        authority: 'ROLE_ADMIN',
     },
 ];
 

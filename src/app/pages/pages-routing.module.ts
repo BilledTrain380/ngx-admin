@@ -7,6 +7,7 @@ import {GroupOverviewComponent} from './group/overview/group-overview.component'
 import {GroupDetailComponent} from './group/detail/group-detail.component';
 import {ManagementComponent} from './management/management.component';
 import {AuthGuard, RoleGuard} from '../app.security';
+import {EventPageComponent} from './event/event-page/event-page.component';
 
 const routes: Routes = [{
     path: '',
@@ -28,6 +29,9 @@ const routes: Routes = [{
     }, {
         path: 'settings',
         loadChildren: './settings/settings.module#SettingsModule',
+    }, {
+        path: 'event',
+        component: EventPageComponent,
     }, {
         path: 'miscellaneous',
         loadChildren: './miscellaneous/miscellaneous.module#MiscellaneousModule',

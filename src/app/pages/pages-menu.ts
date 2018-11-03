@@ -22,12 +22,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
         },
     },
     {
-        title: 'Paritcipantlist',
-        icon: 'nb-list',
-        link: '/pages/classes',
+        title: 'Event',
+        icon: 'fa fa-calendar',
+        link: '/pages/event',
         data: {
-            canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'participant-list'),
-            translation: 'page.participantList',
+            canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'event'),
+            translation: 'page.event',
         },
     },
     {
@@ -38,19 +38,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
             translation: 'page.athletics',
         },
         children: [
-            // Will not be available until report generation is refactored.
-            // {
-            //     title: 'Startliste',
-            //     link: '/pages/ui-features/buttons',
-            // },
-            {
-                title: 'Event Sheets',
-                link: '/pages/ui-features/grid',
-                data: {
-                    canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'event-sheet'),
-                    translation: 'page.eventSheets',
-                },
-            },
             {
                 title: 'Results',
                 link: '/pages/athletics/results',
