@@ -44,6 +44,7 @@ import {COSMIC_THEME} from './styles/theme.cosmic';
 import {CORPORATE_THEME} from './styles/theme.corporate';
 import {PageTitleComponent} from './page-title/page-title.component';
 import {UserModule} from '../modules/user/user.module';
+import { CardActionsComponent } from './components/card-actions/card-actions.component';
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule, UserModule];
 
@@ -80,6 +81,7 @@ const COMPONENTS = [
     ThreeColumnsLayoutComponent,
     TwoColumnsLayoutComponent,
     PageTitleComponent,
+    CardActionsComponent,
 ];
 
 const ENTRY_COMPONENTS = [
