@@ -7,7 +7,7 @@ import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ChangePasswordComponent} from '../../../modules/user/change-password/change-password.component';
 import {USER_SUPPLIER, UserSupplier} from '../../../modules/user/user-providers';
 import {NbTokenService} from '@nebular/auth';
-import {Router} from '@angular/router';
+import {environment} from '../../../../environments/environment';
 
 @Component({
     selector: 'ngx-header',
@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     userMenu = [
         {
+            // TODO: use translate service
             title: 'Change Password',
             data: {
                 // HeaderComponent will be bind to this
@@ -44,7 +45,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 click: function () {
                     // Logout should be done through NbAuthService.logout(), but it does not seem to work.
                     this.tokenService.clear();
-                    this.router.navigateByUrl('/auth/login');
+                    window.open(`${environment.host}/login?logout`, '_self');
                 },
             },
         },
@@ -54,7 +55,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
         private readonly sidebarService: NbSidebarService,
         private readonly menuService: NbMenuService,
         private readonly tokenService: NbTokenService,
-        private readonly router: Router,
         @Inject(USER_SUPPLIER) private readonly userSupplier: UserSupplier,
         private readonly analyticsService: AnalyticsService,
         private readonly modalService: NgbModal,
