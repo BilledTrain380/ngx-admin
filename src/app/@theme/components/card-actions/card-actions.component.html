@@ -1,0 +1,9 @@
+<div [ngClass]="{'float-right': currentDirection === 'ltr', 'float-left': currentDirection === 'rtl'}" class="btn-group btn-divided-group">
+
+    <!--<button *ngFor="let action of actions" type="button" [ngClass]="{'active': action.primary}" class="btn btn-sm btn-primary" (click)="action.onClick()">-->
+        <!--{{ action.title }}-->
+    <!--</button>-->
+
+    <ng-content></ng-content>
+
+</div>
