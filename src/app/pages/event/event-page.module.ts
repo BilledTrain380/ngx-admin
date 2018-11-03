@@ -9,6 +9,7 @@ import {AthleticsModule} from '../../modules/athletics/athletics.module';
 import {GroupModule} from '../../modules/group/group.module';
 import {TreeCheckboxModule} from '../../modules/tree-checkbox/tree-checkbox.module';
 import {HttpModule} from '../../modules/http/http.module';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
     imports: [
@@ -19,6 +20,7 @@ import {HttpModule} from '../../modules/http/http.module';
         AthleticsModule,
         GroupModule,
         HttpModule,
+        RouterModule,
         TranslateModule,
         TreeCheckboxModule,
     ],

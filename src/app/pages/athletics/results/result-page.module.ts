@@ -9,6 +9,7 @@ import {ResultsComponent} from './results.component';
 import {FormsModule} from '@angular/forms';
 import {ThemeModule} from '../../../@theme/theme.module';
 import {TranslateModule} from '@ngx-translate/core';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
     imports: [
@@ -18,6 +19,7 @@ import {TranslateModule} from '@ngx-translate/core';
         NbSpinnerModule,
         Ng2SmartTableModule,
         NbCheckboxModule,
+        RouterModule,
         FormsModule,
         SmartSelectModule,
         AthleticsModule,

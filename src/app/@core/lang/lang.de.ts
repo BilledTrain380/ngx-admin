@@ -26,6 +26,8 @@ export const LANG_DE = {
         text: {
             toCloseParticipation: 'Um die Leichtathletik starten zu können, müssen Sie die Teinahme abschliessen.<br>Dadurch werden die Startnummern generiert und Sie können die Wettkampfblätter herunterladen.',
             toResetParticipation: 'Um die Datenerfassung von neuem zu beginnen müssen Sie die Teilnahme zurücksetzens.<br>Dadurch werden alle Teilnehmer Daten gelöscht und Sie können die Teilnehmer von Anfang neu erfassen.',
+            toManagement: 'Um die Teilnahme abzuschliessen klicken Sie',
+            toManagementHere: 'hier',
         },
         label: {
             sports: 'Sportart',
@@ -74,6 +76,9 @@ export const LANG_DE = {
         },
         action: {
             export: 'Export',
+        },
+        label: {
+            all: 'alle',
         },
     },
 

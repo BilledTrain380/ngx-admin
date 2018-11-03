@@ -1,15 +1,15 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {DISCIPLINE_PROVIDER, DisciplineProvider} from '../../../modules/athletics/athletics-providers';
-import {Discipline} from '../../../modules/athletics/athletics-models';
 import {GROUP_PROVIDER, GroupProvider} from '../../../modules/group/group-providers';
-import {Group} from '../../../modules/group/group-models';
 import {Gender} from '../../../modules/participant/participant-models';
 import {TreeCheckbox} from '../../../modules/tree-checkbox/tree-checkbox-models';
 import {TranslateService} from '@ngx-translate/core';
-import {EventSheetData} from '../../../modules/participation/participation-models';
+import {EventSheetData, ParticipationStatus} from '../../../modules/participation/participation-models';
 import {
     PARTICIPATION_FILE_PROVIDER,
+    PARTICIPATION_PROVIDER,
     ParticipationFileProvider,
+    ParticipationProvider,
 } from '../../../modules/participation/participation-providers';
 import {HTTP_SERVICE, HttpService} from '../../../modules/http/http-service';
 import {FileQualifier} from '../../../modules/http/http-models';
@@ -29,26 +29,32 @@ export class EventPageComponent implements OnInit {
     isEventSheetLoading: boolean = false;
     isParticipantListLoading: boolean = false;
 
+    isParticipationOpen: boolean = false;
+
     constructor(
         @Inject(DISCIPLINE_PROVIDER) private readonly disciplineProvider: DisciplineProvider,
         @Inject(GROUP_PROVIDER) private readonly groupProvider: GroupProvider,
         @Inject(SPORT_PROVIDER) private readonly sportProvider: SportProvider,
         @Inject(PARTICIPATION_FILE_PROVIDER) private readonly fileProvider: ParticipationFileProvider,
+        @Inject(PARTICIPATION_PROVIDER) private readonly participationProvider: ParticipationProvider,
         @Inject(HTTP_SERVICE) private readonly http: HttpService,
         private readonly translateService: TranslateService,
     ) {}
 
     async ngOnInit() {
 
+        this.isParticipationOpen = (await this.participationProvider.getStatus()) === ParticipationStatus.OPEN;
+
         const sports: ReadonlyArray<TreeCheckbox> = (await this.sportProvider.getAll())
             .filter(it => it.name !== 'Leichtathletik') // TODO: Use correct sport name for athletic
             .map(it => new TreeCheckbox(it.name, [], 'col-lg-12', it));
 
-        this.participantListTree = new TreeCheckbox('alle', sports);
-        this.participantListTree.toggleCollapse();
-
         const maleTranslate: string = await this.translateService.get(Gender.MALE).toPromise();
         const femaleTranslate: string = await this.translateService.get(Gender.FEMALE).toPromise();
+        const allTranslate: string = await this.translateService.get('eventPage.label.all').toPromise();
+
+        this.participantListTree = new TreeCheckbox(allTranslate, sports);
+        this.participantListTree.toggleCollapse();
 
         const disciplineList = await this.disciplineProvider.getAll();
         const groupList = await this.groupProvider.getGroupList({ competitive: true });
@@ -80,8 +86,7 @@ export class EventPageComponent implements OnInit {
             return new TreeCheckbox(discipline.name, groups, 'col-lg-4');
         });
 
-        // TODO: translate alle
-        this.eventSheetsTree = new TreeCheckbox('alle', disciplines, 'col-lg-12', undefined, false, false);
+        this.eventSheetsTree = new TreeCheckbox(allTranslate, disciplines, 'col-lg-12', undefined, false, false);
     }
 
     async exportParticipantList(): Promise<void> {
