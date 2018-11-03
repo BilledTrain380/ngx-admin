@@ -1,10 +1,16 @@
-import {Participation, ParticipationStatus} from './participation-models';
+import {EventSheetData, Participation, ParticipationStatus} from './participation-models';
 import {Inject, Injectable, InjectionToken} from '@angular/core';
 import {REST_SERVICE, RestService} from '../http/http-service';
 import {participationStatusJsonSchema} from './json-schemas';
+import {Sport} from '../sport/sport-models';
+import {FileQualifier} from '../http/http-models';
+import {fileQualifierJsonSchema} from '../http/json-schema';
 
 export const PARTICIPATION_PROVIDER: InjectionToken<ParticipationProvider> =
-    new InjectionToken('token for participation');
+    new InjectionToken('token for participation provider');
+
+export const PARTICIPATION_FILE_PROVIDER: InjectionToken<ParticipationFileProvider> =
+    new InjectionToken('token for participation file provider');
 
 /**
  * Describes a provider for the participation.
@@ -36,6 +42,20 @@ export interface ParticipationProvider {
      * @throws {Error} If the response is not ok.
      */
     reset(): Promise<void>;
+}
+
+/**
+ * Describes a provider to create various files
+ * regarding the participation.
+ *
+ * @author Nicolas Märchy <billedtrain380@gmail.com>
+ * @since 1.0.0
+ */
+export interface ParticipationFileProvider {
+
+    createParticipantList(sports: ReadonlyArray<Sport>): Promise<FileQualifier>;
+
+    createEventSheets(data: ReadonlyArray<EventSheetData>): Promise<FileQualifier>;
 }
 
 /**
@@ -77,5 +97,42 @@ export class HttpParticipationProvider implements ParticipationProvider {
         };
 
         return this.rest.patchRequest('api/rest/participation', JSON.stringify(body));
+    }
+}
+
+/**
+ * {@link ParticipationFileProvider} implementation over http connection.
+ *
+ * @author Nicolas Märchy <billedtrain380@gmail.com>
+ * @since 1.0.0
+ */
+@Injectable()
+export class HttpParticipationFileProvider implements ParticipationFileProvider {
+
+    constructor(
+        @Inject(REST_SERVICE)
+        private readonly rest: RestService,
+    ) {}
+
+    async createEventSheets(data: ReadonlyArray<EventSheetData>): Promise<FileQualifier> {
+
+        const body = data.map(it => ({
+            discipline: it.discipline.name,
+            group: it.group.name,
+            gender: it.gender,
+        }));
+
+        return await this.rest.postRequest<FileQualifier>(
+            'api/web/event-sheets',
+            JSON.stringify(body),
+            fileQualifierJsonSchema);
+    }
+
+    async createParticipantList(sports: ReadonlyArray<Sport>): Promise<FileQualifier> {
+
+        return await this.rest.postRequest<FileQualifier>(
+            'api/web/participant-list',
+            JSON.stringify(sports),
+            fileQualifierJsonSchema);
     }
 }
