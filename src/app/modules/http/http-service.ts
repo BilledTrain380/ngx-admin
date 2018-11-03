@@ -6,6 +6,7 @@ import {AuthenticationError, BadRequestError, RequestError, ResourceNotFoundErro
 import {NoConnectionError} from '../../app.errors';
 import {NbAuthService, NbAuthToken} from '@nebular/auth';
 import {Router} from '@angular/router';
+import {FileQualifier} from './http-models';
 
 export type RequestBody = Blob | DataSource | string;
 
@@ -129,6 +130,8 @@ export interface HttpService {
      * @throws {RequestError} if the response is not ok
      */
     postForm(url: string, formData: FormData, headers?: Headers): Promise<Response>;
+
+    getFile(qualifier: FileQualifier, headers?: Headers): Promise<Blob>;
 }
 
 /**
@@ -169,7 +172,7 @@ export class AuthRestService implements RestService {
 
         const token: NbAuthToken = await this.authService.getToken().toPromise();
 
-        const response: Response = await run(fetch, `${environment.host}/${url}`, {
+        const response: Response = await run(fetch, encodeURI(`${environment.host}/${url}`), {
             method,
             mode: 'cors',
             body: body as any, // because typescript sucks and can not recognize the type
@@ -209,16 +212,33 @@ export class AuthHttpService implements HttpService {
 
         headers.append('Authorization', `Bearer ${token.getValue()}`);
 
-        const response: Response = await run(fetch, `${environment.host}/${url}`, {
+        const response: Response = await run(fetch, encodeURI(`${environment.host}/${url}`), {
             method: 'POST',
             mode: 'cors',
-            headers: headers,
+            headers,
             body: formData,
         });
 
         await handleResponse(response);
 
         return response;
+    }
+
+    async getFile(qualifer: FileQualifier, headers: Headers = new Headers()): Promise<Blob> {
+
+        const token: NbAuthToken = await this.authService.getToken().toPromise();
+
+        headers.append('Authorization', `Bearer ${token.getValue()}`);
+
+        const response: Response = await run(fetch, encodeURI(`${environment.host}/api/web/file${qualifer.value}`), {
+            method: 'GET',
+            mode: 'cors',
+            headers,
+        });
+
+        await handleResponse(response);
+
+        return response.blob();
     }
 }
 
@@ -293,6 +313,16 @@ export class PSARestService implements RestService, HttpService {
         try {
             await this.doFilter(url);
             return await this.http.postForm(url, formData, headers);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async getFile(qualifier: FileQualifier, headers: Headers = new Headers()): Promise<Blob> {
+
+        try {
+            await this.doFilter(qualifier.value);
+            return await this.http.getFile(qualifier, headers);
         } catch (e) {
             this.handleError(e);
         }
