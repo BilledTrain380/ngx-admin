@@ -4,8 +4,9 @@
         <div>
 
             <span *ngIf="root.children.length > 0" class="mr-1 ml-1">
-                <i *ngIf="root.collapsed" class="fa fa-plus-circle" (click)="root.toggleCollapse()"></i>
-                <i *ngIf="!root.collapsed" class="fa fa-minus-circle" (click)="root.toggleCollapse()"></i>
+                <i *ngIf="root.collapsed && currentDirection === 'ltr'" class="nb-arrow-dropright" (click)="root.toggleCollapse()"></i>
+                <i *ngIf="root.collapsed && currentDirection === 'rtl'" class="nb-arrow-dropleft" (click)="root.toggleCollapse()"></i>
+                <i *ngIf="!root.collapsed" class="nb-arrow-dropdown" (click)="root.toggleCollapse()"></i>
             </span>
 
             <span *ngIf="root.children.length < 1" class="mr-2 ml-2"></span>
