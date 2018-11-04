@@ -53,8 +53,22 @@ export interface ParticipationProvider {
  */
 export interface ParticipationFileProvider {
 
+    /**
+     * Creates participant list files for the given {@code sports}.
+     *
+     * @param sports - the sports to create a participant list of
+     *
+     * @return a file qualifier to identify the file
+     */
     createParticipantList(sports: ReadonlyArray<Sport>): Promise<FileQualifier>;
 
+    /**
+     * Creates event sheets for the given {@code data}.
+     *
+     * @param data - the data to create the event sheets
+     *
+     * @return a file qualifier to identify the file
+     */
     createEventSheets(data: ReadonlyArray<EventSheetData>): Promise<FileQualifier>;
 }
 
