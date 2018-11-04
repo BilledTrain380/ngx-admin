@@ -51,7 +51,7 @@
 
                     <div *ngIf="isParticipationOpen" class="col-lg-12">
                         <div class="alert alert-primary" role="alert">
-                            <strong>Information!</strong> {{ 'participation.status.open' | translate }}.
+                            <strong>{{ 'alert.info' | translate }}</strong> {{ 'participation.status.open' | translate }}.
                             <span *nbIsGranted="['view', 'management']">
                                 {{ 'participation.text.toManagement' | translate }} <a routerLink="/pages/management">{{ 'participation.text.toManagementHere' | translate }}</a>.
                             </span>

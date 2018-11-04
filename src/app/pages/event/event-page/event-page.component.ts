@@ -80,13 +80,13 @@ export class EventPageComponent implements OnInit {
                     new TreeCheckbox(femaleTranslate, [], 'col-lg-12', femaleEventSheetData),
                 ];
 
-                return new TreeCheckbox(group.name, genders, 'col-lg-6');
+                return new TreeCheckbox(group.name, genders);
             });
 
-            return new TreeCheckbox(discipline.name, groups, 'col-lg-4');
+            return new TreeCheckbox(discipline.name, groups, 'col-lg-6');
         });
 
-        this.eventSheetsTree = new TreeCheckbox(allTranslate, disciplines, 'col-lg-12', undefined, false, false);
+        this.eventSheetsTree = new TreeCheckbox(allTranslate, disciplines, 'col-lg-4', undefined, false, false);
     }
 
     async exportParticipantList(): Promise<void> {
@@ -97,7 +97,7 @@ export class EventPageComponent implements OnInit {
 
         const fileQualifier: FileQualifier = await this.fileProvider.createParticipantList(data);
 
-        await this.downloadFile(fileQualifier);
+        await this.http.downloadFile(fileQualifier);
 
         this.isParticipantListLoading = false;
     }
@@ -116,22 +116,9 @@ export class EventPageComponent implements OnInit {
 
         const fileQualifier: FileQualifier = await this.fileProvider.createEventSheets(data);
 
-        await this.downloadFile(fileQualifier);
+        await this.http.downloadFile(fileQualifier);
 
         this.isEventSheetLoading = false;
-    }
-
-    private async downloadFile(qualifier: FileQualifier): Promise<void> {
-
-        const eventSheetsFile: Blob = await this.http.getFile(qualifier);
-
-        const url = window.URL.createObjectURL(eventSheetsFile);
-
-        const link: HTMLAnchorElement = document.createElement('a');
-        link.href = url;
-        link.download = qualifier.name;
-        link.click();
-        window.URL.revokeObjectURL(url);
     }
 }
 
