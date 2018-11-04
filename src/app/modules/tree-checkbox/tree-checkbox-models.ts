@@ -9,7 +9,7 @@ export class TreeCheckbox {
     constructor(
         readonly label: string,
         readonly children: ReadonlyArray<TreeCheckbox> = [],
-        readonly childColumnClass: string = 'col-lg-12',
+        readonly ColumnClass: string = 'col-lg-12',
         readonly data?: any,
         public checked: boolean | undefined = false,
         public collapsed: boolean = true,
