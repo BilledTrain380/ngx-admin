@@ -132,6 +132,8 @@ export interface HttpService {
     postForm(url: string, formData: FormData, headers?: Headers): Promise<Response>;
 
     getFile(qualifier: FileQualifier, headers?: Headers): Promise<Blob>;
+
+    downloadFile(qualifier: FileQualifier): Promise<void>;
 }
 
 /**
@@ -224,13 +226,13 @@ export class AuthHttpService implements HttpService {
         return response;
     }
 
-    async getFile(qualifer: FileQualifier, headers: Headers = new Headers()): Promise<Blob> {
+    async getFile(qualifier: FileQualifier, headers: Headers = new Headers()): Promise<Blob> {
 
         const token: NbAuthToken = await this.authService.getToken().toPromise();
 
         headers.append('Authorization', `Bearer ${token.getValue()}`);
 
-        const response: Response = await run(fetch, encodeURI(`${environment.host}/api/web/file${qualifer.value}`), {
+        const response: Response = await run(fetch, encodeURI(`${environment.host}/api/web/file${qualifier.value}`), {
             method: 'GET',
             mode: 'cors',
             headers,
@@ -239,6 +241,19 @@ export class AuthHttpService implements HttpService {
         await handleResponse(response);
 
         return response.blob();
+    }
+
+    async downloadFile(qualifier: FileQualifier): Promise<void> {
+
+        const file: Blob = await this.getFile(qualifier, new Headers());
+
+        const url = window.URL.createObjectURL(file);
+
+        const link: HTMLAnchorElement = document.createElement('a');
+        link.href = url;
+        link.download = qualifier.name;
+        link.click();
+        window.URL.revokeObjectURL(url);
     }
 }
 
@@ -323,6 +338,16 @@ export class PSARestService implements RestService, HttpService {
         try {
             await this.doFilter(qualifier.value);
             return await this.http.getFile(qualifier, headers);
+        } catch (e) {
+            this.handleError(e);
+        }
+    }
+
+    async downloadFile(qualifier: FileQualifier): Promise<void> {
+
+        try {
+            await this.doFilter(qualifier.value);
+            await this.http.downloadFile(qualifier);
         } catch (e) {
             this.handleError(e);
         }
