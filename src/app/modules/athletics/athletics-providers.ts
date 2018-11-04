@@ -1,12 +1,20 @@
 import {Gender} from '../participant/participant-models';
-import {Competitor, Discipline, Result, TemporaryResult} from './athletics-models';
+import {Competitor, Discipline, RankingData, Result, TemporaryResult} from './athletics-models';
 import {Group} from '../group/group-models';
 import {Inject, Injectable, InjectionToken} from '@angular/core';
 import {REST_SERVICE, RestService} from '../http/http-service';
 import {competitorsJsonSchema, disciplineListJsonSchema, resultsJsonSchema} from './json-schema';
+import {FileQualifier} from '../http/http-models';
+import {fileQualifierJsonSchema} from '../http/json-schema';
 
 export const COMPETITOR_PROVIDER: InjectionToken<CompetitorProvider> =
     new InjectionToken('token for competitor provider');
+
+export const DISCIPLINE_PROVIDER: InjectionToken<DisciplineProvider> =
+    new InjectionToken('token for discipline provider');
+
+export const ATHLETICS_FILE_PROVIDER: InjectionToken<AthleticsFileProvider> =
+    new InjectionToken('token for athletics file provider');
 
 /**
  * Provider for the competitor domain.
@@ -35,6 +43,39 @@ export interface CompetitorProvider {
      * @return The saved results
      */
     saveResults(competitor: Competitor, results: ReadonlyArray<TemporaryResult>): Promise<ReadonlyArray<Result>>;
+}
+
+/**
+ * Provider for the discipline domain.
+ *
+ * @author Nicolas Märchy <billedtrain380@gmail.com>
+ * @since 1.0.0
+ */
+export interface DisciplineProvider {
+
+    /**
+     * @return all available disciplines
+     */
+    getAll(): Promise<ReadonlyArray<Discipline>>;
+}
+
+/**
+ * Describes a provider to create various files
+ * regarding the ranking.
+ *
+ * @author Nicolas Märchy <billedtrain380@gmail.com>
+ * @since 1.0.0
+ */
+export interface AthleticsFileProvider {
+
+    /**
+     * Creates ranking files based on the given {@code data}.
+     *
+     * @param data - the data to create ranking files
+     *
+     * @return a file qualifier to identify the file
+     */
+    createRanking(data: RankingData): Promise<FileQualifier>;
 }
 
 /**
@@ -73,23 +114,6 @@ export class HttpCompetitorProvider implements CompetitorProvider {
     }
 }
 
-export const DISCIPLINE_PROVIDER: InjectionToken<DisciplineProvider> =
-    new InjectionToken('token for discipline provider');
-
-/**
- * Provider for the discipline domain.
- *
- * @author Nicolas Märchy <billedtrain380@gmail.com>
- * @since 1.0.0
- */
-export interface DisciplineProvider {
-
-    /**
-     * @return all available disciplines
-     */
-    getAll(): Promise<ReadonlyArray<Discipline>>;
-}
-
 /**
  * Http {@link DisciplineProvider} implementation.
  *
@@ -106,5 +130,28 @@ export class HttpDisciplineProvider implements DisciplineProvider {
 
     getAll(): Promise<ReadonlyArray<Discipline>> {
         return this.rest.getRequest('api/rest/disciplines', disciplineListJsonSchema);
+    }
+}
+
+/**
+ * Http {@link AthleticsFileProvider} implementation.
+ *
+ * @author Nicolas Märchy <billedtrain380@gmail.com>
+ * @since 1.0.0
+ */
+@Injectable()
+export class HttpAthleticsFileProvider implements AthleticsFileProvider {
+
+    constructor(
+        @Inject(REST_SERVICE)
+        private readonly rest: RestService,
+    ) {}
+
+    async createRanking(data: RankingData): Promise<FileQualifier> {
+
+        return await this.rest.postRequest<FileQualifier>(
+            'api/web/ranking',
+            JSON.stringify(data),
+            fileQualifierJsonSchema);
     }
 }

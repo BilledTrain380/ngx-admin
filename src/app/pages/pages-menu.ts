@@ -48,7 +48,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
             },
             {
                 title: 'Ranking',
-                link: '/pages/ui-features/modals',
+                link: '/pages/athletics/ranking',
                 data: {
                     canShow: (it: NbAccessChecker): Observable<boolean> => it.isGranted('view', 'ranking'),
                     translation: 'page.ranking',

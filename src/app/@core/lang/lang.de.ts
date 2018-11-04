@@ -121,6 +121,21 @@ export const LANG_DE = {
                 noGroups: 'Keine Gruppen mit Wettkämpfer vorhanden',
             },
         },
+        ranking: {
+            title: {
+                types: 'Ranglistentypen',
+            },
+            label: {
+                all: 'alle',
+                disciplines: 'Disziplinen',
+                disciplineGroup: '3-Kampf',
+                total: 'Gesamt',
+                ubsCup: 'UBS Cup',
+            },
+            action: {
+                export: 'Export',
+            },
+        },
     },
 
     settings: {

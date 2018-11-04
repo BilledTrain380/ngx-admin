@@ -36,6 +36,10 @@ const routeSecurity: Array<RouteSecurity> = [{
         match: RouteMatch.FULL,
         authority: 'ROLE_USER',
     }, {
+        route: '/pages/athletics/ranking',
+        match: RouteMatch.FULL,
+        authority: 'ROLE_ADMIN',
+    }, {
         route: '/pages/management',
         match: RouteMatch.FULL,
         authority: 'ROLE_ADMIN',

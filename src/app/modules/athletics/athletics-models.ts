@@ -42,3 +42,21 @@ export class TemporaryResult {
         readonly distance?: string,
     ) {}
 }
+
+export class DisciplineRanking {
+
+    constructor(
+        readonly discipline: string,
+        readonly gender: Gender,
+    ) {}
+}
+
+export class RankingData {
+
+    constructor(
+        readonly total: ReadonlyArray<Gender> = [],
+        readonly discipline: ReadonlyArray<DisciplineRanking> = [],
+        readonly disciplineGroup: ReadonlyArray<Gender> = [],
+        readonly ubsCup: ReadonlyArray<Gender> = [],
+    ) {}
+}
