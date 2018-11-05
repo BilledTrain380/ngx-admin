@@ -4,7 +4,7 @@ import {GROUP_PROVIDER, GroupProvider} from '../../../modules/group/group-provid
 import {Gender} from '../../../modules/participant/participant-models';
 import {TreeCheckbox} from '../../../modules/tree-checkbox/tree-checkbox-models';
 import {TranslateService} from '@ngx-translate/core';
-import {EventSheetData, ParticipationStatus} from '../../../modules/participation/participation-models';
+import {ATHLETICS, EventSheetData, ParticipationStatus} from '../../../modules/participation/participation-models';
 import {
     PARTICIPATION_FILE_PROVIDER,
     PARTICIPATION_PROVIDER,
@@ -46,7 +46,7 @@ export class EventPageComponent implements OnInit {
         this.isParticipationOpen = (await this.participationProvider.getStatus()) === ParticipationStatus.OPEN;
 
         const sports: ReadonlyArray<TreeCheckbox> = (await this.sportProvider.getAll())
-            .filter(it => it.name !== 'Leichtathletik') // TODO: Use correct sport name for athletic
+            .filter(it => it.name !== ATHLETICS)
             .map(it => new TreeCheckbox(it.name, [], 'col-lg-12', it));
 
         const maleTranslate: string = await this.translateService.get(Gender.MALE).toPromise();
@@ -80,13 +80,14 @@ export class EventPageComponent implements OnInit {
                     new TreeCheckbox(femaleTranslate, [], 'col-lg-12', femaleEventSheetData),
                 ];
 
-                return new TreeCheckbox(group.name, genders);
+                return new TreeCheckbox(group.name, genders, 'col-lg-6');
             });
 
-            return new TreeCheckbox(discipline.name, groups, 'col-lg-6');
+            return new TreeCheckbox(discipline.name, groups, 'col-lg-4');
         });
 
-        this.eventSheetsTree = new TreeCheckbox(allTranslate, disciplines, 'col-lg-4', undefined, false, false);
+        this.eventSheetsTree = new TreeCheckbox(allTranslate, disciplines);
+        this.eventSheetsTree.toggleCollapse();
     }
 
     async exportParticipantList(): Promise<void> {

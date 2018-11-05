@@ -29,3 +29,12 @@ export interface EventSheetData {
     readonly group: Group;
     readonly gender: Gender;
 }
+
+/**
+ * A special sport which must exists. To refer this sport
+ * use this variable.
+ *
+ * @author nmaerchy <billedtrain380@gmail.com>
+ * @since 1.0.0
+ */
+export const ATHLETICS: string = 'Athletics';

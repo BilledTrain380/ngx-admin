@@ -60,14 +60,14 @@ export class RankingPageComponent implements OnInit {
             .map(it => {
 
                 const genders: ReadonlyArray<TreeCheckbox> = [
-                    new TreeCheckbox(this.maleTranslate, [], '', new DisciplineRanking(it.name, Gender.MALE)),
-                    new TreeCheckbox(this.femaleTranslate, [], '', new DisciplineRanking(it.name, Gender.FEMALE)),
+                    new TreeCheckbox(this.maleTranslate, [], 'col-lg-12', new DisciplineRanking(it.name, Gender.MALE)),
+                    new TreeCheckbox(this.femaleTranslate, [], 'col-lg-12', new DisciplineRanking(it.name, Gender.FEMALE)), // tslint:disable-line: max-line-length
                 ];
 
-                return new TreeCheckbox(it.name, genders);
+                return new TreeCheckbox(it.name, genders, 'col-lg-3');
             });
 
-        this.disciplineCheckbox = new TreeCheckbox(disciplinesTranslate, disciplineCheckboxes, 'col-lg-3 col-md-4');
+        this.disciplineCheckbox = new TreeCheckbox(disciplinesTranslate, disciplineCheckboxes);
         this.disciplineCheckbox.toggleCollapse();
 
         this.disciplineGroupCheckbox = new TreeCheckbox(disciplineGroupTranslate, this.createGenderCheckboxes());

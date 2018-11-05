@@ -21,7 +21,7 @@
 
             <div class="row">
 
-                <div *ngFor="let child of root.children" class="{{root.ColumnClass}}">
+                <div *ngFor="let child of root.children" class="{{child.columnClass}}">
                     <ngx-tree-checkbox [root]="child"></ngx-tree-checkbox>
                 </div>
 
