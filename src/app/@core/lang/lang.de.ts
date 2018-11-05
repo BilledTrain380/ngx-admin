@@ -234,5 +234,5 @@ export const LANG_DE = {
     // direct translations from a enum or a fix value in the application
     MALE: 'Männlich',
     FEMALE: 'Weiblich',
-    athletics: 'Leichtathletik',
+    Athletics: 'Leichtathletik',
 };
