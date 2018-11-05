@@ -232,7 +232,7 @@ export class AuthHttpService implements HttpService {
 
         headers.append('Authorization', `Bearer ${token.getValue()}`);
 
-        const response: Response = await run(fetch, encodeURI(`${environment.host}/api/web/file${qualifier.value}`), {
+        const response: Response = await run(fetch, encodeURI(`${environment.host}/api/web/file/${qualifier.value}`), {
             method: 'GET',
             mode: 'cors',
             headers,
