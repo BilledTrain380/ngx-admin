@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {MENU_ITEMS} from './pages-menu';
 import {NbAccessChecker} from '@nebular/security';
-import {NbAuthService} from '@nebular/auth';
 import {takeWhile} from 'rxjs/operators';
 import {NbMenuItem} from '@nebular/theme';
 import {TranslateService} from '@ngx-translate/core';
@@ -25,33 +24,15 @@ export class PagesComponent implements OnInit, OnDestroy {
 
     constructor(
         private readonly translate: TranslateService,
-        accessChecker: NbAccessChecker,
-        authService: NbAuthService,
-    ) {
-
-        // listens on token change to change ACL of the menu items
-        authService.onTokenChange()
-            .pipe(takeWhile(() => this.alive))
-            .forEach(it => {
-
-                this.menu
-                    .filter(item => item.data !== undefined && item.data.canShow !== undefined)
-                    .forEach(item => {
-
-                        const canShowObservable: Observable<boolean> = item.data.canShow(accessChecker);
-
-                        canShowObservable
-                            .pipe(takeWhile(() => this.alive))
-                            .forEach(canShow => {
-                                item.hidden = !canShow;
-                            });
-                    });
-            });
-    }
+        private readonly accessChecker: NbAccessChecker,
+    ) {}
 
     ngOnInit(): void {
 
-        this.menu.forEach(it => this.translateMenuItem(it));
+        this.menu.forEach(it => {
+            this.translateMenuItem(it);
+            this.checkMenu(it);
+        });
     }
 
     private translateMenuItem(item: NbMenuItem): void {
@@ -67,6 +48,24 @@ export class PagesComponent implements OnInit, OnDestroy {
             item.children.forEach(it => this.translateMenuItem(it));
         }
     }
+
+    private checkMenu(menu: NbMenuItem): void {
+
+        if (menu.data && menu.data.canShow) {
+
+            const canShowObservable: Observable<boolean> = menu.data.canShow(this.accessChecker);
+
+            canShowObservable
+                .pipe(takeWhile(() => this.alive))
+                .forEach(canShow => {
+                    menu.hidden = !canShow;
+                });
+        }
+
+        if (menu.children)
+            menu.children.forEach(it => this.checkMenu(it));
+    }
+
 
     ngOnDestroy(): void {
         this.alive = false;

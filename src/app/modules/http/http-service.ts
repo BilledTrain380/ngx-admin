@@ -370,9 +370,11 @@ export class PSARestService implements RestService, HttpService {
 
         if (error instanceof AuthenticationError) {
             this.router.navigate(['/auth/login']);
+        } else if (error instanceof ResourceNotFoundError) {
+            this.router.navigate(['/pages/miscellaneous/404']);
+        } else {
+            this.router.navigate(['/pages/miscellaneous/no-connection']);
         }
-
-        // TODO: redirect to no connection page if NoConnectionError
 
         throw error;
     }

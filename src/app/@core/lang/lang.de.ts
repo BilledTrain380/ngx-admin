@@ -174,6 +174,14 @@ export const LANG_DE = {
         },
     },
 
+    login: {
+        text: {
+            info: 'Bitte warten Sie einige Sekunden. Sollte die Weiterleitung nicht funktionieren klicken Sie',
+            here: 'hier',
+            redirectInfo: 'Sie werden zum Login weitergeleitet...',
+        },
+    },
+
     alert: {
         great: 'Super!',
         info: 'Information!',
@@ -210,6 +218,9 @@ export const LANG_DE = {
         notDefined: 'N/A',
         actions: 'Aktionen',
         password: 'Password',
+        changePassword: 'Passwort ändern',
+        logout: 'Logout',
+        login: 'Login',
     },
 
     module: {

@@ -59,21 +59,12 @@ export class GroupDetailComponent implements OnInit {
             .pipe(take(1))
             .subscribe(async (params) => {
 
-                try {
-                    this.activeGroup = await this.groupProvider.getGroup(params['name']);
-                    this.sports = await this.sportProvider.getAll();
-                    this.participationStatus = await this.participationProvider.getStatus();
+                this.activeGroup = await this.groupProvider.getGroup(params['name']);
+                this.sports = await this.sportProvider.getAll();
+                this.participationStatus = await this.participationProvider.getStatus();
 
-                    await this.loadParticipants();
-                    this.loading = false;
-
-                } catch (error) {
-                    if (error instanceof ResourceNotFoundError) {
-                        this.router.navigate(['pages/group/detail']);
-                    } else {
-                        throw error;
-                    }
-                }
+                await this.loadParticipants();
+                this.loading = false;
             });
     }
 

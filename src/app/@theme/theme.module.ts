@@ -45,8 +45,9 @@ import {CORPORATE_THEME} from './styles/theme.corporate';
 import {PageTitleComponent} from './page-title/page-title.component';
 import {UserModule} from '../modules/user/user.module';
 import { CardActionsComponent } from './components/card-actions/card-actions.component';
+import {TranslateModule} from '@ngx-translate/core';
 
-const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule, UserModule];
+const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule, UserModule, TranslateModule];
 
 const NB_MODULES = [
     NbBadgeModule,

@@ -1,5 +1,5 @@
 import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
-import {NbMenuService, NbSidebarService} from '@nebular/theme';
+import {NbMenuItem, NbMenuService, NbSidebarService} from '@nebular/theme';
 import {AnalyticsService} from '../../../@core/utils/analytics.service';
 import {filter, takeWhile} from 'rxjs/operators';
 import {User} from '../../../modules/user/user-models';
@@ -8,6 +8,7 @@ import {ChangePasswordComponent} from '../../../modules/user/change-password/cha
 import {USER_SUPPLIER, UserSupplier} from '../../../modules/user/user-providers';
 import {NbTokenService} from '@nebular/auth';
 import {environment} from '../../../../environments/environment';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
     selector: 'ngx-header',
@@ -24,7 +25,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     userMenu = [
         {
-            // TODO: use translate service
             title: 'Change Password',
             data: {
                 // HeaderComponent will be bind to this
@@ -36,6 +36,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
                     modal.componentInstance.user = this.user;
                 },
+                translation: 'label.changePassword',
             },
         },
         {
@@ -45,8 +46,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 click: function () {
                     // Logout should be done through NbAuthService.logout(), but it does not seem to work.
                     this.tokenService.clear();
-                    window.open(`${environment.host}/login?logout`, '_self');
+                    window.open(`${environment.host}/logout`, '_self');
                 },
+                translation: 'label.logout',
             },
         },
     ];
@@ -56,6 +58,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         private readonly menuService: NbMenuService,
         private readonly tokenService: NbTokenService,
         @Inject(USER_SUPPLIER) private readonly userSupplier: UserSupplier,
+        private readonly translateService: TranslateService,
         private readonly analyticsService: AnalyticsService,
         private readonly modalService: NgbModal,
     ) {
@@ -74,6 +77,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
             .subscribe(({ item }) => {
                 if (item.data && item.data.click) item.data.click.apply(this);
             });
+
+        this.userMenu.forEach(it => this.translateMenuItem(it));
     }
 
     ngOnDestroy(): void {
@@ -96,5 +101,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     startSearch() {
         this.analyticsService.trackEvent('startSearch');
+    }
+
+    private translateMenuItem(item: NbMenuItem): void {
+
+        if (item.data && item.data.translation) {
+
+            this.translateService.get(item.data.translation).subscribe(it => {
+                item.title = it;
+            });
+        }
+
+        if (item.children) {
+            item.children.forEach(it => this.translateMenuItem(it));
+        }
     }
 }
