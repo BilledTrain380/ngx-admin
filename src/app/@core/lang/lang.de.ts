@@ -179,6 +179,10 @@ export const LANG_DE = {
             info: 'Bitte warten Sie einige Sekunden. Sollte die Weiterleitung nicht funktionieren klicken Sie',
             here: 'hier',
             redirectInfo: 'Sie werden zum Login weitergeleitet...',
+            welcome: 'Willkommen zu PSA!',
+            slogan: 'Your sport event management system.',
+            authProgress: 'Authentifizierung in Bearbeitung',
+            wait: 'Bitte warten',
         },
     },
 
@@ -232,7 +236,7 @@ export const LANG_DE = {
     error: {
         noConnection: {
             title: 'Keine Verbindung zum Server :(',
-            text: 'Sporttag PSA kann keine Verbindung mit dem Server aufnehmen. Versuchen Sie es später noch einmal. Sollte das Problem weiterhin bestehen wenden Sie sich an den Administrator.',
+            text: 'PSA kann keine Verbindung mit dem Server aufnehmen. Versuchen Sie es später noch einmal. Sollte das Problem weiterhin bestehen wenden Sie sich an den Administrator.',
             action: 'Erneut versuchen',
         },
         notFound: {
