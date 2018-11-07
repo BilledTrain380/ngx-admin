@@ -11,5 +11,6 @@
 export const environment = {
     production: false,
     host: 'http://localhost:8080',
+    baseHref: '/app',
     passwordPolicy: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).[\\S]{8,64}$',
 };

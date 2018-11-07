@@ -5,6 +5,7 @@
  */
 export const environment = {
     production: true,
-    host: '',
+    host: window.location.origin,
+    baseHref: '/app',
     passwordPolicy: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).[\\S]{8,64}$',
 };

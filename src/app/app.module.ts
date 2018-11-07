@@ -68,7 +68,7 @@ import {JSONTranslateLoader} from './@core/lang/translate.service';
                             'event_sheets',
                             'participant_list',
                         ].join(' '),
-                        redirectUri: `${window.location.origin}/auth/callback`,
+                        redirectUri: `${environment.host}${environment.baseHref}/auth/callback`,
                     },
                     redirect: {
                         success: 'pages/group/overview',
@@ -96,7 +96,7 @@ import {JSONTranslateLoader} from './@core/lang/translate.service';
     ],
     bootstrap: [AppComponent],
     providers: [
-        {provide: APP_BASE_HREF, useValue: '/'},
+        {provide: APP_BASE_HREF, useValue: environment.baseHref}, // TODO: delete unused ngx-admin pages
         {
             provide: NbRoleProvider,
             useClass: RoleProvider,
