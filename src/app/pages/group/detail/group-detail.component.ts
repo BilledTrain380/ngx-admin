@@ -1,5 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute} from '@angular/router';
 import {take} from 'rxjs/operators';
 import {Participant} from '../../../modules/participant/participant-models';
 import {Sport} from '../../../modules/sport/sport-models';
@@ -8,7 +8,6 @@ import {PARTICIPATION_PROVIDER, ParticipationProvider} from '../../../modules/pa
 import {ParticipationStatus} from '../../../modules/participation/participation-models';
 import {Group} from '../../../modules/group/group-models';
 import {GROUP_PROVIDER, GroupProvider} from '../../../modules/group/group-providers';
-import {ResourceNotFoundError} from '../../../modules/http/http-errors';
 import {SPORT_PROVIDER, SportProvider} from '../../../modules/sport/sport-providers';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmationComponent} from '../../../modules/confirmation/confirmation.component';
@@ -35,7 +34,6 @@ export class GroupDetailComponent implements OnInit {
     sports: ReadonlyArray<Sport> = [];
 
     constructor(
-        private readonly router: Router,
         private readonly route: ActivatedRoute,
         private readonly modalService: NgbModal,
         private readonly translateService: TranslateService,

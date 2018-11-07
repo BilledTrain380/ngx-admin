@@ -56,11 +56,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     constructor(
         private readonly sidebarService: NbSidebarService,
         private readonly menuService: NbMenuService,
-        private readonly tokenService: NbTokenService,
+        private readonly tokenService: NbTokenService, // tslint:disable-line: no-unused-variable
         @Inject(USER_SUPPLIER) private readonly userSupplier: UserSupplier,
         private readonly translateService: TranslateService,
         private readonly analyticsService: AnalyticsService,
-        private readonly modalService: NgbModal,
+        private readonly modalService: NgbModal, // tslint:disable-line: no-unused-variable
     ) {
     }
 
