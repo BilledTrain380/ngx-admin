@@ -96,7 +96,7 @@ import {JSONTranslateLoader} from './@core/lang/translate.service';
     ],
     bootstrap: [AppComponent],
     providers: [
-        {provide: APP_BASE_HREF, useValue: environment.baseHref}, // TODO: delete unused ngx-admin pages
+        {provide: APP_BASE_HREF, useValue: environment.baseHref},
         {
             provide: NbRoleProvider,
             useClass: RoleProvider,
