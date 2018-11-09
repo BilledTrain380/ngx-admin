@@ -223,8 +223,8 @@ export const LANG_DE = {
         actions: 'Aktionen',
         password: 'Password',
         changePassword: 'Passwort ändern',
-        logout: 'Logout',
-        login: 'Login',
+        logout: 'Abmelden',
+        login: 'Anmelden',
     },
 
     module: {
