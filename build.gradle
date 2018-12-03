@@ -10,5 +10,6 @@ plugins {
 }
 
 npmRun {
+    test 'lint'
     build "buildDeploy"
 }
