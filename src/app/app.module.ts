@@ -50,7 +50,7 @@ import {JSONTranslateLoader} from './@core/lang/translate.service';
                     clientId: 'psa-kitten',
                     clientSecret: '',
                     authorize: {
-                        endpoint: `${environment.host}/oauth/authorize`,
+                        endpoint: '/oauth/authorize',
                         responseType: NbOAuth2ResponseType.TOKEN,
                         scope: [
                             'user',
@@ -68,7 +68,7 @@ import {JSONTranslateLoader} from './@core/lang/translate.service';
                             'event_sheets',
                             'participant_list',
                         ].join(' '),
-                        redirectUri: `${environment.host}${environment.baseHref}/auth/callback`,
+                        redirectUri: `${environment.baseHref}/auth/callback`,
                     },
                     redirect: {
                         success: 'pages/group/overview',

@@ -1,6 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NbAuthResult, NbAuthService} from '@nebular/auth';
 import {takeWhile} from 'rxjs/operators';
+import {environment} from '../../../environments/environment';
 
 @Component({
     selector: 'ngx-login',
@@ -8,6 +9,8 @@ import {takeWhile} from 'rxjs/operators';
     styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit, OnDestroy {
+
+    readonly logoPath: string = `${environment.baseHref}/assets/images/psa-logo.svg`;
 
     private alive: boolean = true;
 
@@ -29,5 +32,4 @@ export class LoginComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.alive = false;
     }
-
 }
