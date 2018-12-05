@@ -11,6 +11,8 @@
 export const environment = {
     production: false,
     host: 'http://localhost:8080',
+    devHost: 'http://localhost:8080', // host name for aot build can not be dynamic (@NgModule and such must use this)
+    devServer: 'http://localhost:4200',
     baseHref: '/',
     passwordPolicy: '^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#$^+=!*()@%&]).[\\S]{8,64}$',
 };
