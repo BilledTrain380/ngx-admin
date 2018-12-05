@@ -1,9 +1,11 @@
 import {TranslateLoader} from '@ngx-translate/core';
 import {Observable, of} from 'rxjs';
 import {LANG_DE} from './lang.de';
+import {LANG_EN} from './lang.en';
 
 const languages = {
     lang_de: LANG_DE,
+    lang_en: LANG_EN,
 };
 
 /**

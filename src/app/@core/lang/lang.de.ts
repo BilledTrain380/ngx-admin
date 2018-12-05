@@ -25,7 +25,7 @@ export const LANG_DE = {
         },
         text: {
             toCloseParticipation: 'Um die Leichtathletik starten zu können, müssen Sie die Teinahme abschliessen.<br>Dadurch werden die Startnummern generiert und Sie können die Wettkampfblätter herunterladen.',
-            toResetParticipation: 'Um die Datenerfassung von neuem zu beginnen müssen Sie die Teilnahme zurücksetzens.<br>Dadurch werden alle Teilnehmer Daten gelöscht und Sie können die Teilnehmer von Anfang neu erfassen.',
+            toResetParticipation: 'Um die Datenerfassung von neuem zu beginnen müssen Sie die Teilnahme zurücksetzen.<br>Dadurch werden alle Teilnehmer Daten gelöscht und Sie können die Teilnehmer von Anfang neu erfassen.',
             toManagement: 'Um die Teilnahme abzuschliessen klicken Sie',
             toManagementHere: 'hier',
         },
@@ -153,7 +153,7 @@ export const LANG_DE = {
                 changePassword: 'Password ändern',
             },
             alert: {
-                confirmDelete: 'Möchten Sie den Benutzer "{{ username }}" wircklich löschen.',
+                confirmDelete: 'Möchten Sie den Benutzer "{{ username }}" wircklich löschen?',
             },
             text: {
                 passwordRequirements: '<ul>\n' +
@@ -180,7 +180,7 @@ export const LANG_DE = {
             here: 'hier',
             redirectInfo: 'Sie werden zum Login weitergeleitet...',
             welcome: 'Willkommen zu PSA!',
-            slogan: 'Your sport event management system.',
+            slogan: 'Ihr Sport Event Management System.',
             authProgress: 'Authentifizierung in Bearbeitung',
             wait: 'Bitte warten',
         },
@@ -221,7 +221,7 @@ export const LANG_DE = {
     label: {
         notDefined: 'N/A',
         actions: 'Aktionen',
-        password: 'Password',
+        password: 'Passwort',
         changePassword: 'Passwort ändern',
         logout: 'Abmelden',
         login: 'Anmelden',
