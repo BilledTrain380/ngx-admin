@@ -9,6 +9,7 @@ import {USER_SUPPLIER, UserSupplier} from '../../../modules/user/user-providers'
 import {NbTokenService} from '@nebular/auth';
 import {environment} from '../../../../environments/environment';
 import {TranslateService} from '@ngx-translate/core';
+import {LayoutService} from '../../../@core/data/layout.service';
 
 @Component({
     selector: 'ngx-header',
@@ -61,6 +62,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         private readonly translateService: TranslateService,
         private readonly analyticsService: AnalyticsService,
         private readonly modalService: NgbModal, // tslint:disable-line: no-unused-variable
+        private readonly layoutService: LayoutService,
     ) {
     }
 
@@ -85,15 +87,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.alive = false;
     }
 
-    toggleSidebar(): boolean {
-        this.sidebarService.toggle(true, 'menu-sidebar');
-        return false;
-    }
+  toggleSidebar(): boolean {
+    this.sidebarService.toggle(true, 'menu-sidebar');
+    this.layoutService.changeLayoutSize();
 
-    toggleSettings(): boolean {
-        this.sidebarService.toggle(false, 'settings-sidebar');
-        return false;
-    }
+    return false;
+  }
+
+  toggleSettings(): boolean {
+    this.sidebarService.toggle(false, 'settings-sidebar');
+
+    return false;
+  }
 
     goToHome() {
         this.menuService.navigateHome();
