@@ -30,7 +30,7 @@ export const LANG_EN = {
             toManagementHere: 'here',
         },
         label: {
-            sports: 'Kind of sport',
+            sports: 'Kind of Sport',
         },
     },
 
@@ -46,7 +46,7 @@ export const LANG_EN = {
             import: 'Import',
         },
         status: {
-            withPendingParticipation: 'Open participants',
+            withPendingParticipation: 'Open participation',
             withNoPendingParticipation: 'Closed participation',
             noGroups: 'No groups are available.',
         },
@@ -106,7 +106,7 @@ export const LANG_EN = {
             title: {
                 default: 'Results',
                 competitors: 'Competitors',
-                absentCompetitors: 'Absent competitors',
+                absentCompetitors: 'Absent Competitors',
             },
             label: {
                 startNumber: 'Startnumber',
