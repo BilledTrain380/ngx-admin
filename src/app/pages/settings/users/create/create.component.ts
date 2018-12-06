@@ -4,6 +4,7 @@ import {USER_PROVIDER, UserProvider} from '../../../../modules/user/user-provide
 import {User} from '../../../../modules/user/user-models';
 import {NgForm} from '@angular/forms';
 import {environment} from '../../../../../environments/environment';
+import {NbDialogRef} from '@nebular/theme';
 
 @Component({
     selector: 'ngx-create',
@@ -14,7 +15,7 @@ export class CreateComponent {
 
     isPasswordRevealed: boolean = false;
 
-    // Should be set through the modal ref component instance.
+    // Will be set through dialog service context
     takenUsernames: ReadonlyArray<string> = [];
 
     usernameIsTaken: boolean = false;
@@ -22,7 +23,7 @@ export class CreateComponent {
     readonly passwordPolicyRegex: string = environment.passwordPolicy;
 
     constructor(
-        private readonly activeModal: NgbActiveModal,
+        private readonly ref: NbDialogRef<CreateComponent>,
         @Inject(USER_PROVIDER)
         private readonly userProvider: UserProvider,
     ) {}
@@ -32,7 +33,7 @@ export class CreateComponent {
     }
 
     dismissModal(): void {
-        this.activeModal.dismiss();
+        this.ref.close();
     }
 
     checkUsername(name: string): void {
@@ -48,6 +49,6 @@ export class CreateComponent {
         };
 
         await this.userProvider.createUser(user, form.value.password);
-        this.activeModal.close();
+        this.ref.close(true);
     }
 }

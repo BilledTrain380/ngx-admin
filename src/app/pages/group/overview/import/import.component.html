@@ -1,33 +1,35 @@
-<div class="modal-header">
-    <span>{{ 'group.action.import' | translate }}</span>
-    <button class="close" aria-label="Close" (click)="dismissModal()">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+<nb-card>
 
-<div class="modal-body" [nbSpinner]="loading">
-
-    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
-        <strong>{{ 'alert.error' | translate }}</strong> {{ 'group.alert.fileUploadError' | translate }}
-        <br>
-        {{ errorMessage }}
-    </div>
-
-    <h4>{{ 'group.title.csvFormat' | translate }}</h4>
-    <ul class="mb-5" [innerHTML]="'group.text.fileRequirements' | translate">
-    </ul>
-
-    <ngx-dropzone (onFileDrop)="setFile($event)"></ngx-dropzone>
-
-</div>
-
-<div class="modal-footer">
-
-    <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
-        {{ 'form.action.abort' | translate }}
-    </button>
-
-    <button class="btn btn-md btn-primary" type="button" [disabled]="!file" (click)="upload()">
+    <nb-card-header>
         {{ 'group.action.import' | translate }}
-    </button>
-</div>
+    </nb-card-header>
+
+    <nb-card-body>
+
+        <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+            <strong>{{ 'alert.error' | translate }}</strong> {{ 'group.alert.fileUploadError' | translate }}
+            <br>
+            {{ errorMessage }}
+        </div>
+
+        <h4>{{ 'group.title.csvFormat' | translate }}</h4>
+        <ul class="mb-5" [innerHTML]="'group.text.fileRequirements' | translate">
+        </ul>
+
+        <ngx-dropzone (onFileDrop)="setFile($event)"></ngx-dropzone>
+
+    </nb-card-body>
+
+    <nb-card-footer>
+
+        <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
+            {{ 'form.action.abort' | translate }}
+        </button>
+
+        <button class="btn btn-md btn-primary" type="button" [disabled]="!file" (click)="upload()">
+            {{ 'group.action.import' | translate }}
+        </button>
+
+    </nb-card-footer>
+
+</nb-card>

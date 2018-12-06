@@ -1,24 +1,23 @@
-<div class="modal-header">
-    <span>{{ 'module.confirmation.confirm' | translate }}</span>
-    <button class="close" aria-label="Close" (click)="dismissModal()">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+<nb-card>
 
-<div class="modal-body">
-
-    {{ message }}
-
-</div>
-
-<div class="modal-footer">
-
-    <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
-        {{ 'form.action.abort' | translate }}
-    </button>
-
-    <button class="btn btn-md btn-{{ severity }}" type="button" (click)="confirm()">
+    <nb-card-header>
         {{ 'module.confirmation.confirm' | translate }}
-    </button>
+    </nb-card-header>
 
-</div>
+    <nb-card-body>
+        {{ message }}
+    </nb-card-body>
+
+    <nb-card-footer>
+
+        <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
+            {{ 'form.action.abort' | translate }}
+        </button>
+
+        <button class="btn btn-md btn-{{ severity }}" type="button" (click)="confirm()">
+            {{ 'module.confirmation.confirm' | translate }}
+        </button>
+
+    </nb-card-footer>
+
+</nb-card>

@@ -2,6 +2,7 @@ import {Component, Inject} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {GROUP_PROVIDER, GroupProvider} from '../../../../modules/group/group-providers';
 import {BadRequestError} from '../../../../modules/http/http-errors';
+import {NbDialogRef} from '@nebular/theme';
 
 @Component({
     selector: 'ngx-import',
@@ -17,7 +18,7 @@ export class ImportComponent {
     file?: File;
 
     constructor(
-        private readonly activeModal: NgbActiveModal,
+        private readonly ref: NbDialogRef<ImportComponent>,
 
         @Inject(GROUP_PROVIDER)
         private readonly groupProvider: GroupProvider,
@@ -36,7 +37,7 @@ export class ImportComponent {
 
             if (this.file !== undefined) {
                 await this.groupProvider.import(this.file);
-                this.activeModal.close();
+                this.ref.close(true);
             }
 
         } catch (error) {
@@ -51,6 +52,6 @@ export class ImportComponent {
     }
 
     dismissModal(): void {
-        this.activeModal.dismiss();
+        this.ref.close();
     }
 }

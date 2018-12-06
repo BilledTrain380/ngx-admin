@@ -1,9 +1,8 @@
 import {Component, Inject, Input, OnDestroy, OnInit} from '@angular/core';
-import {NbMenuItem, NbMenuService, NbSidebarService} from '@nebular/theme';
+import {NbDialogService, NbMenuItem, NbMenuService, NbSidebarService} from '@nebular/theme';
 import {AnalyticsService} from '../../../@core/utils/analytics.service';
 import {filter, takeWhile} from 'rxjs/operators';
 import {User} from '../../../modules/user/user-models';
-import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ChangePasswordComponent} from '../../../modules/user/change-password/change-password.component';
 import {USER_SUPPLIER, UserSupplier} from '../../../modules/user/user-providers';
 import {NbTokenService} from '@nebular/auth';
@@ -31,11 +30,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 // HeaderComponent will be bind to this
                 click: function () {
 
-                    const modal: NgbModalRef = this.modalService.open(ChangePasswordComponent, {
-                        size: 'lg', container: 'nb-layout',
+                    this.dialogService.open(ChangePasswordComponent, {
+                        context: {
+                            user: this.user,
+                        },
                     });
-
-                    modal.componentInstance.user = this.user;
                 },
                 translation: 'label.changePassword',
             },
@@ -61,7 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         @Inject(USER_SUPPLIER) private readonly userSupplier: UserSupplier,
         private readonly translateService: TranslateService,
         private readonly analyticsService: AnalyticsService,
-        private readonly modalService: NgbModal, // tslint:disable-line: no-unused-variable
+        private readonly dialogService: NbDialogService, // tslint:disable-line: no-unused-variable
         private readonly layoutService: LayoutService,
     ) {
     }

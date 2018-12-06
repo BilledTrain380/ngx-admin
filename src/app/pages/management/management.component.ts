@@ -3,9 +3,10 @@ import {PARTICIPATION_PROVIDER, ParticipationProvider} from '../../modules/parti
 import {GROUP_PROVIDER, GroupProvider} from '../../modules/group/group-providers';
 import {Group} from '../../modules/group/group-models';
 import {ParticipationStatus} from '../../modules/participation/participation-models';
-import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmationComponent} from '../../modules/confirmation/confirmation.component';
 import {TranslateService} from '@ngx-translate/core';
+import {NbDialogRef, NbDialogService} from '@nebular/theme';
+import {filter} from 'rxjs/operators';
 
 @Component({
     selector: 'ngx-management',
@@ -20,7 +21,7 @@ export class ManagementComponent implements OnInit {
     groupList: ReadonlyArray<Group> = [];
 
     constructor(
-        private readonly modalService: NgbModal,
+        private readonly dialogService: NbDialogService,
         private readonly translateService: TranslateService,
 
         @Inject(GROUP_PROVIDER)
@@ -50,15 +51,15 @@ export class ManagementComponent implements OnInit {
 
         const message: string = await this.translateService.get('participation.alert.confirmReset').toPromise();
 
-        const modal: NgbModalRef = this.modalService.open(ConfirmationComponent, {
-            size: 'lg', container: 'nb-layout',
+        const ref: NbDialogRef<any> = this.dialogService.open(ConfirmationComponent, {
+            context: {
+                message,
+            },
         });
 
-        modal.componentInstance.message = message;
-
-        // we catch the modal dismiss, so it won't bubble the error
-        modal.result
-            .then(async () => {
+        ref.onClose
+            .pipe(filter(success => success))
+            .subscribe(async () => {
 
                 await this.participationProvider.reset();
 
@@ -68,6 +69,6 @@ export class ManagementComponent implements OnInit {
                 setTimeout(() => {
                     this.resetSuccess = false;
                 }, 5000);
-            }).catch(() => {});
+            });
     }
 }

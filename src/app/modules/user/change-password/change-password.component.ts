@@ -4,6 +4,7 @@ import {USER_PROVIDER, UserProvider} from '../user-providers';
 import {NgForm} from '@angular/forms';
 import {User} from '../user-models';
 import {environment} from '../../../../environments/environment';
+import {NbDialogRef} from '@nebular/theme';
 
 @Component({
     selector: 'ngx-change-password',
@@ -14,7 +15,7 @@ export class ChangePasswordComponent implements OnInit {
 
     isPasswordRevealed: boolean = false;
 
-    // Should be set through modal ref component instance.
+    // Will be set through dialog service context
     user: User = {
         id: 0,
         username: '',
@@ -24,7 +25,7 @@ export class ChangePasswordComponent implements OnInit {
     readonly passwordPolicyRegex: string = environment.passwordPolicy;
 
     constructor(
-        private readonly activeModal: NgbActiveModal,
+        private readonly ref: NbDialogRef<ChangePasswordComponent>,
 
         @Inject(USER_PROVIDER)
         private readonly userProvider: UserProvider,
@@ -38,12 +39,12 @@ export class ChangePasswordComponent implements OnInit {
     }
 
     dismissModal(): void {
-        this.activeModal.dismiss();
+        this.ref.close();
     }
 
     async submit(form: NgForm): Promise<void> {
 
         await this.userProvider.updateUserPassword(this.user, form.value.password);
-        this.activeModal.close();
+        this.ref.close(true);
     }
 }

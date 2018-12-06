@@ -4,7 +4,6 @@ import {ManagementComponent} from './management.component';
 import {NbAccordionModule, NbBadgeModule, NbCardModule, NbListModule} from '@nebular/theme';
 import {RouterModule} from '@angular/router';
 import {ConfirmationModule} from '../../modules/confirmation/confirmation.module';
-import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {ThemeModule} from '../../@theme/theme.module';
 import {TranslateModule} from '@ngx-translate/core';
 
@@ -18,7 +17,6 @@ import {TranslateModule} from '@ngx-translate/core';
         NbAccordionModule,
         NbBadgeModule,
         ConfirmationModule,
-        NgbModalModule,
         TranslateModule,
     ],
     declarations: [ManagementComponent],

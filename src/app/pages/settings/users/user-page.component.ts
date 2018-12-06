@@ -1,11 +1,12 @@
 import {AfterViewInit, Component, Inject} from '@angular/core';
 import {USER_PROVIDER, UserProvider} from '../../../modules/user/user-providers';
 import {User} from '../../../modules/user/user-models';
-import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {TranslateService} from '@ngx-translate/core';
 import {ConfirmationComponent} from '../../../modules/confirmation/confirmation.component';
 import {CreateComponent} from './create/create.component';
 import {ChangePasswordComponent} from '../../../modules/user/change-password/change-password.component';
+import {NbDialogRef, NbDialogService} from '@nebular/theme';
+import {filter} from 'rxjs/operators';
 
 @Component({
     selector: 'ngx-users',
@@ -19,7 +20,7 @@ export class UserPageComponent implements AfterViewInit {
     deleteSuccess: boolean = false;
 
     constructor(
-        private readonly modalService: NgbModal,
+        private readonly dialogService: NbDialogService,
         private readonly translateService: TranslateService,
 
         @Inject(USER_PROVIDER)
@@ -32,24 +33,26 @@ export class UserPageComponent implements AfterViewInit {
 
     async openCreateUserModal(): Promise<void> {
 
-        const modal: NgbModalRef = this.modalService.open(CreateComponent, {
-            size: 'lg', container: 'nb-layout',
+        const ref: NbDialogRef<any> = this.dialogService.open(CreateComponent, {
+            context: {
+                takenUsernames: this.userList.map(it => it.username).concat('admin'),
+            } as any,
         });
 
-        modal.componentInstance.takenUsernames = this.userList.map(it => it.username).concat('admin');
-
-        modal.result
-            .then(() => this.loadUsers())
-            .catch(() => {});
+        ref.onClose
+            .pipe(filter(success => success))
+            .subscribe(() => {
+                this.loadUsers();
+            });
     }
 
     async openChangePasswordModal(user: User): Promise<void> {
 
-        const modal: NgbModalRef = this.modalService.open(ChangePasswordComponent, {
-            size: 'lg', container: 'nb-layout',
+        this.dialogService.open(ChangePasswordComponent, {
+            context: {
+                user,
+            },
         });
-
-        modal.componentInstance.user = user;
     }
 
     async toggleEnableStatus(user: User): Promise<void> {
@@ -63,15 +66,15 @@ export class UserPageComponent implements AfterViewInit {
             { username: user.username })
             .toPromise();
 
-        const modal: NgbModalRef = this.modalService.open(ConfirmationComponent, {
-            size: 'lg', container: 'nb-layout',
+        const ref: NbDialogRef<any> = this.dialogService.open(ConfirmationComponent, {
+            context: {
+                message,
+            },
         });
 
-        modal.componentInstance.message = message;
-
-        // we catch the modal dismiss, so it won't bubble the error
-        modal.result
-            .then(async () => {
+        ref.onClose
+            .pipe(filter(success => success))
+            .subscribe(async () => {
 
                 await this.userProvider.deleteUser(user);
 
@@ -81,7 +84,7 @@ export class UserPageComponent implements AfterViewInit {
                 setTimeout(() => {
                     this.deleteSuccess = false;
                 }, 5000);
-            }).catch(() => {});
+            });
     }
 
     private async loadUsers(): Promise<void> {

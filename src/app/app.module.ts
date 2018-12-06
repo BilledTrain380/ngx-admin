@@ -33,6 +33,7 @@ import {JSONTranslateLoader} from './@core/lang/translate.service';
         HttpClientModule,
         AppRoutingModule,
         HttpModule,
+        ThemeModule.forRoot(),
         TranslateModule.forRoot({
             loader: {
                 provide: TranslateLoader,
@@ -41,7 +42,6 @@ import {JSONTranslateLoader} from './@core/lang/translate.service';
         }),
         PreviousRouteModule.forRoot(),
         NgbModule.forRoot(),
-        ThemeModule.forRoot(),
         CoreModule.forRoot(),
         NbAuthModule.forRoot({
             strategies: [

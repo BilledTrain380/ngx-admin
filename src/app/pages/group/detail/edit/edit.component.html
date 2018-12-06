@@ -1,13 +1,14 @@
-<div class="modal-header">
-    <span>{{ 'form.action.edit' | translate }}</span>
-    <button class="close" aria-label="Close" (click)="dismissModal()">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>
+<form class="modal-lg" [formGroup]="editForm" (ngSubmit)="submit()">
 
-<form [formGroup]="editForm" (ngSubmit)="submit()">
+<nb-card>
 
-    <div class="modal-body">
+    <nb-card-header>
+
+        {{ 'form.action.edit' | translate }}
+
+    </nb-card-header>
+
+    <nb-card-body>
 
         <div class="row">
 
@@ -62,19 +63,8 @@
                     <label for="inputBirthday">{{ 'participant.label.birthday' | translate }}</label>
                     <div class="input-group">
 
-                        <input class="form-control" id="inputBirthday" type="text" disabled [value]="datePickerValue.toLocaleDateString()">
-
-                        <div class="input-group-append">
-
-                            <button class="btn btn-outline-secondary" [nbPopover]="datePicker" nbPopoverPlacement="bottom" type="button">
-                                <i class="fa fa-calendar"></i>
-                            </button>
-
-                            <ng-template #datePicker>
-                                <nb-calendar [(date)]="datePickerValue"></nb-calendar>
-                            </ng-template>
-
-                        </div>
+                        <input class="form-control" id="inputBirthday" readonly [nbDatepicker]="datepicker" type="text" formControlName="birthday" required>
+                        <nb-datepicker #datepicker></nb-datepicker>
 
                     </div>
                 </div>
@@ -94,18 +84,20 @@
             </div>
         </div>
 
-    </div>
+    </nb-card-body>
 
-    <div class="modal-footer">
+    <nb-card-footer>
 
-        <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
-            {{ 'form.action.abort' | translate }}
-        </button>
+            <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
+                {{ 'form.action.abort' | translate }}
+            </button>
 
-        <button class="btn btn-md btn-primary" [disabled]="editForm.invalid" type="submit">
-            {{ 'form.action.save' | translate }}
-        </button>
+            <button class="btn btn-md btn-primary" [disabled]="editForm.invalid" type="submit">
+                {{ 'form.action.save' | translate }}
+            </button>
 
-    </div>
+    </nb-card-footer>
+
+</nb-card>
 
 </form>

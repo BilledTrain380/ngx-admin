@@ -1,9 +1,10 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {Group} from '../../../modules/group/group-models';
 import {GROUP_PROVIDER, GroupProvider} from '../../../modules/group/group-providers';
-import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ImportComponent} from './import/import.component';
 import {NbAccessChecker} from '@nebular/security';
+import {NbDialogService} from '@nebular/theme';
+import {filter} from 'rxjs/operators';
 
 class GroupModel {
 
@@ -28,11 +29,9 @@ export class GroupOverviewComponent implements OnInit {
     groupList: Array<GroupModel> = [];
 
     constructor(
-
         @Inject(GROUP_PROVIDER)
         private readonly groupProvider: GroupProvider,
-
-        private readonly modalService: NgbModal,
+        private readonly dialogService: NbDialogService,
         readonly accessChecker: NbAccessChecker,
     ) {}
 
@@ -50,14 +49,17 @@ export class GroupOverviewComponent implements OnInit {
     }
 
     showImportModal(): void {
-        const modal: NgbModalRef = this.modalService.open(ImportComponent, {size: 'lg', container: 'nb-layout'});
-        modal.result.then(() => {
-            this.ngOnInit();
-            this.importSuccessful = true;
-            setTimeout(() => {
-                this.importSuccessful = false;
-            }, 5000);
-        }).catch(() => {});
+
+        this.dialogService.open(ImportComponent).onClose
+            .pipe(filter(success => success))
+            .subscribe(() => {
+
+                this.ngOnInit();
+                this.importSuccessful = true;
+                setTimeout(() => {
+                    this.importSuccessful = false;
+                }, 5000);
+            });
     }
 }
 

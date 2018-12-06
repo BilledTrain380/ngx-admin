@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NbDialogRef} from '@nebular/theme';
 
 @Component({
     selector: 'ngx-confirmation',
@@ -12,15 +12,15 @@ export class ConfirmationComponent {
     severity: string = 'danger';
 
     constructor(
-        private readonly activeModal: NgbActiveModal,
+        private readonly ref: NbDialogRef<ConfirmationComponent>,
     ) {
     }
 
     dismissModal(): void {
-        this.activeModal.dismiss();
+        this.ref.close();
     }
 
     confirm(): void {
-        this.activeModal.close();
+        this.ref.close(true);
     }
 }
