@@ -3,7 +3,7 @@ import {NbDialogService, NbMenuItem, NbMenuService, NbSidebarService} from '@neb
 import {AnalyticsService} from '../../../@core/utils/analytics.service';
 import {filter, takeWhile} from 'rxjs/operators';
 import {User} from '../../../modules/user/user-models';
-import {ChangePasswordComponent} from '../../../modules/user/change-password/change-password.component';
+import {ChangePasswordComponent} from '../change-password/change-password.component';
 import {USER_SUPPLIER, UserSupplier} from '../../../modules/user/user-providers';
 import {NbTokenService} from '@nebular/auth';
 import {environment} from '../../../../environments/environment';

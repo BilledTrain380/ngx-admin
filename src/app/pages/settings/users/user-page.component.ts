@@ -4,7 +4,7 @@ import {User} from '../../../modules/user/user-models';
 import {TranslateService} from '@ngx-translate/core';
 import {ConfirmationComponent} from '../../../modules/confirmation/confirmation.component';
 import {CreateComponent} from './create/create.component';
-import {ChangePasswordComponent} from '../../../modules/user/change-password/change-password.component';
+import {ChangePasswordComponent} from '../../../@theme/components/change-password/change-password.component';
 import {NbDialogRef, NbDialogService} from '@nebular/theme';
 import {filter} from 'rxjs/operators';
 

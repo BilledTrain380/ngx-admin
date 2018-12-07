@@ -62,10 +62,11 @@ import {
 import {DEFAULT_THEME} from './styles/theme.default';
 import {COSMIC_THEME} from './styles/theme.cosmic';
 import {CORPORATE_THEME} from './styles/theme.corporate';
-import {PageTitleComponent} from './page-title/page-title.component';
+import {PageTitleComponent} from './components/page-title/page-title.component';
 import {UserModule} from '../modules/user/user.module';
 import {TranslateModule} from '@ngx-translate/core';
 import {AutoFloatDirective} from './directives/auto-float.directive';
+import {ChangePasswordComponent} from './components/change-password/change-password.component';
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule, UserModule, TranslateModule];
 
@@ -122,10 +123,12 @@ const COMPONENTS = [
     TwoColumnsLayoutComponent,
     PageTitleComponent,
     AutoFloatDirective,
+    ChangePasswordComponent,
 ];
 
 const ENTRY_COMPONENTS = [
     ThemeSwitcherListComponent,
+    ChangePasswordComponent,
 ];
 
 const PIPES = [

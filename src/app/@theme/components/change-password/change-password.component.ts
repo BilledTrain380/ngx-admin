@@ -1,8 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {USER_PROVIDER, UserProvider} from '../user-providers';
+import {USER_PROVIDER, UserProvider} from '../../../modules/user/user-providers';
 import {NgForm} from '@angular/forms';
-import {User} from '../user-models';
+import {User} from '../../../modules/user/user-models';
 import {environment} from '../../../../environments/environment';
 import {NbDialogRef} from '@nebular/theme';
 

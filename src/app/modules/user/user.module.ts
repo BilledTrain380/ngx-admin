@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {HttpUserProvider, JWTUserSupplier, USER_PROVIDER, USER_SUPPLIER} from './user-providers';
 import {TranslateModule} from '@ngx-translate/core';
-import {ChangePasswordComponent} from './change-password/change-password.component';
 import {FormsModule} from '@angular/forms';
 import {NbCardModule} from '@nebular/theme';
 
@@ -13,9 +12,6 @@ import {NbCardModule} from '@nebular/theme';
         FormsModule,
         NbCardModule,
     ],
-    declarations: [ChangePasswordComponent],
-    entryComponents: [ChangePasswordComponent],
-    exports: [ChangePasswordComponent],
     providers: [
         {
             provide: USER_PROVIDER,
