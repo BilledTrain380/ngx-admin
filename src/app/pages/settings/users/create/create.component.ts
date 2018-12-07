@@ -1,5 +1,4 @@
 import {Component, Inject} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {USER_PROVIDER, UserProvider} from '../../../../modules/user/user-providers';
 import {User} from '../../../../modules/user/user-models';
 import {NgForm} from '@angular/forms';

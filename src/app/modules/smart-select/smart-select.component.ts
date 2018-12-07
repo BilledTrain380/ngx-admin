@@ -19,7 +19,7 @@ export class SmartSelectComponent implements OnChanges {
         onDisplay: value => String(value),
     };
 
-    @Output('onChange')
+    @Output()
     readonly onChange: EventEmitter<any> = new EventEmitter();
 
     selectedValue?: any;

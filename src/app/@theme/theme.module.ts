@@ -52,7 +52,7 @@ import {
     ThemeSwitcherListComponent,
     TinyMCEComponent,
 } from './components';
-import {CapitalizePipe, EvaIconsPipe, NumberWithCommasPipe, PluralPipe, RoundPipe, TimingPipe,} from './pipes';
+import {CapitalizePipe, EvaIconsPipe, NumberWithCommasPipe, PluralPipe, RoundPipe, TimingPipe} from './pipes';
 import {
     OneColumnLayoutComponent,
     SampleLayoutComponent,

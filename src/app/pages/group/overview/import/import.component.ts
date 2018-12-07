@@ -1,5 +1,4 @@
 import {Component, Inject} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {GROUP_PROVIDER, GroupProvider} from '../../../../modules/group/group-providers';
 import {BadRequestError} from '../../../../modules/http/http-errors';
 import {NbDialogRef} from '@nebular/theme';
