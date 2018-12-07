@@ -249,7 +249,7 @@ export class AuthHttpService implements HttpService {
 
         const url = window.URL.createObjectURL(file);
 
-        const link: HTMLAnchorElement = document.createElement('a');
+        const link: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
         link.href = url;
         link.download = qualifier.name;
         link.click();
@@ -372,11 +372,11 @@ export class PSARestService implements RestService, HttpService {
             this.router.navigate(['/auth/login']);
         } else if (error instanceof ResourceNotFoundError) {
             this.router.navigate(['/pages/miscellaneous/404']);
-        } else {
-            this.router.navigate(['/pages/miscellaneous/no-connection']);
+        } else if (error instanceof BadRequestError) {
+            throw error;
         }
 
-        throw error;
+        this.router.navigate(['/pages/miscellaneous/no-connection']);
     }
 }
 
@@ -394,17 +394,19 @@ async function handleResponse(response: Response): Promise<void> {
         return;
     }
 
+    const body: any = await response.json();
+
     if (response.status === 400)
-        throw new BadRequestError(response.statusText, timestamp(), response.url);
+        throw new BadRequestError(body.message, timestamp(), response.url);
 
     if (response.status === 401)
-        throw new AuthenticationError(response.statusText, timestamp(), response.url);
+        throw new AuthenticationError(body.message, timestamp(), response.url);
 
     if (response.status === 404)
-        throw new ResourceNotFoundError(response.statusText, timestamp(), response.url);
+        throw new ResourceNotFoundError(body.message, timestamp(), response.url);
 
     throw new RequestError(
-        response.statusText,
+        body.message,
         timestamp(),
         response.status,
         'Could not resolve request',
