@@ -9,7 +9,7 @@
 
                 <span>{{ 'group.title.overview' | translate }}</span>
 
-                <div *nbIsGranted="['create', 'groups']" class="float-right btn-group btn-divided-group">
+                <div *nbIsGranted="['create', 'groups']" ngxAutoFloat class="btn-group btn-divided-group">
 
                     <button type="button" class="btn btn-sm btn-primary active" (click)="showImportModal()">
                         <i class="fa fa-upload"></i>
@@ -45,11 +45,11 @@
                             {{ group.coach }}
                         </button>
 
-                        <div *ngIf="group.pendingParticipation" class="float-right">
+                        <div *ngIf="group.pendingParticipation" ngxAutoFloat>
                             <i class="fa fa-exclamation-triangle text-warning"></i> {{ 'group.status.withPendingParticipation' | translate }}
                         </div>
 
-                        <div *ngIf="!group.pendingParticipation" class="float-right">
+                        <div *ngIf="!group.pendingParticipation" ngxAutoFloat>
                             <i class="fa fa-check-circle text-success"></i> {{ 'group.status.withNoPendingParticipation' | translate }}
                         </div>
 

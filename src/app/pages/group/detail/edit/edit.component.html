@@ -88,13 +88,17 @@
 
     <nb-card-footer>
 
+        <div ngxAutoFloat class="btn-group btn-divided-group">
+
             <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
                 {{ 'form.action.abort' | translate }}
             </button>
 
-            <button class="btn btn-md btn-primary" [disabled]="editForm.invalid" type="submit">
+            <button class="btn btn-md btn-primary active" [disabled]="editForm.invalid" type="submit">
                 {{ 'form.action.save' | translate }}
             </button>
+
+        </div>
 
     </nb-card-footer>
 

@@ -4,39 +4,39 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 import {
-  NbActionsModule,
-  NbCardModule,
-  NbLayoutModule,
-  NbMenuModule,
-  NbRouteTabsetModule,
-  NbSearchModule,
-  NbSidebarModule,
-  NbTabsetModule,
-  NbThemeModule,
-  NbUserModule,
-  NbCheckboxModule,
-  NbPopoverModule,
-  NbContextMenuModule,
-  NbProgressBarModule,
-  NbCalendarModule,
-  NbCalendarRangeModule,
-  NbStepperModule,
-  NbButtonModule,
-  NbInputModule,
-  NbAccordionModule,
-  NbDatepickerModule,
-  NbDialogModule,
-  NbWindowModule,
-  NbListModule,
-  NbToastrModule,
-  NbAlertModule,
-  NbSpinnerModule,
-  NbRadioModule,
-  NbSelectModule,
-  NbChatModule,
-  NbTooltipModule,
-  NbCalendarKitModule,
-  NbBadgeModule,
+    NbAccordionModule,
+    NbActionsModule,
+    NbAlertModule,
+    NbBadgeModule,
+    NbButtonModule,
+    NbCalendarKitModule,
+    NbCalendarModule,
+    NbCalendarRangeModule,
+    NbCardModule,
+    NbChatModule,
+    NbCheckboxModule,
+    NbContextMenuModule,
+    NbDatepickerModule,
+    NbDialogModule,
+    NbInputModule,
+    NbLayoutModule,
+    NbListModule,
+    NbMenuModule,
+    NbPopoverModule,
+    NbProgressBarModule,
+    NbRadioModule,
+    NbRouteTabsetModule,
+    NbSearchModule,
+    NbSelectModule,
+    NbSidebarModule,
+    NbSpinnerModule,
+    NbStepperModule,
+    NbTabsetModule,
+    NbThemeModule,
+    NbToastrModule,
+    NbTooltipModule,
+    NbUserModule,
+    NbWindowModule,
 } from '@nebular/theme';
 
 import {NbSecurityModule} from '@nebular/security';
@@ -44,22 +44,15 @@ import {NbSecurityModule} from '@nebular/security';
 import {
     FooterComponent,
     HeaderComponent,
-    SearchInputComponent,
-    ThemeSettingsComponent,
-    SwitcherComponent,
     LayoutDirectionSwitcherComponent,
+    SearchInputComponent,
+    SwitcherComponent,
+    ThemeSettingsComponent,
     ThemeSwitcherComponent,
-    TinyMCEComponent,
     ThemeSwitcherListComponent,
+    TinyMCEComponent,
 } from './components';
-import {
-  CapitalizePipe,
-  PluralPipe,
-  RoundPipe,
-  TimingPipe,
-  NumberWithCommasPipe,
-  EvaIconsPipe,
-} from './pipes';
+import {CapitalizePipe, EvaIconsPipe, NumberWithCommasPipe, PluralPipe, RoundPipe, TimingPipe,} from './pipes';
 import {
     OneColumnLayoutComponent,
     SampleLayoutComponent,
@@ -71,8 +64,8 @@ import {COSMIC_THEME} from './styles/theme.cosmic';
 import {CORPORATE_THEME} from './styles/theme.corporate';
 import {PageTitleComponent} from './page-title/page-title.component';
 import {UserModule} from '../modules/user/user.module';
-import { CardActionsComponent } from './components/card-actions/card-actions.component';
 import {TranslateModule} from '@ngx-translate/core';
+import {AutoFloatDirective} from './directives/auto-float.directive';
 
 const BASE_MODULES = [CommonModule, FormsModule, ReactiveFormsModule, UserModule, TranslateModule];
 
@@ -128,7 +121,7 @@ const COMPONENTS = [
     ThreeColumnsLayoutComponent,
     TwoColumnsLayoutComponent,
     PageTitleComponent,
-    CardActionsComponent,
+    AutoFloatDirective,
 ];
 
 const ENTRY_COMPONENTS = [

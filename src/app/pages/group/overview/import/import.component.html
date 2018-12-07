@@ -22,13 +22,17 @@
 
     <nb-card-footer>
 
-        <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
-            {{ 'form.action.abort' | translate }}
-        </button>
+        <div ngxAutoFloat class="btn-group btn-divided-group">
 
-        <button class="btn btn-md btn-primary" type="button" [disabled]="!file" (click)="upload()">
-            {{ 'group.action.import' | translate }}
-        </button>
+            <button class="btn btn-md btn-secondary" type="button" (click)="dismissModal()">
+                {{ 'form.action.abort' | translate }}
+            </button>
+
+            <button class="btn btn-md btn-primary active" type="button" [disabled]="!file" (click)="upload()">
+                {{ 'group.action.import' | translate }}
+            </button>
+
+        </div>
 
     </nb-card-footer>
 
