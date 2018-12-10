@@ -2,6 +2,7 @@ import {Component, OnDestroy} from '@angular/core';
 import {takeWhile} from 'rxjs/operators';
 import {NbAuthResult, NbAuthService} from '@nebular/auth';
 import {Router} from '@angular/router';
+import {environment} from '../../../environments/environment';
 
 @Component({
     selector: 'ngx-oauthcallback',
@@ -9,6 +10,8 @@ import {Router} from '@angular/router';
     styleUrls: ['./oauthcallback.component.scss'],
 })
 export class OauthcallbackComponent implements OnDestroy {
+
+    readonly logoPath: string = `${environment.baseHref}/assets/images/psa-logo.svg`;
 
     private alive: boolean = true;
 
