@@ -70,6 +70,13 @@ export interface ParticipationFileProvider {
      * @return a file qualifier to identify the file
      */
     createEventSheets(data: ReadonlyArray<EventSheetData>): Promise<FileQualifier>;
+
+    /**
+     * Creates the start list.
+     *
+     * @return a file qualifier to identify the startlist file
+     */
+    createStartlist(): Promise<FileQualifier>;
 }
 
 /**
@@ -148,5 +155,9 @@ export class HttpParticipationFileProvider implements ParticipationFileProvider 
             'api/web/participant-list',
             JSON.stringify(sports),
             fileQualifierJsonSchema);
+    }
+
+    async createStartlist(): Promise<FileQualifier> {
+        return await this.rest.getRequest<FileQualifier>('api/web/startlist', fileQualifierJsonSchema);
     }
 }

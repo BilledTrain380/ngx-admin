@@ -28,6 +28,7 @@ export class EventPageComponent implements OnInit {
 
     isEventSheetLoading: boolean = false;
     isParticipantListLoading: boolean = false;
+    isStartlistLoading: boolean = false;
 
     isParticipationOpen: boolean = false;
 
@@ -39,7 +40,8 @@ export class EventPageComponent implements OnInit {
         @Inject(PARTICIPATION_PROVIDER) private readonly participationProvider: ParticipationProvider,
         @Inject(HTTP_SERVICE) private readonly http: HttpService,
         private readonly translateService: TranslateService,
-    ) {}
+    ) {
+    }
 
     async ngOnInit() {
 
@@ -57,7 +59,7 @@ export class EventPageComponent implements OnInit {
         this.participantListTree.toggleCollapse();
 
         const disciplineList = await this.disciplineProvider.getAll();
-        const groupList = await this.groupProvider.getGroupList({ competitive: true });
+        const groupList = await this.groupProvider.getGroupList({competitive: true});
 
         const disciplines: ReadonlyArray<TreeCheckbox> = disciplineList.map(discipline => {
 
@@ -101,6 +103,17 @@ export class EventPageComponent implements OnInit {
         await this.http.downloadFile(fileQualifier);
 
         this.isParticipantListLoading = false;
+    }
+
+    async exportStartlist(): Promise<void> {
+
+        this.isStartlistLoading = true;
+
+        const fileQualifier: FileQualifier = await this.fileProvider.createStartlist();
+
+        await this.http.downloadFile(fileQualifier);
+
+        this.isStartlistLoading = false;
     }
 
     async exportEventSheets(): Promise<void> {

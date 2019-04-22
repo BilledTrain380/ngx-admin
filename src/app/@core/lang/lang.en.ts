@@ -72,6 +72,7 @@ export const LANG_EN = {
     eventPage: {
         title: {
             participantList: 'Participantlist',
+            startlist: 'Startlist',
             eventSheets: 'Event Sheets',
         },
         action: {

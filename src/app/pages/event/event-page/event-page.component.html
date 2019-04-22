@@ -2,7 +2,7 @@
 
 <div class="row">
 
-    <div class="col-lg-12">
+    <div class="col-lg-6">
 
         <nb-card>
 
@@ -27,6 +27,42 @@
                 <button class="btn btn-primary mb-2" (click)="exportParticipantList()" [disabled]="isParticipantListLoading">
                     <span *ngIf="!isParticipantListLoading">{{ 'eventPage.action.export' | translate }}</span>
                     <i *ngIf="isParticipantListLoading" class="fa fa-spinner fa-spin"></i>
+                </button>
+
+            </nb-card-body>
+
+        </nb-card>
+
+    </div>
+
+    <div class="col-lg-6">
+
+        <nb-card>
+
+            <nb-card-header>
+
+                {{ 'eventPage.title.startlist' | translate }}
+
+            </nb-card-header>
+
+            <nb-card-body>
+
+                <div class="row">
+
+                    <div *ngIf="isParticipationOpen" class="col-lg-12">
+                        <div class="alert alert-primary" role="alert">
+                            <strong>{{ 'alert.info' | translate }}</strong> {{ 'participation.status.open' | translate }}.
+                            <span *nbIsGranted="['view', 'management']">
+                                {{ 'participation.text.toManagement' | translate }} <a routerLink="/pages/management">{{ 'participation.text.toManagementHere' | translate }}</a>.
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button class="btn btn-primary mb-2" (click)="exportStartlist()" [disabled]="isParticipationOpen">
+                    <span *ngIf="!isStartlistLoading">{{ 'eventPage.action.export' | translate }}</span>
+                    <i *ngIf="isStartlistLoading" class="fa fa-spinner fa-spin"></i>
                 </button>
 
             </nb-card-body>
