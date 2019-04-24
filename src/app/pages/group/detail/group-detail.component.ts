@@ -28,6 +28,8 @@ export class GroupDetailComponent implements OnInit {
     editSuccess: boolean = false;
     deleteSuccess: boolean = false;
 
+    isSaving: boolean = false;
+
     activeGroup: Group = {name: '', coach: { id: 0, name: ''}};
     participationStatus: ParticipationStatus = ParticipationStatus.CLOSE;
     participantList: ReadonlyArray<ParticipantModel> = [];
@@ -96,14 +98,17 @@ export class GroupDetailComponent implements OnInit {
 
                 model.absentProperty
                     .subscribe(absentValue => {
+                        this.isSaving = true;
                         const participant: Participant = Object.assign(it, {absent: absentValue});
-                        this.participantProvider.update(participant);
+                        this.participantProvider.update(participant).then(() => this.isSaving = false);
                     });
 
                 model.sportProperty
                     .subscribe(sportName => {
+                        this.isSaving = true;
+
                         const sport: Sport = this.sports.find(sportType => sportType.name === sportName);
-                        this.participantProvider.setSport(it, sport);
+                        this.participantProvider.setSport(it, sport).then(() => this.isSaving = false);
 
                         if (model.isReparticipate) {
                             model.isReparticipate = false;

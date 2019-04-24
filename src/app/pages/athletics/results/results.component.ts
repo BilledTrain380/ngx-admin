@@ -39,6 +39,7 @@ export class ResultsComponent implements OnInit {
 
     isLoading: boolean = false;
     isParticipationOpen: boolean = false;
+    isSaving: boolean = false;
 
     groups: ReadonlyArray<Group> = [];
     disciplines: ReadonlyArray<Discipline> = [];
@@ -117,6 +118,8 @@ export class ResultsComponent implements OnInit {
                 .pipe(distinctUntilChanged())
                 .subscribe(resultValue => {
 
+                    this.isSaving = true;
+
                     const result: TemporaryResult = {
                         id: model.result.id,
                         value: Math.floor(resultValue * model.result.discipline.unit.factor),
@@ -130,6 +133,7 @@ export class ResultsComponent implements OnInit {
                         // we only send 1 result, therefore the response only has one result
                         model.result.points = results[0].points;
                         model.result.isCalculating = false;
+                        this.isSaving = false;
                     });
                 });
 

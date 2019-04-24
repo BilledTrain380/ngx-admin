@@ -22,6 +22,11 @@
 
             <nb-card-body>
 
+                <div class="alert alert-info" role="alert">
+                    <span *ngIf="!isSaving">{{ 'alert.changes.saved' | translate }} <i class="fa fa-check-circle"></i></span>
+                    <span *ngIf="isSaving">{{ 'alert.changes.saving' | translate }} <i class="fa fa-exclamation-circle"></i></span>
+                </div>
+
                 <div *ngIf="createSuccess" class="alert alert-success" role="alert">
                     <strong>{{ 'alert.great' | translate }}</strong> {{ 'participant.alert.createSuccess' | translate }}
                 </div>

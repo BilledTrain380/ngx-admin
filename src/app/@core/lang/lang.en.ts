@@ -193,6 +193,10 @@ export const LANG_EN = {
         attention: 'Attention!',
         warning: 'Warning!',
         error: 'Error!',
+        changes: {
+            saving: 'Saving changes...',
+            saved: 'Changes are saved',
+        },
     },
 
     page: {
