@@ -28,7 +28,7 @@
                     <strong>{{ 'alert.info' | translate }}</strong> {{ 'group.status.noGroups' | translate }}
                 </div>
 
-                <nb-card *ngFor="let group of groupList">
+                <nb-card *ngFor="let group of groupList" class="tight">
                     <nb-card-header>
 
                         <a *ngIf="accessChecker.isGranted('view', 'group') | async" routerLink="/pages/group/detail/{{ group.name }}" class="text-heading">

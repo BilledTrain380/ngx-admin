@@ -73,7 +73,7 @@
                         <td *ngIf="participationIsOpen() || participant.isReparticipate">
 
                             <div class="input-group">
-                                <select class="form-control" [(ngModel)]="participant.sport" (change)="participant.sportChanged()">
+                                <select class="form-control form-control-sm" [(ngModel)]="participant.sport" (change)="participant.sportChanged()">
                                     <option *ngFor="let sport of sports" [value]="sport.name">{{ sport.name | translate }}</option>
                                 </select>
                                 <span class="input-group-append" *ngIf="participant.isReparticipate">
