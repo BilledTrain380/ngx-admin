@@ -148,7 +148,8 @@ export class AuthRestService implements RestService {
 
     constructor(
         private readonly authService: NbAuthService,
-    ) {}
+    ) {
+    }
 
     async getRequest<T>(url: string, jsonSchema: object): Promise<T> {
         return this.fetchRequest<T>(url, 'GET', undefined, jsonSchema);
@@ -206,7 +207,8 @@ export class AuthHttpService implements HttpService {
 
     constructor(
         private readonly authService: NbAuthService,
-    ) {}
+    ) {
+    }
 
     async postForm(url: string, formData: FormData, headers: Headers = new Headers()): Promise<Response> {
 
@@ -252,7 +254,7 @@ export class AuthHttpService implements HttpService {
         const link: HTMLAnchorElement = document.createElement('a') as HTMLAnchorElement;
         link.href = url;
         link.download = qualifier.name;
-        link.click();
+        link.dispatchEvent(new MouseEvent('click', {'view': window, 'bubbles': true, 'cancelable': true}));
         window.URL.revokeObjectURL(url);
     }
 }
@@ -271,7 +273,8 @@ export class PSARestService implements RestService, HttpService {
         private readonly rest: AuthRestService,
         private readonly http: AuthHttpService,
         private readonly router: Router,
-    ) {}
+    ) {
+    }
 
     async deleteRequest<T>(url: string, body?: RequestBody, jsonSchema?: object): Promise<T> {
 
@@ -418,7 +421,7 @@ async function validateResponseBody(response: Response, schema: object): Promise
     const body: any = await response.json();
 
     const valid: boolean = await new AjvImpl()
-    .validate(schema, body);
+        .validate(schema, body);
 
     if (!valid) throw new TypeError(`Response does not match JSON schema: url=${response.url}`);
 
