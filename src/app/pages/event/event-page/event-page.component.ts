@@ -96,7 +96,9 @@ export class EventPageComponent implements OnInit {
 
         this.isParticipantListLoading = true;
 
-        const data: ReadonlyArray<Sport> = this.participantListTree.children.map(it => it.data);
+        const data: ReadonlyArray<Sport> = this.participantListTree.children
+            .filter(it => it.checked)
+            .map(it => it.data);
 
         const fileQualifier: FileQualifier = await this.fileProvider.createParticipantList(data);
 
