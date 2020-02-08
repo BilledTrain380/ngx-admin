@@ -4,13 +4,13 @@ sudo: false
 dist: trusty
 
 node_js:
-  - '8'
-  - '9'
   - '10'
 
 branches:
   only:
   - master
+  - starter-kit
+  - demo
 
 addons:
   apt:
